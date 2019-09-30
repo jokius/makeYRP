@@ -1,0 +1,14 @@
+node_modules/
+public/custom/
+public/workshop/
+public/worlds/
+public/templates/
+public/bin/core\.js
+public/bin/standalone\.js
+old/
+db/
+dist/
+/config/development.env.json
+/docker-compose.yml
+/Dockerfile
+/public/uploads/

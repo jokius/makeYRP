@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  gm_forge:
+    restart: always
+    build: .
+    ports:
+      - '30000:80'
+    links:
+      - mongo
+    environment:
+      NODE_ENV: production
+      APP_ENV: production
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
