@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-  gm_forge:
+  myrp:
     restart: always
     build: .
     ports:

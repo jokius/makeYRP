@@ -35,7 +35,7 @@ app.use('/public', express.static('public'))
 /* eslint-disable no-console */
 mongoose
   .connect(
-    'mongodb://mongo:27017/gm_forge',
+    'mongodb://mongo:27017/myrp',
     { useNewUrlParser: true },
   )
   .then(() => console.log('MongoDB Connected'))

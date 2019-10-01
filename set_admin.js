@@ -9,7 +9,7 @@ const login = process.argv[2]
 /* eslint-disable no-console */
 mongoose
   .connect(
-    'mongodb://mongo:27017/gm_forge',
+    'mongodb://mongo:27017/myrp',
     { useNewUrlParser: true },
   )
   .then(() => console.log('MongoDB Connected'))

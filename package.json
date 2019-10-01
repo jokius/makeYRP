@@ -1,5 +1,5 @@
 {
-  "name": "gm_forge",
+  "name": "make_yrp",
   "description": "Worldbuilding and Tabletop Gaming, without the hassle of online! (React + Mobx, Express)",
   "main": "dist/server.js",
   "scripts": {
