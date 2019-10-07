@@ -131,7 +131,7 @@ export default class GameModel {
         type: {
           label: 'Тип',
           rules: 'required',
-          value: this.pageObj.type || '',
+          value: this.pageObj.type || 'map',
         },
         grid: {
           label: 'Вид сетки',
