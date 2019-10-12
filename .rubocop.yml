@@ -1,0 +1,65 @@
+---
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+  - node_modules/**/*
+  - db/schema.rb
+  - bin/*
+  - locale/*
+
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+  - db/migrate/*
+
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+  - spec/**/*
+
+Metrics/ClassLength:
+  Max: 120
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+  - db/migrate/*
+
+Metrics/ModuleLength:
+  Max: 120
+
+RSpec/EmptyExampleGroup:
+  Exclude:
+  - spec/integration/internal/**/*
+
+RSpec/ExampleLength:
+  Max: 11
+
+RSpec/MultipleExpectations:
+  Max: 3
+
+RSpec/NestedGroups:
+  Max: 5
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+  - locale/custom_locales.rb
+  - db/migrate/*
