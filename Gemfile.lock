@@ -104,6 +104,7 @@ GEM
       colorize (~> 0.7)
       ruby_parser (>= 3.13.0)
     ffi (1.11.1)
+    foreman (0.86.0)
     gitlab (4.12.0)
       httparty (~> 0.14, >= 0.14.0)
       terminal-table (~> 1.5, >= 1.5.1)
@@ -331,6 +332,7 @@ DEPENDENCIES
   database_cleaner
   fast_jsonapi
   fasterer (~> 0.7.1)
+  foreman
   listen (>= 3.0.5, < 3.2)
   mock_redis
   mongoid!
