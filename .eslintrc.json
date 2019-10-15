@@ -1,19 +1,14 @@
 {
   "parserOptions": {
-    "parser": "@typescript-eslint/parser"
+    "parser": "babel-eslint"
   },
   "extends": [
     "eslint:recommended",
     "plugin:vue/recommended",
-    "plugin:prettier/recommended",
     "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript"
+    "plugin:import/warnings"
   ],
   "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts"]
-    },
     "import/resolver": {
       "node": {
         "extensions": [".js", ".vue", ".ts"],
@@ -21,7 +16,7 @@
       }
     }
   },
-  "plugins": ["prettier", "babel", "import", "sort-class-members", "@typescript-eslint"],
+  "plugins": ["babel", "import", "sort-class-members"],
   "env": {
     "browser": true,
     "node": true,
@@ -34,7 +29,6 @@
     "o__": "readonly"
   },
   "rules": {
-    "prettier/prettier": "error",
     "vue/attribute-hyphenation": ["error", "always"],
     "vue/html-closing-bracket-newline": [
       "error",
@@ -135,7 +129,7 @@
       "error",
       2,
       {
-        "baseIndent": 0,
+        "baseIndent": 1,
         "switchCase": 1
       }
     ],
@@ -194,60 +188,15 @@
     {
       "files": ["*.ts"],
       "rules": {
-        "@typescript-eslint/adjacent-overload-signatures": "error",
-        "@typescript-eslint/ban-ts-ignore": "error",
-        "@typescript-eslint/ban-types": "error",
         "camelcase": "off",
-        "@typescript-eslint/class-name-casing": "error",
-        "@typescript-eslint/consistent-type-assertions": "error",
         "no-array-constructor": "off",
-        "@typescript-eslint/no-array-constructor": "error",
         "no-empty-function": "off",
-        "@typescript-eslint/no-empty-interface": "error",
-        "@typescript-eslint/no-inferrable-types": "error",
-        "@typescript-eslint/no-misused-new": "error",
-        "@typescript-eslint/no-namespace": "error",
-        "@typescript-eslint/no-non-null-assertion": "warn",
-        "@typescript-eslint/no-this-alias": "error",
         "no-unused-vars": "off",
         "no-use-before-define": "off",
-        "@typescript-eslint/no-var-requires": "error",
-        "@typescript-eslint/prefer-namespace-keyword": "error",
-        "@typescript-eslint/triple-slash-reference": "error",
-        "@typescript-eslint/type-annotation-spacing": "error",
         "no-var": "error",
         "prefer-const": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
-
-        "@typescript-eslint/interface-name-prefix": ["error", "always"],
-        "@typescript-eslint/camelcase": "off",
-        "@typescript-eslint/no-use-before-define": ["error", { "functions": false }],
-        "@typescript-eslint/no-unused-vars": [
-          "error",
-          { "argsIgnorePattern": "^_" }
-        ],
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-empty-function": "off",
-        "@typescript-eslint/member-delimiter-style": ["error", {
-          "multiline": {
-            "delimiter": "none",
-            "requireLast": false
-          }
-        }],
-        "@typescript-eslint/explicit-function-return-type": [
-          "error",
-          { "allowExpressions": true }
-        ],
-
-        "@typescript-eslint/member-ordering": ["error", {
-          "default": [
-            "field",
-            "constructor",
-            "method"
-          ]
-        }],
-
         "import/named": "off",
         "sort-class-members/sort-class-members": "off"
       }
