@@ -18,6 +18,9 @@ gem 'fast_jsonapi'
 gem 'bson_ext'
 gem 'mongoid', git: 'https://github.com/mongodb/mongoid.git'
 
+# Auth
+gem 'devise'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
