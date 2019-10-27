@@ -89,7 +89,7 @@
 
   export default {
     data: () => ({
-      logIn: links.base.signUp,
+      logIn: links.base.signIn,
       emailRules: [
         requiredField,
         (v) => /.+@.+\..+/.test(v) || 'E-mail не корректен',

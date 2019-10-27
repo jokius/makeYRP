@@ -8,11 +8,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: links.base.signIn,
-    component: () => import('../components/pages/SignIn/index'),
+    component: () => import('../components/pages/SignIn'),
   },
   {
     path: links.base.signUp,
-    component: () => import('../components/pages/SignUp/index'),
+    component: () => import('../components/pages/SignUp'),
   },
 ]
 
