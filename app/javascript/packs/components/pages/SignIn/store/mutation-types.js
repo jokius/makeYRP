@@ -1,3 +1,0 @@
-export const UPDATE_IS_VALID = 'UPDATE_IS_VALID'
-export const UPDATE_EMAIL = 'UPDATE_EMAIL'
-export const UPDATE_PASSWORD = 'UPDATE_PASSWORD'

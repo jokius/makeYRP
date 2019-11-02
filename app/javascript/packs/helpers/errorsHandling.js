@@ -16,7 +16,7 @@ const handling = (commit, rawError) => {
     }
   }
 
-  console.log('error', rawError.toString()) // eslint-disable-line no-console
+  console.error('error', rawError.toString()) // eslint-disable-line no-console
 }
 
 export {

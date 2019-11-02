@@ -1,8 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import signUp from '../components/pages/SignUp/store'
-import signIn from '../components/pages/SignIn/store'
+import signUp from '../components/Authorization/stores/SignUp'
+import signIn from '../components/Authorization/stores/SignIn'
+import games from '../components/Games/stores/Index'
+import newGame from '../components/Games/stores/New'
+import currentUser from '../components/CurrentUser/stores/Show'
+import newSystem from '../components/Systems/stores/New'
+import systems from '../components/Systems/stores/Index'
 
 Vue.use(Vuex)
 
@@ -11,5 +16,10 @@ export default new Vuex.Store({
   modules: {
     signUp: signUp,
     signIn: signIn,
+    games: games,
+    newGame: newGame,
+    currentUser: currentUser,
+    newSystem: newSystem,
+    systems: systems,
   },
 })

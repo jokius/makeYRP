@@ -8,6 +8,13 @@ const links = {
     home: '',
     signUp: 'users/sign_up',
     signIn: 'users/sign_in',
+    currentUser: 'users/current',
+    createGame: 'games/new',
+    systems: 'systems',
+    newSystem: 'systems/new',
+    games: 'games',
+    newGame: 'games/new',
+    openGame: 'games/:id',
   }),
 
   dynamic: (link, params) => {

@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "required": ["id", "nickname", "avatar", "admin"],
+  "properties": {
+    "id": { "type": "number" },
+    "nickname": { "type": "string" },
+    "avatar": { "type": ["null", "string"] },
+    "admin": { "type": "boolean" }
+  }
+}
