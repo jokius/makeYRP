@@ -22,8 +22,10 @@ module MakeYRP
   class Application < Rails::Application
     config.load_defaults 6.0
     config.i18n.default_locale = :ru
-
-    config.generators.assets = false
-    config.generators.helper = false
+    config.generators do |generator|
+      generator.test_framework :rspec
+      generator.assets false
+      generator.helper false
+    end
   end
 end

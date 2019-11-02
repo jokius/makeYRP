@@ -8,6 +8,7 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 require 'json_matchers/rspec'
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -16,7 +17,7 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
-JsonMatchers.schema_root = 'spec/support/api/schemas'
+JsonMatchers.schema_root = 'spec/schemas'
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
