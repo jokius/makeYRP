@@ -22,6 +22,10 @@ gem 'devise'
 
 gem 'russian'
 
+# Dry
+gem 'dry-schema'
+gem 'dry-transaction'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
@@ -29,6 +33,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
   gem 'foreman'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'overcommit'
