@@ -13,12 +13,12 @@ class Systems::Change
   def change(input)
     template = input[:template]
     version = template[:version]
-    save(system(version))
+    save(system(input, template, version))
   end
 
   private
 
-  def system(version)
+  def system(input, template, version)
     record = system_by_key(template[:identifier])
     record.assign_attributes(input.merge(version: version)) unless record.version == version.to_s
     record
