@@ -2,14 +2,17 @@
 
 require 'rails_helper'
 
-RSpec.describe UsersController, type: :controller do
+RSpec.describe UsersController, type: :request do
   let(:user) { create(:user) }
+  let(:headers) { { headers: { ACCEPT: 'application/json' } } }
 
-  before { sign_in_user(user) }
+  before { sign_in user }
 
-  describe 'GET #current json' do
+  describe 'GET /users/current json' do
     context 'when get short info' do
-      before { get :current, params: { full: false, format: :json } }
+      before do
+        get '/users/current', **headers, params: { full: false }
+      end
 
       it 'correct json' do
         expect(response.status).to eq 200

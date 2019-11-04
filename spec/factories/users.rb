@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -15,12 +16,13 @@
 #  updated_at             :datetime         not null
 #
 
-# frozen_string_literal: true
-
 FactoryBot.define do
   factory :user do
     email { FFaker::Internet.unique.email }
     nickname { FFaker::Internet.unique.user_name }
     password { FFaker::Internet.password }
+    avatar do
+      { io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.png')), filename: 'test.png' }
+    end
   end
 end

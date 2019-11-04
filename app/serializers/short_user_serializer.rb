@@ -6,6 +6,6 @@ class ShortUserSerializer < ActiveModel::Serializer
   attributes :id, :nickname, :avatar, :admin
 
   attribute :avatar do
-    url_for(object.avatar) if object.avatar.attached?
+    rails_blob_path(object.avatar, only_path: true) if object.avatar.attached?
   end
 end

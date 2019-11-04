@@ -2,15 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe SystemsController, type: :controller do
+RSpec.describe SystemsController, type: :request do
   let(:user) { create(:user) }
+  let(:headers) { { headers: { ACCEPT: 'application/json' } } }
 
-  before { sign_in_user(user) }
+  before { sign_in user }
 
-  describe 'GET #index json' do
+  describe 'GET /systems json' do
     before do
       create(:system)
-      get :index, params: { format: :json }
+      get '/systems', **headers
     end
 
     it 'correct json' do
@@ -19,11 +20,11 @@ RSpec.describe SystemsController, type: :controller do
     end
   end
 
-  describe 'POST #create json' do
+  describe 'POST /systems json' do
     before do
-      post :create,
+      post '/systems',
+           **headers,
            params: {
-             format: :json,
              name: 'new system',
              text: file_fixture('system.json').read,
              file: nil

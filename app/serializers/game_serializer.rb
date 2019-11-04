@@ -20,7 +20,10 @@ class GameSerializer < ActiveModel::Serializer
   end
 
   belongs_to :master, serializer: ShortUserSerializer
-  has_many :users, serializer: ShortUserSerializer
+  has_many :users, serializer: ShortUserSerializer do
+    object.users.with_attached_avatar
+  end
+
   has_many :menus
   has_many :pages
 end

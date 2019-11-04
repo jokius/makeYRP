@@ -2,12 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe GamesController, type: :controller do
+RSpec.describe GamesController, type: :request do
   let(:user) { create(:user) }
+  let(:headers) { { headers: { ACCEPT: 'application/json' } } }
 
-  before { sign_in_user(user) }
+  before { sign_in user }
 
-  describe 'GET #index json' do
+  describe 'GET /games json' do
     let!(:game) do
       game = create(:game)
       game.update(users: [user])
@@ -19,7 +20,7 @@ RSpec.describe GamesController, type: :controller do
     let!(:close_game) { create(:game, :close) }
 
     context 'when get open games' do
-      before { get :index, params: { open: true, format: :json } }
+      before { get '/games', **headers, params: { open: true } }
 
       it 'correct json' do
         expect(response.status).to eq 200
@@ -35,7 +36,7 @@ RSpec.describe GamesController, type: :controller do
     end
 
     context 'when get close games' do
-      before { get :index, params: { open: false, format: :json } }
+      before { get '/games', **headers, params: { open: false } }
 
       it 'correct json' do
         expect(response.status).to eq 200
@@ -49,13 +50,13 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-  describe 'POST #create json' do
+  describe 'POST /games json' do
     let(:system) { create :system }
 
     before do
-      post :create,
+      post '/games',
+           **headers,
            params: {
-             format: :json,
              name: 'new game',
              system_id: system.id
            }
@@ -67,10 +68,10 @@ RSpec.describe GamesController, type: :controller do
     end
   end
 
-  describe 'GET #show json' do
+  describe 'GET /games/:id json' do
     let(:game) { create(:game) }
 
-    before { get :show, params: { id: game.id, format: :json } }
+    before { get "/games/#{game.id}", **headers }
 
     it 'correct json' do
       expect(response.status).to eq 200

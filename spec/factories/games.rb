@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: games
@@ -11,8 +12,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
-# frozen_string_literal: true
 
 FactoryBot.define do
   factory :game do
