@@ -1,12 +1,29 @@
 import { handling } from '../../../../helpers/errorsHandling'
-import { createPage, deletePage, loadGame } from '../../api'
-import { ADD_PAGE, DELETE_PAGE, GAME_LOADED } from '../mutation-types'
+import {
+  createPage,
+  createSheet,
+  deletePage,
+  deleteSheet,
+  loadGame,
+  loadSheets,
+} from '../../api'
+import {
+  ADD_PAGE,
+  ADD_SHEET,
+  DELETE_PAGE,
+  DELETE_SHEET,
+  GAME_LOADED,
+  SET_LOADED,
+  SHEETS_LOADED,
+} from '../mutation-types'
 
 export default {
   async loadGame({ commit }, id) {
     try {
       const game = await loadGame(id)
+      commit(SHEETS_LOADED, await loadSheets(id))
       commit(GAME_LOADED, game)
+      commit(SET_LOADED)
     } catch (error) {
       handling(commit, error)
     }
@@ -26,6 +43,25 @@ export default {
       const game = state.info
       await deletePage({ game_id: game.id, id: game.pages[index].id })
       commit(DELETE_PAGE, index)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async createSheet({ commit, state }, type) {
+    try {
+      const game = state.info
+      commit(ADD_SHEET, await createSheet(game.id,{ type }))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async deleteSheet({ commit, state }, id) {
+    try {
+      const game = state.info
+      await deleteSheet(game.id, id)
+      commit(DELETE_SHEET, id)
     } catch (error) {
       handling(commit, error)
     }

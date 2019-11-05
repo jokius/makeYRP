@@ -8,10 +8,19 @@ import {
   ADD_PAGE,
   DELETE_PAGE,
   UPDATE_PAGE_NAME,
+  ADD_SHEET,
+  SHEETS_LOADED,
+  SET_LOADED,
+  DELETE_SHEET,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
+import { SheetModel } from '../../../../models/SheetModel'
 
 export default {
+  [SET_LOADED](state) {
+    state.loaded = true
+  },
+
   [GAME_LOADED](state, game) {
     state.info = new GameModel().setInfo(game)
     state.loaded = true
@@ -49,5 +58,18 @@ export default {
 
   [UPDATE_PAGE_NAME](state, name) {
     state.pageName = name
+  },
+
+  [SHEETS_LOADED](state, sheets) {
+    state.sheets = sheets.map((sheet) => new SheetModel().setInfo(sheet))
+    state.loaded = true
+  },
+
+  [ADD_SHEET](state, sheet) {
+    state.sheets = [...state.sheets, sheet]
+  },
+
+  [DELETE_SHEET](state, id) {
+    state.sheets = state.sheets.filter((sheet) => sheet.id !== id)
   },
 }

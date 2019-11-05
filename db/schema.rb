@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_27_184610) do
+ActiveRecord::Schema.define(version: 2019_11_04_101909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,20 @@ ActiveRecord::Schema.define(version: 2019_10_27_184610) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_id"], name: "index_pages_on_game_id"
+  end
+
+  create_table "sheets", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "owner_id", null: false
+    t.boolean "read_all", default: false, null: false
+    t.boolean "write_all", default: false, null: false
+    t.string "name", null: false
+    t.jsonb "params", default: {}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id", "owner_id"], name: "index_sheets_on_game_id_and_owner_id"
+    t.index ["game_id"], name: "index_sheets_on_game_id"
+    t.index ["owner_id"], name: "index_sheets_on_owner_id"
   end
 
   create_table "systems", force: :cascade do |t|

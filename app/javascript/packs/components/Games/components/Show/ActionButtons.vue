@@ -41,9 +41,9 @@
       this.$store.commit(
         UPDATE_LEFT_MENU,
         list.concat([
-          { label: 'Персонажи', icon: 'mdi-account', type: 'tab-characters' },
-          { label: 'Карты', icon: 'mdi-map', type: 'tab-maps' },
-          { label: 'Настройки страници', icon: 'mdi-settings', type: 'tab-config' },
+          { label: 'Персонажи', icon: 'mdi-account', type: 'sheets' },
+          { label: 'Карты', icon: 'mdi-map', type: 'maps' },
+          { label: 'Настройки страници', icon: 'mdi-settings', type: 'settings' },
         ])
       )
     },

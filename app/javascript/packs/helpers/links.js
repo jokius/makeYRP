@@ -14,7 +14,10 @@ const links = {
     newSystem: 'systems/new',
     games: 'games',
     newGame: 'games/new',
-    openGame: 'games/:id',
+    game: 'games/:id',
+    page: 'games/:game_id/pages/:id',
+    sheets: 'games/:game_id/sheets',
+    sheet: 'games/:game_id/sheets/:id',
   }),
 
   dynamic: (link, params) => {

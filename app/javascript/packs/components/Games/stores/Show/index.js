@@ -5,7 +5,7 @@ export default {
   state: {
     loaded: false,
     info: null,
-    characters: [],
+    sheets: [],
     openModals: [],
     leftMenus: [],
     currentMenu: 0,

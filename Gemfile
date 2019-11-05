@@ -26,10 +26,11 @@ gem 'russian'
 gem 'dry-schema'
 gem 'dry-transaction'
 
+gem 'ffaker'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
-  gem 'ffaker'
 end
 
 group :development do

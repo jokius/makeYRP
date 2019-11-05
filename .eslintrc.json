@@ -181,7 +181,8 @@
         "[conventional-private-methods]"
       ],
       "accessorPairPositioning": "together"
-    }]
+    }],
+    "import/named": "off"
   },
 
   "overrides": [
@@ -197,7 +198,6 @@
         "prefer-const": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
-        "import/named": "off",
         "sort-class-members/sort-class-members": "off"
       }
     }
