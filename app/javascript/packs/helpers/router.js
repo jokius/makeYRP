@@ -30,6 +30,10 @@ const routes = [
     path: links.base.newGame,
     component: () => import('../components/Games/pages/New'),
   },
+  {
+    path: links.base.game,
+    component: () => import('../components/Games/pages/Show'),
+  },
 ]
 
 const router = new VueRouter({

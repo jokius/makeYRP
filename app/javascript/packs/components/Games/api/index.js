@@ -12,6 +12,11 @@ export const createGame = (params) =>
     .post(links.base.games, params)
     .then((response) => response.data)
 
+export const loadGame = (id) =>
+  axios
+    .get(links.dynamic(links.base.game, { id }))
+    .then((response) => response.data)
+
 export const createPage = (game_id, params) =>
   axios
     .post(links.dynamic(links.base.pages, { game_id }), params)
