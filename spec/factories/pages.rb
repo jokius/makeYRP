@@ -2,19 +2,19 @@
 
 # == Schema Information
 #
-# Table name: sheets
+# Table name: pages
 #
 #  id         :bigint           not null, primary key
 #  game_id    :bigint           not null
-#  owner_id   :bigint           not null
-#  read_all   :boolean          default(FALSE), not null
-#  write_all  :boolean          default(FALSE), not null
 #  name       :string           not null
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-class SheetSerializer < ActiveModel::Serializer
-  attributes :id, :name, :params
+FactoryBot.define do
+  factory :page do
+    game
+    name { FFaker::Product.product_name }
+  end
 end

@@ -47,13 +47,14 @@ export default {
   },
 
   [ADD_PAGE](state, page) {
-    state.info = new GameModel().addPage(page)
+    state.info = state.info.addPage(page)
     state.currentPage = state.info.pages.length - 1
   },
 
-  [DELETE_PAGE](state, index) {
-    state.info = new GameModel().deletePage(index)
-    if (state.currentPage === index) state.currentPage -= 1
+  [DELETE_PAGE](state, id) {
+    state.info = state.info.deletePage(id)
+    const maxIndex = state.info.pages.length - 1
+    if (maxIndex > state.currentPage) state.currentPage = maxIndex
   },
 
   [UPDATE_PAGE_NAME](state, name) {

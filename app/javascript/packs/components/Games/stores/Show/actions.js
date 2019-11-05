@@ -38,11 +38,11 @@ export default {
     }
   },
 
-  async deletePage({ commit, state }, index) {
+  async deletePage({ commit, state }, id) {
     try {
       const game = state.info
-      await deletePage({ game_id: game.id, id: game.pages[index].id })
-      commit(DELETE_PAGE, index)
+      await deletePage({ game_id: game.id, id })
+      commit(DELETE_PAGE, id)
     } catch (error) {
       handling(commit, error)
     }

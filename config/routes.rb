@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :games, except: %i[update delete] do
     scope module: :games do
       resources :sheets
+      resources :pages
     end
   end
 

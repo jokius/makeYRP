@@ -9,7 +9,7 @@ export default {
     openModals: [],
     leftMenus: [],
     currentMenu: 0,
-    currentPage: null,
+    currentPage: 0,
     pageName: null,
   },
 
