@@ -3,7 +3,6 @@ import {
   UPDATE_IS_VALID,
   UPDATE_PASSWORD,
 } from '../mutation-types'
-
 import { UPDATE_ERRORS } from '../../../../helpers/mutation-types'
 
 export default {

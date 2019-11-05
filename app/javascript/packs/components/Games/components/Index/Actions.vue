@@ -39,10 +39,8 @@
         currentUser: (state) => state.currentUser.info,
       }),
 
-      admin: {
-        get() {
-          return this.currentUser.admin
-        },
+      admin() {
+        return this.currentUser.admin
       },
     },
   }

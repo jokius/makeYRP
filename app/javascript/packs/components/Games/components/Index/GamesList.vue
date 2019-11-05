@@ -53,7 +53,7 @@
     props: { games: { type: Array, required: true } },
     methods: {
       openGame(id) {
-        return links.dynamic(links.base.openGame, { id: id })
+        return links.dynamic(links.base.game, { id })
       },
     },
   }

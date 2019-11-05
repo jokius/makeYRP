@@ -16,7 +16,7 @@
           >
             <v-card class="elevation-12">
               <v-toolbar
-                color="primary"
+                color="indigo"
                 dark
                 flat
               >
@@ -42,7 +42,7 @@
                 <v-spacer />
                 <v-btn
                   :disabled="!isValid"
-                  color="primary"
+                  color="indigo"
                   @click="save"
                 >
                   Добавить
@@ -107,7 +107,7 @@
         if (this.isValid) {
           this.$store.dispatch('createGame', { ...this.game }).then(() => {
             if (this.game.id) {
-              this.$router.push(links.dynamic(links.base.openGame, { id: this.game.id }))
+              this.$router.push(links.dynamic(links.base.game, { id: this.game.id }))
             }
           })
         }
