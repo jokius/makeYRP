@@ -1,15 +1,46 @@
-FROM node:12
+FROM ruby:2.6.5-alpine as builder
 
-WORKDIR /usr/src/app
+RUN apk add --no-cache postgresql-dev openssh build-base git make nodejs yarn imagemagick tzdata gmp-dev
 
-COPY package.json ./
+RUN gem install bundler -v 2.0.2
 
-COPY yarn.lock ./
+# Add working dir
+RUN mkdir -p /app
+WORKDIR /app
 
-RUN yarn
+# Install dependencies
+COPY Gemfile* /app/
+RUN bundle config --global frozen 1 \
+ && bundle install --without development test -j4 --retry 3 \
+ # Remove unneeded files (cached *.gem, *.o, *.c)
+ && rm -rf /usr/local/bundle/cache/*.gem \
+ && find /usr/local/bundle/gems/ -name "*.c" -delete \
+ && find /usr/local/bundle/gems/ -name "*.o" -delete
 
-COPY . .
+ENV NODE_ENV production
+# Install js dependencies
+COPY package.json babel.config.js postcss.config.js .browserslistrc yarn.lock /app/
+RUN yarn install
 
-EXPOSE 30000
+FROM ruby:2.6.5-alpine
+RUN apk add --no-cache git nodejs imagemagick cmake tzdata yarn
 
-CMD ["yarn", "run", "production"]
+# Copy app with gems from former build stage
+COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
+
+# Set Rails env
+ENV RAILS_ENV production
+ENV RAILS_LOG_TO_STDOUT true
+ENV RAILS_SERVE_STATIC_FILES true
+
+WORKDIR /app
+ADD . .
+
+RUN rails assets:precompile \
+ && rm -rf node_modules
+
+# Expose Puma port
+EXPOSE 3000
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+CMD ["app"]

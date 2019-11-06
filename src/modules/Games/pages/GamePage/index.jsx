@@ -30,8 +30,8 @@ export default class GamePage extends React.Component {
       <div>
         <HeadMenu />
         <LeftMenuBody />
-        <PageContent page={game.pages[game.currentPage] || {}} />
-        {openModals.map(item => item)}
+        <PageContent page={game.pageObj} />
+        {openModals.length > 0 && openModals.map(item => item)}
       </div>
     )
   }

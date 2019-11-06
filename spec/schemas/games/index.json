@@ -1,0 +1,32 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "master", "users"],
+    "properties": {
+      "id": { "type": "number" },
+      "name": { "type": "string" },
+      "master": {
+        "type": "object",
+        "required": ["id", "nickname", "avatar"],
+        "properties": {
+          "id": { "type": "number" },
+          "nickname": { "type": "string" },
+          "avatar": { "type": ["null", "string"] }
+        }
+      },
+      "users": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["id", "nickname", "avatar"],
+          "properties": {
+            "id": { "type": "number" },
+            "nickname": { "type": "string" },
+            "avatar": { "type": ["null", "string"] }
+          }
+        }
+      }
+    }
+  }
+}
