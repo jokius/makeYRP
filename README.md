@@ -1,9 +1,24 @@
-## MakeYRP
+# README
 
-Сервер и клиент для игры в настольлые ролевые игры(trpg)
+This README would normally document whatever steps are necessary to get the
+application up and running.
 
-Спомощью **MakeYRP** вы сможете создать свою ролевую системы, выбрать из уже существующих и добавленных.
+Things you may want to cover:
 
-Так же можно использововать **MakeYRP** как боевую карту
+* Ruby version
 
-Если не вдоватся в подробности это это аналог [roll20](https://roll20.net/)
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...

@@ -1,0 +1,1 @@
+export const UPDATE_ERRORS = 'UPDATE_ERRORS'

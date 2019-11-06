@@ -1,15 +1,16 @@
 version: '3.7'
 services:
   myrp:
-    restart: always
     build: .
     ports:
-      - '30000:80'
-    links:
-      - mongo
+      - '3000:80'
+    volumes:
+      - './:/usr/src/app'
     environment:
-      NODE_ENV: production
-      APP_ENV: production
+      REDIS_URL: redis://redis:6379/
+    depends_on:
+      - mongo
+
   mongo:
     container_name: mongo
     image: mongo
