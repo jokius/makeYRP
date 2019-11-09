@@ -39,6 +39,8 @@ CommitMsg:
 PreCommit:
   AuthorEmail:
     enabled: true
+  ALL:
+    problem_on_unmodified_line: warn
 
   AuthorName:
     enabled: false
@@ -75,9 +77,9 @@ PreCommit:
       - app/assets/javascripts/cable.js
     include:
       - 'app/assets/javascripts/**/*.js'
-      - frontend/**/*.js
-      - frontend/**/*.ts
-      - frontend/**/*.vue
+      - app/javascript/**/*.js
+      - app/javascript/**/*.ts
+      - app/javascript/**/*.vue
 
   HamlLint:
     enabled: true
