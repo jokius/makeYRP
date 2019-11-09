@@ -1,6 +1,4 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex from 'vuex'
 import axios from 'axios'
 import qs from 'qs'
 
@@ -30,5 +28,4 @@ document.addEventListener('DOMContentLoaded', () => {
     store,
     render: (h) => h(App),
   })
-  // .$mount(document.createElement('application'))
 })

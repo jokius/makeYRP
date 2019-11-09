@@ -1,7 +1,6 @@
 import {
   CURRENT_USER_LOADED,
 } from '../mutation-types'
-
 import { UPDATE_ERRORS } from '../../../../helpers/mutation-types'
 import { UserModel } from '../../../../models/UserModel'
 
