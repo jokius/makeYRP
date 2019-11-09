@@ -2,9 +2,7 @@
 
 class Games::PagesController < ApplicationController
   def create
-    responds(Pages::Create, params) do |page|
-      respond_json json: page, status: :created
-    end
+    responds(Pages::Create, params, status: :created)
   end
 
   def destroy

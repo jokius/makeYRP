@@ -7,9 +7,7 @@ class Games::SheetsController < ApplicationController
   end
 
   def create
-    responds(Sheets::Create, params.merge(owner_id: current_user.id)) do |sheet|
-      respond_json json: sheet, status: :created
-    end
+    responds(Sheets::Create, params.merge(owner_id: current_user.id), status: :created)
   end
 
   def destroy

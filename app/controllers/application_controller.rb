@@ -5,13 +5,13 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def responds(interactor, input, &block)
+  def responds(interactor, input, status: :ok, &block)
     input = input.to_unsafe_hash if input.is_a? ActionController::Parameters
     interactor.new.call(input) do |result|
       result.success do |value|
         return yield(value) if block
 
-        respond_json json: value
+        respond_json json: value, status: status
       end
 
       result.failure do |error|
