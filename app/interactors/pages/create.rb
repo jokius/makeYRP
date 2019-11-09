@@ -2,7 +2,7 @@
 
 class Pages::Create
   include Dry::Transaction
-  SHEETS_CREATE_SCHEMA = Dry::Schema.Params do
+  PAGES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:game_id).filled(:integer)
     required(:name).filled(:string)
   end
@@ -11,7 +11,7 @@ class Pages::Create
   step :create
 
   def validate(input)
-    result = SHEETS_CREATE_SCHEMA.call(input)
+    result = PAGES_CREATE_SCHEMA.call(input)
     if result.success?
       Success(result.to_h)
     else

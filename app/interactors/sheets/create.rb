@@ -6,7 +6,7 @@ class Sheets::Create
     required(:owner_id).filled(:integer)
     required(:game_id).filled(:integer)
     required(:type).filled(:string)
-    optional(:name).filled(:string)
+    optional(:name).maybe(:string)
   end
 
   step :validate
