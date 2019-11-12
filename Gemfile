@@ -15,6 +15,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'active_model_serializers', '~> 0.10.0'
 
 # Database
+gem 'awesome_nested_set'
 gem 'pg'
 
 # Auth

@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   end
 
   resources :systems, except: %i[delete update]
+  resource :folder
 end
