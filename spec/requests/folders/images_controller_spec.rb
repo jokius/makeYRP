@@ -25,4 +25,31 @@ RSpec.describe Folders::ImagesController, type: :request do
       expect(response).to match_json_schema('folders/show')
     end
   end
+
+  describe 'PUT /folders/:folder_id/images/:id json' do
+    let(:image) { create(:folder_file) }
+    let(:new_name) { 'new folder' }
+
+    before do
+      put "/folders/0/images/#{image.id}",
+          **headers,
+          params: {
+            name: new_name
+          }
+    end
+
+    it 'correct json' do
+      expect(response.status).to eq 201
+      expect(json_data[:name]).to eq new_name
+      expect(response).to match_json_schema('folders/images/show')
+    end
+  end
+
+  describe 'DELETE /folders/:folder_id/images/:id json' do
+    let(:image) { create(:folder_file) }
+
+    before { delete "/folders/0/images/#{image.id}", **headers }
+
+    it { expect(response.status).to eq 204 }
+  end
 end

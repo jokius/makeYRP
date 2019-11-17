@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="openDialog" width="500">
+  <v-dialog :value="openDialog">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
         Загрузить изображение
@@ -78,7 +78,6 @@
       },
 
       fileAdded(file, response) {
-        this.$refs.imageDropzone.removeFile(file)
         this.$store.commit(FOLDERS_LOADED, response)
       },
     },

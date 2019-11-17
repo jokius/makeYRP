@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Folders::Update
+class Folders::Images::Update
   include Dry::Transaction
-  FOLDERS_UPDATE_SCHEMA = Dry::Schema.Params do
+  IMAGES_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
     required(:name).filled(:string)
   end
@@ -11,7 +11,7 @@ class Folders::Update
   step :update
 
   def validate(input)
-    result = FOLDERS_UPDATE_SCHEMA.call(input)
+    result = IMAGES_UPDATE_SCHEMA.call(input)
     if result.success?
       Success(result.to_h)
     else
@@ -20,13 +20,13 @@ class Folders::Update
   end
 
   def update(input)
-    folder = Folder.find_by(id: input.delete(:id))
-    return Failure(message: 'folder not found', status: :not_fount) unless folder
+    image = FolderFile.find_by(id: input.delete(:id))
+    return Failure(message: 'image not found', status: :not_fount) unless image
 
-    if folder.update(input)
-      Success(folder)
+    if image.update(input)
+      Success(image)
     else
-      Failure(message: folder.errors.to_h, status: 422)
+      Failure(message: image.errors.to_h, status: 422)
     end
   end
 end

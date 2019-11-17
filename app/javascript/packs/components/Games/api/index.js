@@ -58,3 +58,12 @@ export const updateFolder = (params) =>
   axios
     .put(links.dynamic(links.base.folders, params), { ...params })
     .then((response) => response.data)
+
+export const deleteImage = (id) =>
+  axios
+    .delete(links.dynamic(links.base.images, { id, folder_id: 0 }))
+
+export const updateImage = (params) =>
+  axios
+    .put(links.dynamic(links.base.images, { id: params.id, folder_id: 0 }), { ...params })
+    .then((response) => response.data)

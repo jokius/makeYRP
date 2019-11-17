@@ -24,4 +24,15 @@ export class FolderModel {
     this.children = this.children.filter((child) => child.id !== id)
     return this
   }
+
+  updateImage(obj) {
+    const image = this.images.find((item) => item.id === obj.id)
+    image.name = obj.name
+    return this
+  }
+
+  deleteImage(id) {
+    this.images = this.images.filter((image) => image.id !== id)
+    return this
+  }
 }

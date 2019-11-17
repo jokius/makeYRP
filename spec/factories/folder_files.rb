@@ -14,6 +14,9 @@
 FactoryBot.define do
   factory :folder_file do
     folder
-    image { File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.png')) }
+    name { FFaker::Product.product_name }
+    image do
+      { io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.png')), filename: 'test.png' }
+    end
   end
 end

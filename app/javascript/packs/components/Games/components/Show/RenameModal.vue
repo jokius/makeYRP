@@ -56,7 +56,7 @@
 
     data() {
       return {
-        newObjName: null,
+        newObjName: this.obj.name,
       }
     },
 

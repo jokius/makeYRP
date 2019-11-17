@@ -67,7 +67,7 @@
       items: {
         get() {
           return [
-            { title: 'Изменить', callback: () => this.showRename() },
+            { title: 'Переименовать', callback: () => this.showRename() },
             { title: 'Удалить', callback: () => this.$store.dispatch('removeObj', this.currentObj) },
           ]
         },

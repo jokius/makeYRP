@@ -22,6 +22,7 @@ const links = {
     folder: 'folder',
     folders: 'folders/:id',
     folderImages: 'folders/:folder_id/images',
+    images: 'folders/:folder_id/images/:id',
   }),
 
   dynamic: (link, params) => {

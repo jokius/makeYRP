@@ -2,14 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Folders::Update, type: :interactor do
+RSpec.describe Folders::Images::Update, type: :interactor do
   subject(:interactor) { described_class.new.call(input) }
 
-  describe 'update folder' do
-    let(:folder) { create(:folder, name: 'old name') }
+  describe 'update image' do
+    let(:image) { create(:folder_file, name: 'old name') }
     let(:input) do
       {
-        id: folder.id,
+        id: image.id,
         name: 'super name'
       }
     end

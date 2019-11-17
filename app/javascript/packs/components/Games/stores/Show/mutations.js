@@ -17,6 +17,8 @@ import {
   UPDATE_CURRENT_RIGHT_CLICK_MENU,
   DELETE_FOLDER,
   UPDATE_FOLDER,
+  UPDATE_IMAGE,
+  DELETE_IMAGE,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -99,5 +101,13 @@ export default {
 
   [DELETE_FOLDER](state, id) {
     state.folder = state.folder.deleteChild(id)
+  },
+
+  [UPDATE_IMAGE](state, obj) {
+    state.folder = state.folder.updateImage(obj)
+  },
+
+  [DELETE_IMAGE](state, id) {
+    state.folder = state.folder.deleteImage(id)
   },
 }

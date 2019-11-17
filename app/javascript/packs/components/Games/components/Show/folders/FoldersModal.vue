@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     :value="openDialog"
-    width="664"
+    width="710"
     scrollable
   >
     <v-card>
@@ -160,7 +160,7 @@
     grid-template-columns: repeat(4, 150px);
     grid-template-rows: auto;
     grid-gap: 10px;
-    margin-top: 7px;
+    margin-top: 10px;
     margin-bottom: 5px;
   }
 

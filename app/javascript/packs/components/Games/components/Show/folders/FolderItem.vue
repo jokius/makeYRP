@@ -33,8 +33,6 @@
     },
 
     data: () => ({
-      showMenu: false,
-      showRenameModal: false,
       position: {
         x: 0,
         y: 0,
@@ -51,16 +49,8 @@
           return {
             type: 'folder',
             id: this.id,
+            name: this.name,
           }
-        },
-      },
-
-      renameFolder: {
-        get() {
-          return true
-        },
-        set() {
-          this.showRenameModal = true
         },
       },
     },

@@ -4,17 +4,20 @@ import {
   createPage,
   createSheet,
   deleteFolder,
+  deleteImage,
   deletePage,
   deleteSheet,
   loadFolder,
   loadGame,
   loadSheets,
   updateFolder,
+  updateImage,
 } from '../../api'
 import {
   ADD_PAGE,
   ADD_SHEET,
   DELETE_FOLDER,
+  DELETE_IMAGE,
   DELETE_PAGE,
   DELETE_SHEET,
   FOLDERS_LOADED,
@@ -24,6 +27,7 @@ import {
   SHEETS_LOADED,
   UPDATE_CURRENT_RIGHT_CLICK_MENU,
   UPDATE_FOLDER,
+  UPDATE_IMAGE,
 } from '../mutation-types'
 
 export default {
@@ -101,6 +105,7 @@ export default {
         commit(UPDATE_FOLDER, await updateFolder(obj))
         break
       case 'image':
+        commit(UPDATE_IMAGE, await updateImage(obj))
         break
       default:
         break
@@ -116,6 +121,8 @@ export default {
         commit(DELETE_FOLDER, id)
         break
       case 'image':
+        await deleteImage(id)
+        commit(DELETE_IMAGE, id)
         break
       default:
         break
