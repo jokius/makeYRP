@@ -12,6 +12,9 @@ export default {
       currentMenu: 0,
       currentPage: 0,
       pageName: null,
+      foldersLoaded: false,
+      folder: {},
+      currentRightClickMenu: '',
     }
   },
 

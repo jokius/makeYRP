@@ -19,6 +19,9 @@ const links = {
     page: 'games/:game_id/pages/:id',
     sheets: 'games/:game_id/sheets',
     sheet: 'games/:game_id/sheets/:id',
+    folder: 'folder',
+    folders: 'folders/:id',
+    folderImages: 'folders/:folder_id/images',
   }),
 
   dynamic: (link, params) => {

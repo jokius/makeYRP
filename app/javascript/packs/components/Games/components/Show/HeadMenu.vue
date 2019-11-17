@@ -44,7 +44,7 @@
 <style scoped lang="scss">
   .headMenus {
     position: fixed;
-    z-index: 1001;
+    z-index: 101;
     display: grid;
     grid-template-columns: repeat(3, max-content);
     grid-gap: 5px;

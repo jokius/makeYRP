@@ -39,3 +39,22 @@ export const createSheet = (game_id, params) =>
 export const deleteSheet = (game_id, id) =>
   axios
     .delete(links.dynamic(links.base.sheet, { game_id, id }))
+
+export const loadFolder = (params) =>
+  axios
+    .get(links.base.folder, { params })
+    .then((response) => response.data)
+
+export const createFolder = (params) =>
+  axios
+    .post(links.base.folder, params)
+    .then((response) => response.data)
+
+export const deleteFolder = (id) =>
+  axios
+    .delete(links.dynamic(links.base.folders, { id }))
+
+export const updateFolder = (params) =>
+  axios
+    .put(links.dynamic(links.base.folders, params), { ...params })
+    .then((response) => response.data)

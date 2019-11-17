@@ -16,8 +16,9 @@ Rails.application.routes.draw do
   end
 
   resources :systems, except: %i[delete update]
-  resource :folder
-  resources :folders, only: :none do
+
+  resource :folder, only: %i[create show]
+  resources :folders, only: %i[update destroy] do
     scope module: :folders do
       resources :images
     end

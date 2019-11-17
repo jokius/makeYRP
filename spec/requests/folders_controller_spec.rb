@@ -44,15 +44,14 @@ RSpec.describe FoldersController, type: :request do
     end
   end
 
-  describe 'PUT /folder json' do
+  describe 'PUT /folders/:id json' do
     let(:folder) { create(:folder) }
     let(:new_name) { 'new folder' }
 
     before do
-      put '/folder',
+      put "/folders/#{folder.id}",
           **headers,
           params: {
-            id: folder.id,
             name: new_name
           }
     end
@@ -64,8 +63,8 @@ RSpec.describe FoldersController, type: :request do
     end
   end
 
-  describe 'DELETE /folder json' do
-    before { delete '/folder', **headers, params: { id: create(:folder).id } }
+  describe 'DELETE /folders/:id json' do
+    before { delete "/folders/#{create(:folder).id}", **headers }
 
     it { expect(response.status).to eq 204 }
   end

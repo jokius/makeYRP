@@ -12,9 +12,15 @@ import {
   SHEETS_LOADED,
   SET_LOADED,
   DELETE_SHEET,
+  FOLDERS_UNLOADED,
+  FOLDERS_LOADED,
+  UPDATE_CURRENT_RIGHT_CLICK_MENU,
+  DELETE_FOLDER,
+  UPDATE_FOLDER,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
+import { FolderModel } from '../../../../models/FolderModel'
 
 export default {
   [SET_LOADED](state) {
@@ -72,5 +78,26 @@ export default {
 
   [DELETE_SHEET](state, id) {
     state.sheets = state.sheets.filter((sheet) => sheet.id !== id)
+  },
+
+  [FOLDERS_UNLOADED](state) {
+    state.foldersLoaded = false
+  },
+
+  [FOLDERS_LOADED](state, folder) {
+    state.folder = new FolderModel().setInfo(folder)
+    state.foldersLoaded = true
+  },
+
+  [UPDATE_CURRENT_RIGHT_CLICK_MENU](state, item) {
+    state.currentRightClickMenu = item
+  },
+
+  [UPDATE_FOLDER](state, obj) {
+    state.folder = state.folder.updateChild(obj)
+  },
+
+  [DELETE_FOLDER](state, id) {
+    state.folder = state.folder.deleteChild(id)
   },
 }

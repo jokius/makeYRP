@@ -1,20 +1,29 @@
 import { handling } from '../../../../helpers/errorsHandling'
 import {
+  createFolder,
   createPage,
   createSheet,
+  deleteFolder,
   deletePage,
   deleteSheet,
+  loadFolder,
   loadGame,
   loadSheets,
+  updateFolder,
 } from '../../api'
 import {
   ADD_PAGE,
   ADD_SHEET,
+  DELETE_FOLDER,
   DELETE_PAGE,
   DELETE_SHEET,
+  FOLDERS_LOADED,
+  FOLDERS_UNLOADED,
   GAME_LOADED,
   SET_LOADED,
   SHEETS_LOADED,
+  UPDATE_CURRENT_RIGHT_CLICK_MENU,
+  UPDATE_FOLDER,
 } from '../mutation-types'
 
 export default {
@@ -64,6 +73,52 @@ export default {
       commit(DELETE_SHEET, id)
     } catch (error) {
       handling(commit, error)
+    }
+  },
+
+  async loadFolder({ commit }, params) {
+    try {
+      commit(FOLDERS_UNLOADED)
+      commit(FOLDERS_LOADED, await loadFolder(params))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async createFolder({ commit }, params) {
+    try {
+      commit(FOLDERS_UNLOADED)
+      commit(FOLDERS_LOADED, await createFolder(params))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async renameObj({ commit }, obj) {
+    commit(UPDATE_CURRENT_RIGHT_CLICK_MENU, '')
+    switch (obj.type) {
+      case 'folder':
+        commit(UPDATE_FOLDER, await updateFolder(obj))
+        break
+      case 'image':
+        break
+      default:
+        break
+    }
+  },
+
+  async removeObj({ commit }, obj) {
+    commit(UPDATE_CURRENT_RIGHT_CLICK_MENU, '')
+    const id = obj.id
+    switch (obj.type) {
+      case 'folder':
+        await deleteFolder(id)
+        commit(DELETE_FOLDER, id)
+        break
+      case 'image':
+        break
+      default:
+        break
     }
   },
 }
