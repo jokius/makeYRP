@@ -2,7 +2,7 @@ export class UserModel {
   id = null
   admin = false
   nickname = null
-  avatar = null
+  avatar = {}
 
   setInfo(raw) {
     this.id = raw.id
