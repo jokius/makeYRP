@@ -14,12 +14,12 @@
 #  children_count :integer          default(0), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  images         :jsonb
 #
 
 class Folder < ApplicationRecord
   acts_as_nested_set
-  mount_uploaders :images, ImageUploader
+
+  has_many :files, class_name: 'FolderFile', dependent: :destroy
 
   belongs_to :user
 end

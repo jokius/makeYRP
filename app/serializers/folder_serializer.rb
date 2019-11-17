@@ -14,15 +14,12 @@
 #  children_count :integer          default(0), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  images         :jsonb
 #
 
 class FolderSerializer < ActiveModel::Serializer
   attributes :id, :name, :parent_id
   has_many :children, serializer: ShortFolderSerializer
-  attribute :images do
-    object.images.map do |image|
-      { url: image.url, lazy: image.lazy.url, thumb: image.thumb.url }
-    end
+  has_many :images, serializer: ImageSerializer do
+    object.files.with_attached_image
   end
 end

@@ -28,6 +28,8 @@ gem 'dry-schema'
 gem 'dry-transaction'
 
 gem 'ffaker'
+gem 'image_processing'
+gem 'mini_magick'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -38,6 +40,7 @@ group :development do
   gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
   gem 'foreman'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'meta_request'
   gem 'overcommit'
   gem 'reek', require: false
   gem 'rubocop', require: false

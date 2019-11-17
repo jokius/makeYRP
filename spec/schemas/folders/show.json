@@ -20,11 +20,19 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["url", "lazy", "thumb"],
+        "required": ["id", "name", "versions"],
         "properties": {
-          "url": { "type": ["null", "string"] },
-          "lazy": { "type": ["null", "string"] },
-          "thumb": { "type": ["null", "string"] }
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "versions": {
+            "type": "object",
+            "required": ["url", "lazy", "thumb"],
+            "properties": {
+              "url": { "type": ["null", "string"] },
+              "lazy": { "type": ["null", "string"] },
+              "thumb": { "type": ["null", "string"] }
+            }
+          }
         }
       }
     }

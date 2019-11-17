@@ -3,10 +3,18 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
+  before_action do
+    class_name = 'ActiveStorage::Service::DiskService'
+    next unless ActiveStorage::Blob.service.class.name == class_name
+
+    ActiveStorage::Current.host = request.base_url
+    Rails.application.routes.default_url_options[:host] = request.base_url
+  end
+
   protected
 
   def responds(interactor, input, status: :ok, &block)
-    input = input.to_unsafe_hash if input.is_a? ActionController::Parameters
+    input = input.permit!.to_h if input.is_a? ActionController::Parameters
     interactor.new.call(input) do |result|
       result.success do |value|
         return yield(value) if block

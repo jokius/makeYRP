@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_04_101909) do
+ActiveRecord::Schema.define(version: 2019_11_12_233300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,30 @@ ActiveRecord::Schema.define(version: 2019_11_04_101909) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "folder_files", force: :cascade do |t|
+    t.bigint "folder_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["folder_id"], name: "index_folder_files_on_folder_id"
+  end
+
+  create_table "folders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.integer "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lft"], name: "index_folders_on_lft"
+    t.index ["parent_id"], name: "index_folders_on_parent_id"
+    t.index ["rgt"], name: "index_folders_on_rgt"
+    t.index ["user_id"], name: "index_folders_on_user_id"
   end
 
   create_table "games", force: :cascade do |t|

@@ -14,19 +14,23 @@
 #  children_count :integer          default(0), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  images         :jsonb
 #
 
 FactoryBot.define do
   factory :folder do
     user
     name { FFaker::Product.product_name }
-    images { [File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.png'))] }
   end
 
   trait :with_children do
     after(:create) do |parent|
       create(:folder, parent: parent)
+    end
+  end
+
+  trait :with_file do
+    after(:create) do |folder|
+      create(:folder_file, folder: folder)
     end
   end
 end

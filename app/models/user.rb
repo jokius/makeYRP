@@ -17,10 +17,13 @@
 #
 
 class User < ApplicationRecord
+  extend Images
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_one_attached :avatar
+  has_one_attached :avatar, dependent: :purge
+  images_version :avatar
 
   has_many :users_in_games, dependent: :destroy
   has_many :games, through: :users_in_games
