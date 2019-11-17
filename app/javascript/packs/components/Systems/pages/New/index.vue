@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app id="inspire">
     <system-form />
-  </div>
+  </v-app>
 </template>
 
 <script>

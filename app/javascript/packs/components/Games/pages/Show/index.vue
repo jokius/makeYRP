@@ -1,11 +1,13 @@
 <template>
-  <v-content v-if="loaded">
-    <head-menu />
-    <left-menu-body v-if="game.currentMenu >= 0" />
-    <!--      <page-content />-->
-    <open-modals />
-  </v-content>
-  <loader v-else />
+  <v-app id="inspire">
+    <v-content v-if="loaded">
+      <head-menu />
+      <left-menu-body v-if="game.currentMenu >= 0" />
+      <!--      <page-content />-->
+      <open-modals />
+    </v-content>
+    <loader v-else />
+  </v-app>
 </template>
 
 <script>

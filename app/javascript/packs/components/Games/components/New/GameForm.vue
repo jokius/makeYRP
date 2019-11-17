@@ -1,59 +1,57 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
+  <v-content>
+    <v-container
+      class="fill-height"
+      fluid
+    >
+      <v-row
+        align="center"
+        justify="center"
       >
-        <v-row
-          align="center"
-          justify="center"
+        <v-col
+          cols="12"
+          sm="8"
+          md="4"
         >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card class="elevation-12">
-              <v-toolbar
-                color="indigo"
-                dark
-                flat
-              >
-                <v-toolbar-title>Создать игру</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field
-                    v-model="name"
-                    required
-                    label="Название"
-                  />
+          <v-card class="elevation-12">
+            <v-toolbar
+              color="indigo"
+              dark
+              flat
+            >
+              <v-toolbar-title>Создать игру</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <v-form>
+                <v-text-field
+                  v-model="name"
+                  required
+                  label="Название"
+                />
 
-                  <v-select
-                    v-model="system_id"
-                    :items="systems"
-                    label="Standard"
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <router-link :to="games">К списку игр</router-link>
-                <v-spacer />
-                <v-btn
-                  :disabled="!isValid"
-                  color="indigo"
-                  @click="save"
-                >
-                  Добавить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+                <v-select
+                  v-model="system_id"
+                  :items="systems"
+                  label="Standard"
+                />
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <router-link :to="games">К списку игр</router-link>
+              <v-spacer />
+              <v-btn
+                :disabled="!isValid"
+                color="indigo"
+                @click="save"
+              >
+                Добавить
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
