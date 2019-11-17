@@ -4,7 +4,14 @@
   "properties": {
     "id": { "type": "number" },
     "nickname": { "type": "string" },
-    "avatar": { "type": ["null", "string"] },
-    "admin": { "type": "boolean" }
+    "avatar": {
+      "type": "object",
+      "required": ["url", "lazy", "thumb"],
+      "properties": {
+        "url": { "type": ["null", "string"] },
+        "lazy": { "type": ["null", "string"] },
+        "thumb": { "type": ["null", "string"] }
+      }
+    }
   }
 }
