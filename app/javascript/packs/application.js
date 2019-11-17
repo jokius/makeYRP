@@ -6,15 +6,9 @@ import App from './components/app.vue'
 import router from './helpers/router'
 import store from './helpers/store'
 import vuetify from './plugins/vuetify'
+import headers from './helpers/headers'
 
-axios.defaults.headers.common = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json; charset=utf-8',
-  'X-CSRF-Token': document
-    .querySelector('meta[name="csrf-token"]')
-    .getAttribute('content'),
-  'X-Requested-With': 'XMLHttpRequest',
-}
+axios.defaults.headers.common = headers
 
 axios.defaults.paramsSerializer = (params) =>
   qs.stringify(params, { arrayFormat: 'brackets' })
