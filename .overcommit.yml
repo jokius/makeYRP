@@ -91,7 +91,3 @@ PreCommit:
 
   CoffeeLint:
     enabled: true
-
-PrePush:
-  Brakeman:
-    enabled: true
