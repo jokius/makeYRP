@@ -385,6 +385,8 @@ GEM
     tilt (2.0.10)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2019.3)
+      tzinfo (>= 1.0.0)
     unicode-display_width (1.6.0)
     virtus (1.0.5)
       axiom-types (~> 0.1)
@@ -451,6 +453,7 @@ DEPENDENCIES
   russian
   spring
   spring-watcher-listen (~> 2.0.0)
+  tzinfo-data
   web-console (>= 3.3.0)
   webpacker (~> 4.0)
 
