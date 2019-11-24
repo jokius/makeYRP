@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["id", "name", "params"],
+  "properties": {
+    "id": { "type": "number" },
+    "name": { "type": "string" },
+    "params": { "type": "object" }
+  }
+}

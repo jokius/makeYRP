@@ -98,7 +98,7 @@
       },
 
       select() {
-        this.$emit('select', this.image.id)
+        this.$emit('select', this.image)
       },
     },
   }

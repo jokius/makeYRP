@@ -1,7 +1,14 @@
 <template>
   <div>
     <template v-for="modal in openModals">
-      <page-modal v-if="modal.name === 'page'" :key="modal.key" :uniq-key="modal.key" />
+      <page-modal v-if="modal.name === 'page'" :key="`page_${modal.key}`" :uniq-key="modal.key" />
+      <color-picker-modal
+        v-else-if="modal.name === 'color-picker'"
+        :key="`color-picker_${modal.key}`"
+        :uniq-key="modal.key"
+        :target="modal.target"
+        :start-color="modal.startColor"
+      />
       <v-alert
         v-else
         :key="modal.key"
@@ -19,11 +26,13 @@
 <script>
   import { mapState } from 'vuex'
 
+  import ColorPickerModal from './ColorPickerModal'
+
   import PageModal from '../../components/Show/PageModal'
 
   export default {
     name: 'OpenModals',
-    components: { PageModal },
+    components: { ColorPickerModal, PageModal },
     data () {
       return {
         alert: true,

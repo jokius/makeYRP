@@ -3,7 +3,7 @@
 module Images
   def images_version(name)
     url(name)
-    version(name, version: 'thumb', width: 150)
+    version(name, version: 'thumb', width: 200)
     version(name, version: 'lazy', width: 10)
   end
 

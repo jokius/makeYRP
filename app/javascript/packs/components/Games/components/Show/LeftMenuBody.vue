@@ -6,7 +6,7 @@
     :width="navigation.width"
   >
     <tab-sheets v-if="menuType === 'sheets'" />
-    <!--    <tab-config v-else-if="menuType === 'tab-config'" />-->
+    <tab-settings v-else-if="menuType === 'settings'" />
   </v-navigation-drawer>
 </template>
 
@@ -14,13 +14,11 @@
   import { mapState } from 'vuex'
 
   import TabSheets from '../../components/Show/TabSheets'
-  // import TabConfig from '../../components/Show/TabConfig'
+  import TabSettings from '../../components/Show/TabSettings'
 
   export default {
     name: 'LeftMenuBody',
-    components: { TabSheets,
-      // TabConfig
-    },
+    components: { TabSheets, TabSettings },
     data() {
       return {
         navigation: {
@@ -93,7 +91,7 @@
 
   .menuBody {
     position: fixed;
-    z-index: 1000;
+    z-index: 100;
     top: 60px !important;
     height: 100vh;
     background-color: $white;

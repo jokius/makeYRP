@@ -5,6 +5,10 @@ class Games::PagesController < ApplicationController
     responds(Pages::Create, params, status: :created)
   end
 
+  def update
+    responds(Pages::Update, params, status: :created)
+  end
+
   def destroy
     page.delete
     head :no_content
