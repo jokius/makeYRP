@@ -43,7 +43,6 @@ group :development do
   gem 'foreman'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'meta_request'
-  gem 'overcommit'
   gem 'reek', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
