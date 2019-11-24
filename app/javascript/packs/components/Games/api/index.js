@@ -24,7 +24,7 @@ export const createPage = (game_id, params) =>
 
 export const deletePage = (params) =>
   axios
-    .delete(links.dynamic(links.base.page, { ...params }))
+    .delete(links.dynamic(links.base.page, params))
 
 export const loadSheets = (game_id) =>
   axios
@@ -67,3 +67,9 @@ export const updateImage = (params) =>
   axios
     .put(links.dynamic(links.base.images, { id: params.id, folder_id: 0 }), { ...params })
     .then((response) => response.data)
+
+export const updatePage = (ids, params) =>
+  axios
+    .put(links.dynamic(links.base.page, ids), params)
+    .then((response) => response.data)
+

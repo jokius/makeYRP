@@ -64,7 +64,7 @@
           text
           @click="$emit('close')"
         >
-          Выбрать
+          Закрыть
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -85,7 +85,7 @@
 
 <script>
   import { mapState } from 'vuex'
-
+  import { get } from 'lodash'
 
   import FolderItem from './FolderItem'
   import FoldersPreloader from './FoldersPreloader'
@@ -107,7 +107,6 @@
         openNewFolder: false,
         openDropzone: false,
         newFolderName: null,
-        currentSelected: 0,
       }
     },
 
@@ -115,6 +114,8 @@
       ...mapState({
         folder: (state) => state.game.folder,
         foldersLoaded: (state) => state.game.foldersLoaded,
+        game: (state) => state.game.info,
+        currentPage: (state) => state.game.currentPage,
       }),
 
       title: {
@@ -138,6 +139,16 @@
       images: {
         get() {
           return this.folder.images
+        },
+      },
+
+      currentSelected: {
+        get() {
+          return get(this.currentPage.params, 'background.image.id', 0)
+        },
+        set(value) {
+          const image = this.currentSelected !== value.id ?  value : null
+          this.$store.dispatch('changePage', { background: { image } })
         },
       },
     },

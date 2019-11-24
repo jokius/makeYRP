@@ -19,6 +19,8 @@ import {
   UPDATE_FOLDER,
   UPDATE_IMAGE,
   DELETE_IMAGE,
+  UPDATE_PAGE,
+  CHANGE_TARGET_COLOR,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -51,7 +53,7 @@ export default {
   },
 
   [UPDATE_CURRENT_PAGE](state, index) {
-    state.currentPage = index
+    state.currentPage = state.info.getPage(index)
   },
 
   [ADD_PAGE](state, page) {
@@ -109,5 +111,19 @@ export default {
 
   [DELETE_IMAGE](state, id) {
     state.folder = state.folder.deleteImage(id)
+  },
+
+  [UPDATE_PAGE](state, page) {
+    state.info = state.info.updatePage(page)
+  },
+
+  [CHANGE_TARGET_COLOR](state, obj) {
+    switch (obj.target) {
+      case 'pageBackground':
+        state.info = state.info.changePageBackgroundColor(obj)
+        break
+      default:
+        break
+    }
   },
 }

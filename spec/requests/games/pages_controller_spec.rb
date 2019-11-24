@@ -23,11 +23,31 @@ RSpec.describe Games::PagesController, type: :request do
     it { expect(Page.find_by(game: game, name: 'test page')).not_to be_nil }
   end
 
-  describe 'DELETE /games/:game_id/sheets/:id json' do
-    let(:page) { create(:page, game: game) }
+  describe 'PUT /games/:game_id/pages/:id json' do
+    let(:page) { create(:page) }
+    let(:new_name) { 'new page name' }
+    let(:page_params) { { test_key: 'test' } }
 
     before do
-      delete "/games/#{game.id}/pages/#{page.id}", **headers
+      put "/games/0/pages/#{page.id}",
+          **headers,
+          params: {
+            name: new_name,
+            page_params: page_params
+          }
+    end
+
+    it 'correct json' do
+      expect(response.status).to eq 201
+      expect(response).to match_json_schema('games/pages/show')
+    end
+  end
+
+  describe 'DELETE /games/:game_id/pages/:id json' do
+    let(:page) { create(:page) }
+
+    before do
+      delete "/games/0/pages/#{page.id}", **headers
     end
 
     it { expect(response.status).to eq 204 }

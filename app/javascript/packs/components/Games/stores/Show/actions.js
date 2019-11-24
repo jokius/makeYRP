@@ -1,3 +1,5 @@
+import { defaultsDeep } from 'lodash'
+
 import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
@@ -12,6 +14,7 @@ import {
   loadSheets,
   updateFolder,
   updateImage,
+  updatePage,
 } from '../../api'
 import {
   ADD_PAGE,
@@ -25,10 +28,20 @@ import {
   GAME_LOADED,
   SET_LOADED,
   SHEETS_LOADED,
+  UPDATE_CURRENT_PAGE,
   UPDATE_CURRENT_RIGHT_CLICK_MENU,
   UPDATE_FOLDER,
   UPDATE_IMAGE,
+  UPDATE_PAGE,
 } from '../mutation-types'
+
+const sendPageParams = async (state, payload) => {
+  const page = state.currentPage
+  const params = defaultsDeep(payload, page.params)
+  const ids = { game_id: 0, id: page.id }
+
+  return await updatePage(ids, { name: page.name, page_params: params })
+}
 
 export default {
   async loadGame({ commit }, id) {
@@ -36,6 +49,7 @@ export default {
       const game = await loadGame(id)
       commit(SHEETS_LOADED, await loadSheets(id))
       commit(GAME_LOADED, game)
+      commit(UPDATE_CURRENT_PAGE, 0)
       commit(SET_LOADED)
     } catch (error) {
       handling(commit, error)
@@ -51,10 +65,9 @@ export default {
     }
   },
 
-  async deletePage({ commit, state }, id) {
+  async deletePage({ commit }, id) {
     try {
-      const game = state.info
-      await deletePage({ game_id: game.id, id })
+      await deletePage({ game_id: 0, id })
       commit(DELETE_PAGE, id)
     } catch (error) {
       handling(commit, error)
@@ -126,6 +139,30 @@ export default {
         break
       default:
         break
+    }
+  },
+
+  async changePage({ commit, state }, params) {
+    try {
+      commit(UPDATE_PAGE, await sendPageParams(state, params))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async saveTargetColor({ commit, state }, obj) {
+    try {
+      switch (obj.target) {
+        case 'pageBackground':
+          commit(UPDATE_PAGE, await sendPageParams(state,
+            { background: { color: obj.color } }
+          ))
+          break
+        default:
+          break
+      }
+    } catch (error) {
+      handling(commit, error)
     }
   },
 }
