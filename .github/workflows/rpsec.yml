@@ -1,6 +1,6 @@
-name: Rspec
+name: rpsec
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   vm-job:
@@ -44,8 +44,11 @@ jobs:
           gem install bundler
           bundle install --jobs 4 --retry 3
           bin/rails db:setup
-      - name: Run tests
+
+      - name: Run rpsec
         env:
+          # use localhost for the host here because we have specified a container for the job.
+          # If we were running the job on the VM this would be postgres
           PGHOST: localhost
           PGUSER: postgres
           PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port

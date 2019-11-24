@@ -1,4 +1,4 @@
-name: brakeman
+name: rubocop
 
 on: [push, pull_request]
 
@@ -15,8 +15,8 @@ jobs:
       - name: install PostgreSQL client
         run: sudo apt-get install libpq-dev
 
-      - name: Run brakeman
+      - name: Run rubocop
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
-          bundle exec brakeman
+          bundle exec rubocop
