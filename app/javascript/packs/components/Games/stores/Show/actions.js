@@ -3,6 +3,7 @@ import { defaultsDeep } from 'lodash'
 import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
+  createMessage,
   createPage,
   createSheet,
   deleteFolder,
@@ -11,6 +12,7 @@ import {
   deleteSheet,
   loadFolder,
   loadGame,
+  loadMessages,
   loadSheets,
   updateFolder,
   updateImage,
@@ -26,6 +28,7 @@ import {
   FOLDERS_LOADED,
   FOLDERS_UNLOADED,
   GAME_LOADED,
+  MESSAGES_LOADED,
   SET_LOADED,
   SHEETS_LOADED,
   UPDATE_CURRENT_PAGE,
@@ -46,9 +49,9 @@ const sendPageParams = async (state, payload) => {
 export default {
   async loadGame({ commit }, id) {
     try {
-      const game = await loadGame(id)
+      commit(GAME_LOADED, await loadGame(id))
       commit(SHEETS_LOADED, await loadSheets(id))
-      commit(GAME_LOADED, game)
+      commit(MESSAGES_LOADED, await loadMessages(id))
       commit(UPDATE_CURRENT_PAGE, 0)
       commit(SET_LOADED)
     } catch (error) {
@@ -161,6 +164,15 @@ export default {
         default:
           break
       }
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async sendMessage({ commit, state }, body) {
+    try {
+      const game = state.info
+      await createMessage(game.id,{ body })
     } catch (error) {
       handling(commit, error)
     }

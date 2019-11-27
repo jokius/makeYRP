@@ -11,6 +11,7 @@ services:
       RAILS_ENV: development
       SECRET_KEY_BASE: ""
       HOST: 'http://localhost:3000'
+      REDIS_URL: redis://redis:6379/
     volumes:
       - .:/app
     depends_on:
@@ -27,6 +28,11 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:5.0.7-alpine
+    ports:
+      - "6379:6379"
 
   webpacker:
     build: .

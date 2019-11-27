@@ -19,6 +19,7 @@ const links = {
     page: 'games/:game_id/pages/:id',
     sheets: 'games/:game_id/sheets',
     sheet: 'games/:game_id/sheets/:id',
+    messages: 'games/:game_id/messages',
     folder: 'folder',
     folders: 'folders/:id',
     folderImages: 'folders/:folder_id/images',

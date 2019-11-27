@@ -10,7 +10,8 @@
       "properties": {
         "url": { "type": ["null", "string"] },
         "lazy": { "type": ["null", "string"] },
-        "thumb": { "type": ["null", "string"] }
+        "thumb": { "type": ["null", "string"] },
+        "chat": { "type": ["null", "string"] }
       }
     }
   }

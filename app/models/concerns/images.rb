@@ -1,10 +1,16 @@
 # frozen_string_literal: true
 
 module Images
-  def images_version(name)
+  def images_version(name, add_versions: [])
     url(name)
     version(name, version: 'thumb', width: 200)
     version(name, version: 'lazy', width: 10)
+    add_versions.each do |av|
+      raise 'add versions version is required' if av[:version].blank?
+      raise 'add versions width is required' if av[:width].blank?
+
+      version(name, **av)
+    end
   end
 
   private

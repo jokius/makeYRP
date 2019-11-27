@@ -33,6 +33,8 @@ gem 'mini_magick'
 
 gem 'tzinfo-data'
 
+gem 'redis'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
@@ -53,6 +55,7 @@ group :development do
 end
 
 group :test do
+  gem 'action-cable-testing'
   gem 'database_cleaner'
   gem 'fasterer', '~> 0.7.1'
   gem 'json_matchers'

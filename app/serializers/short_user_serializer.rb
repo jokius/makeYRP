@@ -6,6 +6,7 @@ class ShortUserSerializer < ActiveModel::Serializer
   attribute :avatar do
     { url: object.avatar_url,
       lazy: object.avatar_lazy,
-      thumb: object.avatar_thumb }
+      thumb: object.avatar_thumb,
+      chat: object.avatar_chat }
   end
 end

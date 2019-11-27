@@ -21,4 +21,9 @@ class Game < ApplicationRecord
   has_many :users, through: :users_in_games
   has_many :pages
   has_many :menus
+  has_many :messages
+
+  def limit_messages(limit)
+    messages.limit(limit).order(created_at: :asc)
+  end
 end

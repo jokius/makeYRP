@@ -8,13 +8,12 @@ export default {
       info: null,
       sheets: [],
       openModals: [],
-      leftMenus: [],
-      currentMenu: 0,
       currentPage: {},
       pageName: null,
       foldersLoaded: false,
       folder: {},
       currentRightClickMenu: '',
+      messages: [],
     }
   },
 
