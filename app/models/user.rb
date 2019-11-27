@@ -23,7 +23,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :avatar, dependent: :purge
-  images_version :avatar
+  images_version :avatar, add_versions: [{
+    version: :chat,
+    width: 50
+  }]
 
   has_many :users_in_games, dependent: :destroy
   has_many :games, through: :users_in_games

@@ -2,8 +2,6 @@ import {
   ADD_OPEN_MODAL,
   GAME_LOADED,
   REMOVE_OPEN_MODAL,
-  UPDATE_CURRENT_MENU,
-  UPDATE_LEFT_MENU,
   UPDATE_CURRENT_PAGE,
   ADD_PAGE,
   DELETE_PAGE,
@@ -21,10 +19,13 @@ import {
   DELETE_IMAGE,
   UPDATE_PAGE,
   CHANGE_TARGET_COLOR,
+  ADD_MESSAGE,
+  MESSAGES_LOADED,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
 import { FolderModel } from '../../../../models/FolderModel'
+import { MessageModel } from '../../../../models/MessageModel'
 
 export default {
   [SET_LOADED](state) {
@@ -33,7 +34,6 @@ export default {
 
   [GAME_LOADED](state, game) {
     state.info = new GameModel().setInfo(game)
-    state.loaded = true
   },
 
   [ADD_OPEN_MODAL](state, params) {
@@ -42,14 +42,6 @@ export default {
 
   [REMOVE_OPEN_MODAL](state, key) {
     state.openModals = state.openModals.filter((modal) => modal.key !== key)
-  },
-
-  [UPDATE_LEFT_MENU](state, list) {
-    state.leftMenus = list
-  },
-
-  [UPDATE_CURRENT_MENU](state, index) {
-    state.currentMenu = state.currentMenu !== index ? index : -1
   },
 
   [UPDATE_CURRENT_PAGE](state, index) {
@@ -125,5 +117,15 @@ export default {
       default:
         break
     }
+  },
+
+  [MESSAGES_LOADED](state, messages) {
+    state.messages = messages.map((message) => (
+      new MessageModel().setInfo(message)
+    ))
+  },
+
+  [ADD_MESSAGE](state, message) {
+    state.messages.push(new MessageModel().setInfo(message))
   },
 }

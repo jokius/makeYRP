@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     scope module: :games do
       resources :sheets
       resources :pages
+      resources :messages
     end
   end
 

@@ -73,3 +73,12 @@ export const updatePage = (ids, params) =>
     .put(links.dynamic(links.base.page, ids), params)
     .then((response) => response.data)
 
+export const loadMessages = (game_id) =>
+  axios
+    .get(links.dynamic(links.base.messages, { game_id }))
+    .then((response) => response.data)
+
+export const createMessage = (game_id, params) =>
+  axios
+    .post(links.dynamic(links.base.messages, { game_id }), params)
+    .then((response) => response.data)

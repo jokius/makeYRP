@@ -1,6 +1,5 @@
 <template>
   <div class="headMenus">
-    <action-buttons />
     <page-tabs-list />
     <v-btn
       class="plusButton"
@@ -18,15 +17,15 @@
 <script>
   import { mapState } from 'vuex'
 
-  import ActionButtons from '../../components/Show/ActionButtons'
-  import PageTabsList from '../../components/Show/PageTabsList'
+  import PageTabsList from './PageTabsList'
+
   import {
     ADD_OPEN_MODAL,
   } from '../../stores/mutation-types'
 
   export default {
     name: 'HeadMenu',
-    components: { ActionButtons, PageTabsList },
+    components: {  PageTabsList },
     computed: {
       ...mapState({
         openModals: (state) => state.game.openModals,
@@ -43,11 +42,10 @@
 
 <style scoped lang="scss">
   .headMenus {
-    position: fixed;
-    z-index: 101;
     display: grid;
-    grid-template-columns: repeat(3, max-content);
+    grid-template-columns: repeat(2, max-content);
     grid-gap: 5px;
+    justify-content: right;
   }
 
   .plusButton {

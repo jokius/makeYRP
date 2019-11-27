@@ -14,6 +14,8 @@
         aspect-ratio="1"
         position="center"
         class="bgImage"
+        max-width="292px"
+        max-height="192px"
       >
         <template v-slot:placeholder>
           <v-row
@@ -204,13 +206,13 @@
   }
 
   .bgImage {
-    position: fixed;
+    position: relative;
     width: 300px;
     height: 200px;
   }
 
   .bgText {
-    position: fixed;
+    position: relative;
     z-index: 2;
     background-color: #fff3;
   }
