@@ -49,7 +49,6 @@
   }
 
   .plusButton {
-    margin-left: 3px;
-    margin-top: 5px;
+    margin: 5px 5px 10px 3px;
   }
 </style>
