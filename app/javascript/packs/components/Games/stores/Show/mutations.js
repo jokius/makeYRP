@@ -65,7 +65,6 @@ export default {
 
   [SHEETS_LOADED](state, sheets) {
     state.sheets = sheets.map((sheet) => new SheetModel().setInfo(sheet))
-    state.loaded = true
   },
 
   [ADD_SHEET](state, sheet) {
