@@ -28,16 +28,20 @@
                   required
                   label="Название"
                 />
-                <v-textarea
-                  v-model="text"
-                  label="Загрузка текстом"
-                  auto-grow
-                />
-
                 <v-file-input
-                  v-model="files"
+                  v-model="file"
                   accept="application/json"
-                  label="Загрузка файлом"
+                  label="Файл структуры"
+                />
+                <v-file-input
+                  v-model="dataFile"
+                  accept="application/json"
+                  label="Файл данных"
+                />
+                <v-file-input
+                  v-model="privateDataFile"
+                  accept="application/json"
+                  label="Файл с дополнительными данными"
                 />
               </v-form>
             </v-card-text>
@@ -60,29 +64,26 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-
-  import {
-    UPDATE_NAME,
-    UPDATE_TEXT,
-    UPDATE_FILE,
-  } from '../stores/mutation-types'
   import links from '../../../helpers/links'
 
   export default {
     name: 'SystemForm',
     data: () => ({
       games: links.base.home,
+      system: {
+        name: '',
+        file: null,
+        dataFile: null,
+        privateDataFile: null,
+      },
     }),
 
     computed: {
-      ...mapState({
-        system: (state) => state.newSystem,
-      }),
-
       isValid() {
-        return (this.name && this.name !== '') &&
-          ((this.text && this.text !== '') || (this.files && this.files['name']))
+        if (this.name === '') return false
+        if (!this.file || !this.file['name']) return false
+
+        return this.dataFile && this.dataFile['name']
       },
 
       name: {
@@ -90,26 +91,37 @@
           return this.system.name
         },
         set(value) {
-          this.$store.commit(UPDATE_NAME, value)
+          this.system.name = value
         },
       },
 
-      text: {
+      file: {
         get() {
-          return this.system.text
+          return this.system.file
         },
+
         set(value) {
-          this.$store.commit(UPDATE_TEXT, value)
+          this.system.file = value
         },
       },
 
-      files: {
+      dataFile: {
         get() {
-          return this.system.files
+          return this.system.dataFile
         },
 
         set(value) {
-          this.$store.commit(UPDATE_FILE, value)
+          this.system.dataFile = value
+        },
+      },
+
+      privateDataFile: {
+        get() {
+          return this.system.privateDataFile
+        },
+
+        set(value) {
+          this.system.privateDataFile = value
         },
       },
     },

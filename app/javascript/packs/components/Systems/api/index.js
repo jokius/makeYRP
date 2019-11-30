@@ -4,9 +4,10 @@ import links from '../../../helpers/links'
 
 export const addSystem = (params) => {
   const formData = new FormData()
-  formData.append('file', params.files)
-  formData.append('text', params.text)
   formData.append('name', params.name)
+  formData.append('file', params.file)
+  formData.append('data_file', params.dataFile)
+  formData.append('private_data_file', params.privateDataFile)
 
   return axios
     .post(links.base.systems, formData)
