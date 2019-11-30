@@ -21,13 +21,17 @@ RSpec.describe SystemsController, type: :request do
   end
 
   describe 'POST /systems json' do
+    let(:file) { Rack::Test::UploadedFile.new(file_fixture('system.json')) }
+    let(:data_file) { Rack::Test::UploadedFile.new(file_fixture('system_data.json')) }
+
     before do
       post '/systems',
            **headers,
            params: {
              name: 'new system',
-             text: file_fixture('system.json').read,
-             file: nil
+             file: file,
+             data_file: data_file,
+             private_data_file: nil
            }
     end
 

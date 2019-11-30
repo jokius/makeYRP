@@ -18,15 +18,14 @@ FactoryBot.define do
     name { FFaker::Product.product_name }
     version { 1 }
     key { 'test_system' }
-
-    trait :test_actor do
-      template do
-        {
-          actors: {
+    template do
+      {
+        template: {
+          sheets: {
             test_actor: { test: 'test_attr' }
           }
         }
-      end
+      }
     end
   end
 end

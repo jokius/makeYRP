@@ -6,7 +6,7 @@ RSpec.describe Sheets::Create, type: :interactor do
   subject(:interactor) { described_class.new.call(input) }
 
   let(:user) { create(:user) }
-  let(:system) { create(:system, :test_actor) }
+  let(:system) { create(:system) }
   let(:game) { create(:game, system: system) }
 
   describe 'create new sheet' do
@@ -25,7 +25,7 @@ RSpec.describe Sheets::Create, type: :interactor do
         expect(sheet.name).to eq input[:name]
         expect(sheet.game_id).to eq game.id
         expect(sheet.owner_id).to eq user.id
-        expect(sheet.params).to match system.template['actors']['test_actor']
+        expect(sheet.params).to match system.template['template']['sheets']['test_actor']
       end
     end
 
@@ -44,7 +44,7 @@ RSpec.describe Sheets::Create, type: :interactor do
         expect(sheet.name).not_to be_blank
         expect(sheet.game_id).to eq game.id
         expect(sheet.owner_id).to eq user.id
-        expect(sheet.params).to match system.template['actors']['test_actor']
+        expect(sheet.params).to match system.template['template']['sheets']['test_actor']
       end
     end
   end

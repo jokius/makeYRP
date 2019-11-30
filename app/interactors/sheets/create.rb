@@ -34,7 +34,7 @@ class Sheets::Create
 
   def attrs_by(input)
     template = Game.find(input[:game_id]).system.template
-    input[:params] = template.dig('actors', input.delete(:type)) || {}
+    input[:params] = template.dig('template', 'sheets', input.delete(:type)) || {}
     input[:name] = FFaker::Name.name if input[:name].blank?
     input
   end
