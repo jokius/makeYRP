@@ -46,10 +46,7 @@
         </v-btn>
       </div>
     </div>
-    <add-mutation-modal
-      v-model="obj"
-      :sheet="sheet"
-    />
+    <add-mutation-modal v-model="obj" />
   </div>
 </template>
 
