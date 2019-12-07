@@ -13,12 +13,14 @@
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  sheet_type :string           not null
 #
 
 FactoryBot.define do
   factory :sheet do
     game
-    owner { user }
+    owner { create(:user) }
+    sheet_type { 'character' }
     name { FFaker::Product.product_name }
   end
 end

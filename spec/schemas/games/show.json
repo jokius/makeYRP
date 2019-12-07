@@ -1,8 +1,9 @@
 {
   "type": "object",
-  "required": ["id", "name", "master", "users", "template", "menus", "pages"],
+  "required": ["id", "system", "name", "master", "users", "template", "menus", "pages"],
   "properties": {
     "id": { "type": "number" },
+    "system": { "type": "string" },
     "name": { "type": "string" },
     "master": {
       "type": "object",

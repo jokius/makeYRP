@@ -27,7 +27,7 @@ RSpec.describe Games::SheetsController, type: :request do
            **headers,
            params: {
              game_id: game.id,
-             type: 'character'
+             sheet_type: 'character'
            }
     end
 
@@ -35,11 +35,29 @@ RSpec.describe Games::SheetsController, type: :request do
     it { expect(Sheet.find_by(game: game, owner: user)).not_to be_nil }
   end
 
+  describe 'PUT /games/:game_id/sheets json' do
+    let(:sheet) { create(:sheet, game: game, owner: user) }
+
+    before do
+      put "/games/0/sheets/#{sheet.id}",
+          **headers,
+          params: {
+            name: 'super name',
+            params: { new_params: 'updated' }
+          }
+    end
+
+    it 'correct json' do
+      expect(response.status).to eq 201
+      expect(response).to match_json_schema('sheets/show')
+    end
+  end
+
   describe 'DELETE /games/:game_id/sheets/:id json' do
     let(:sheet) { create(:sheet, game: game, owner: user) }
 
     before do
-      delete "/games/#{game.id}/sheets/#{sheet.id}", **headers
+      delete "/games/0/sheets/#{sheet.id}", **headers
     end
 
     it { expect(response.status).to eq 204 }

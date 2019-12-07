@@ -10,6 +10,10 @@ class Games::SheetsController < ApplicationController
     responds(Sheets::Create, params.merge(owner_id: current_user.id), status: :created)
   end
 
+  def update
+    responds(Sheets::Update, params, status: :created)
+  end
+
   def destroy
     sheet.delete
     head :no_content
