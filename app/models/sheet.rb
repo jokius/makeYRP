@@ -13,6 +13,7 @@
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  sheet_type :string           not null
 #
 
 class Sheet < ApplicationRecord

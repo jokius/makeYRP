@@ -16,7 +16,11 @@
 class GameSerializer < ActiveModel::Serializer
   attributes :id, :name
   attribute :template do
-    object.system.template
+    object.system.template['template']
+  end
+
+  attribute :system do
+    object.system.key.split('-')[0]
   end
 
   belongs_to :master, serializer: ShortUserSerializer
