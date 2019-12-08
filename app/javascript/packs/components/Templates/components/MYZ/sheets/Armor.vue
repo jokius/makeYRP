@@ -125,7 +125,7 @@
 
   .grid-item {
     display: grid;
-    grid-template-columns: 460px 50px 40px;
+    grid-template-columns: 455px 50px 40px;
   }
 
   .headers {
