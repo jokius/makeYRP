@@ -14,7 +14,7 @@ export const createGame = (params) =>
 
 export const loadGame = (id) =>
   axios
-    .get(links.dynamic(links.base.game, { id }))
+    .get(links.json(links.dynamic(links.base.game, { id })))
     .then((response) => response.data)
 
 export const createPage = (game_id, params) =>
@@ -28,7 +28,7 @@ export const deletePage = (params) =>
 
 export const loadSheets = (game_id) =>
   axios
-    .get(links.dynamic(links.base.sheets, { game_id }))
+    .get(links.json(links.dynamic(links.base.sheets, { game_id })))
     .then((response) => response.data)
 
 export const createSheet = (game_id, params) =>
@@ -42,7 +42,7 @@ export const deleteSheet = (game_id, id) =>
 
 export const loadFolder = (params) =>
   axios
-    .get(links.base.folder, { params })
+    .get(links.json(links.base.folder, { params }))
     .then((response) => response.data)
 
 export const createFolder = (params) =>
@@ -75,7 +75,7 @@ export const updatePage = (ids, params) =>
 
 export const loadMessages = (game_id) =>
   axios
-    .get(links.dynamic(links.base.messages, { game_id }))
+    .get(links.json(links.dynamic(links.base.messages, { game_id })))
     .then((response) => response.data)
 
 export const createMessage = (game_id, params) =>
