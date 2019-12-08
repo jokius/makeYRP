@@ -17,7 +17,7 @@
       </v-toolbar>
       <slot name="body" />
       <v-divider />
-      <v-card-actions>
+      <v-card-actions v-if="hasActionsSlot">
         <slot name="actions" />
       </v-card-actions>
     </v-card>
@@ -49,7 +49,13 @@
       }),
 
       zModal() {
-        return 2000 + this.openModals.length
+        return 100 + this.openModals.length
+      },
+
+      hasActionsSlot: {
+        get() {
+          return !!this.$slots.actions
+        },
       },
     },
 
