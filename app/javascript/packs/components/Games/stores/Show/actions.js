@@ -201,8 +201,6 @@ export default {
   },
 
   async sendMessage({ commit, state }, body) {
-    console.log('body', body)
-
     try {
       const game = state.info
       await createMessage(game.id,{ body })
