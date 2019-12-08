@@ -34,11 +34,11 @@
     height: 100%;
     padding-right: 20px;
     padding-left: 20px;
+    padding-top: 20px;
+    text-align: center;
   }
 
   .image {
     object-fit: contain;
-    width: 100%;
-    height: 100%;
   }
 </style>
