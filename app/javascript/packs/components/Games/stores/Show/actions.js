@@ -20,7 +20,6 @@ import {
   updateSheet,
 } from '../../api'
 import {
-  ADD_OPEN_MODAL,
   ADD_PAGE,
   ADD_SHEET,
   DELETE_FOLDER,
@@ -54,21 +53,14 @@ const sendSheetParams = async ({ sheet, changes }) => {
   return await updateSheet({ game_id: 0, ...result })
 }
 
-const removeMe = (commit, sheet) => {
-  const key = Date.now()
-  commit(ADD_OPEN_MODAL, { name: 'sheet', key, id: sheet.id, sheetType: sheet.sheet_type })
-}
-
 export default {
   async loadGame({ commit }, id) {
     try {
       commit(GAME_LOADED, await loadGame(id))
-      const sheets = await loadSheets(id) // remove me
-      commit(SHEETS_LOADED, sheets) // rollback me
+      commit(SHEETS_LOADED, await loadSheets(id))
       commit(MESSAGES_LOADED, await loadMessages(id))
       commit(UPDATE_CURRENT_PAGE, 0)
       commit(SET_LOADED)
-      removeMe(commit, sheets[0])
     } catch (error) {
       handling(commit, error)
     }
