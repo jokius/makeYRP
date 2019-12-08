@@ -32,6 +32,8 @@ const links = {
       params[parameter]))
     return resultLink
   },
+
+  json: (link) => `${link}.json`,
 }
 
 export default links
