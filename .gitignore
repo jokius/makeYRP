@@ -38,3 +38,4 @@ yarn-debug.log*
 /config/storage.yml
 docker-compose.yml
 Dockerfile
+/systems_templates

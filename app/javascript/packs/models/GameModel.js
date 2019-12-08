@@ -9,6 +9,7 @@ export class GameModel {
   users = []
   menus = []
   pages = []
+  system = ''
   template = {}
 
   setInfo(raw) {
@@ -18,6 +19,7 @@ export class GameModel {
     this.users = (raw.users || []).map((user) => new UserModel().setInfo(user))
     this.menus = (raw.menus || []).map((menu) => new MenuModel().setInfo(menu))
     this.pages = (raw.pages || []).map((page) => new PageModel().setInfo(page))
+    this.system = raw.system
     this.template = raw.template || {}
 
     return this
@@ -57,7 +59,7 @@ export class GameModel {
 
   get sheetTypes() {
     const types = []
-    for (let [key, value] of Object.entries(this.template.actors)) {
+    for (let [key, value] of Object.entries(this.template.sheets)) {
       types.push({ value: key, text: value.name || key })
     }
     return types

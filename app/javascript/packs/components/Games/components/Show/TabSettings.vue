@@ -103,12 +103,7 @@
       targetPage: {
         get() {
           return {
-            target: 'pageBackground',
-            params: {
-              game_id: this.game.id,
-              id: this.currentPage.id,
-              name: this.currentPage.name,
-            },
+            target: 'page',
           }
         },
       },

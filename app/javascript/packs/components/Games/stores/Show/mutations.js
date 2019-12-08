@@ -1,3 +1,5 @@
+import { get, set } from 'lodash'
+
 import {
   ADD_OPEN_MODAL,
   GAME_LOADED,
@@ -21,6 +23,8 @@ import {
   CHANGE_TARGET_COLOR,
   ADD_MESSAGE,
   MESSAGES_LOADED,
+  UPDATE_SHEET,
+  UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -68,7 +72,7 @@ export default {
   },
 
   [ADD_SHEET](state, sheet) {
-    state.sheets = [...state.sheets, sheet]
+    state.sheets = [...state.sheets, new SheetModel().setInfo(sheet)]
   },
 
   [DELETE_SHEET](state, id) {
@@ -126,5 +130,25 @@ export default {
 
   [ADD_MESSAGE](state, message) {
     state.messages.push(new MessageModel().setInfo(message))
+  },
+
+  [UPDATE_SHEET](state, raw) {
+    const sheet = state.sheets.find((item) => item.id === raw.id)
+    sheet.setInfo(raw)
+  },
+
+  [UPDATE_SHEET_NAME](state, { id, name }) {
+    const index = state.sheets.findIndex((item) => item.id === id)
+    state.sheets[index].name = name
+  },
+
+  [UPDATE_SHEET_PARAMS](state, { id, path, value, remove = false }) {
+    const index = state.sheets.findIndex((item) => item.id === id)
+    let mutVal = value
+    if (remove) {
+      mutVal = get(state.sheets[index].params, path, []).slice()
+      mutVal.splice(value, 1)
+    }
+    set(state.sheets[index].params, path, mutVal)
   },
 }

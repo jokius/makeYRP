@@ -6,6 +6,7 @@
     "properties": {
       "id": { "type": "number" },
       "name": { "type": "string" },
+      "sheet_type": { "type": "string" },
       "params": { "type": "object" }
     }
   }

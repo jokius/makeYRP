@@ -5,17 +5,17 @@
       :key="sheet.id"
     >
       <v-list-item-avatar size="24" color="indigo">
-        <img
-          v-if="sheet.avatar"
-          :src="sheet.avatar"
+        <v-img
+          v-if="sheet.imgThumb"
+          :src="sheet.imgThumb"
           :alt="sheet.name"
-          @click="showSheet(sheet.id)"
+          @click="showSheet(sheet)"
         />
         <v-icon
-          v-if="!sheet.avatar"
+          v-else
           dark
           :title="sheet.name"
-          @click="showSheet(sheet.id)"
+          @click="showSheet(sheet)"
         >
           mdi-account-circle
         </v-icon>
@@ -23,7 +23,7 @@
       <v-list-item-content>
         <v-list-item-title
           class="pointer"
-          @click="showSheet(sheet.id)"
+          @click="showSheet(sheet)"
           v-text="sheet.name"
         />
       </v-list-item-content>
@@ -56,9 +56,9 @@
       }),
     },
     methods: {
-      showSheet(id) {
+      showSheet({ id, sheetType }) {
         const key = Date.now()
-        this.$store.commit(ADD_OPEN_MODAL, { name: 'sheet', key, id: id })
+        this.$store.commit(ADD_OPEN_MODAL, { name: 'sheet', key, id, sheetType })
       },
 
       deleteSheet(id) {

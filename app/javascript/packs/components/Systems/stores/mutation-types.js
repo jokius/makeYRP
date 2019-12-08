@@ -1,4 +1,1 @@
-export const UPDATE_NAME = 'UPDATE_NAME'
-export const UPDATE_TEXT = 'UPDATE_TEXT'
-export const UPDATE_FILE = 'UPDATE_FILE'
 export const UPDATE_SYSTEMS = 'UPDATE_SYSTEMS'
