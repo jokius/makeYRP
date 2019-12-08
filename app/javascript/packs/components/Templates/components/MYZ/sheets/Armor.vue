@@ -15,17 +15,21 @@
         class="grid-item"
       >
         <v-text-field
-          v-model="item.name"
+          :value="item.name"
           color="indigo"
           class="input"
           hide-details
+          @input="value => input(index, 'name', value)"
+          @change="saveSheet"
         />
         <v-text-field
-          v-model="item.rating"
+          :value="item.rating"
           color="indigo"
           class="input"
-          type="number"
           hide-details
+          type="number"
+          @input="value => input(index, 'rating', parseInt(value, 10) || null)"
+          @change="saveSheet"
         />
         <v-btn
           color="red darken-4"
@@ -63,6 +67,16 @@
     },
 
     methods: {
+      input(index, target, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `armor.${index}.${target}`,
+                             value: value,
+                           })
+
+      },
+
       remove(index) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {

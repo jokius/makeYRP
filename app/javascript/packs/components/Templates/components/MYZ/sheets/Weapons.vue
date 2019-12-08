@@ -18,35 +18,46 @@
         class="grid-item"
       >
         <v-text-field
-          v-model="item.name"
+          :value="item.name"
           color="indigo"
           class="input"
           hide-details
+          @input="value => input(index, 'name', value)"
+          @change="saveSheet"
         />
         <v-text-field
-          v-model="item.bonus"
+          :value="item.bonus"
           color="indigo"
           class="input"
           hide-details
+          type="number"
+          @input="value => input(index, 'bonus', parseInt(value, 10) || null)"
+          @change="saveSheet"
         />
         <v-text-field
-          v-model="item.damage"
+          :value="item.damage"
           color="indigo"
           class="input"
           hide-details
+          type="number"
+          @input="value => input(index, 'damage', parseInt(value, 10) || null)"
+          @change="saveSheet"
         />
         <v-select
-          v-model="item.range"
+          :value="item.range"
           :items="rages"
           color="indigo"
           class="input"
           hide-details
+          @change="value => change(index, 'range', value)"
         />
         <v-text-field
           v-model="item.special"
           color="indigo"
           class="input"
           hide-details
+          @input="value => input(index, 'special', value)"
+          @change="saveSheet"
         />
         <v-btn
           color="red darken-4"
@@ -129,6 +140,39 @@
     },
 
     methods: {
+      input(index, target, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `weapons.${index}.${target}`,
+                             value: value,
+                           })
+
+      },
+
+      change(index, target, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `weapons.${index}.${target}`,
+                             value: value,
+                           })
+
+        this.saveSheet()
+      },
+
+      remove(index) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: 'weapons',
+                             value: index,
+                             remove: true,
+                           })
+
+        this.saveSheet()
+      },
+
       setWeapon(weapon) {
         if (isEmpty(weapon)) return
 
@@ -155,23 +199,11 @@
         this.saveSheet()
       },
 
-      remove(index) {
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: 'weapons',
-                             value: index,
-                             remove: true,
-                           })
-
-        this.saveSheet()
-      },
-
       addWeapon() {
         const weapon = {
           name: '',
-          bonus: '',
-          damage: '',
+          bonus: 0,
+          damage: 1,
           range: this.rages[0],
           special: '',
         }

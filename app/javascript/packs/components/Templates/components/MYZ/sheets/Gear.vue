@@ -16,24 +16,29 @@
         class="grid-item"
       >
         <v-text-field
-          v-model="item.name"
+          :value="item.name"
           color="indigo"
           class="input"
           hide-details
+          @input="value => input(index, 'name', value)"
+          @change="saveSheet"
         />
         <v-text-field
-          v-model.number="item.number"
+          :value="item.number"
           color="indigo"
           class="input"
-          type="number"
           hide-details
+          type="number"
+          @input="value => input(index, 'number', parseInt(value, 10) || null)"
+          @change="saveSheet"
         />
         <v-select
-          v-model.number="item.size"
+          :value="item.size"
           :items="sizes"
           color="indigo"
           class="input"
           hide-details
+          @change="value => change(index, 'size', parseFloat(value))"
         />
         <v-btn
           color="red darken-4"
@@ -105,6 +110,27 @@
     },
 
     methods: {
+      input(index, target, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `gear.${index}.${target}`,
+                             value: value,
+                           })
+
+      },
+
+      change(index, target, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `gear.${index}.${target}`,
+                             value: value,
+                           })
+
+        this.saveSheet()
+      },
+
       remove(index) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
