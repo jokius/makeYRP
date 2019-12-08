@@ -17,8 +17,10 @@ import {
   updateFolder,
   updateImage,
   updatePage,
+  updateSheet,
 } from '../../api'
 import {
+  ADD_OPEN_MODAL,
   ADD_PAGE,
   ADD_SHEET,
   DELETE_FOLDER,
@@ -36,6 +38,7 @@ import {
   UPDATE_FOLDER,
   UPDATE_IMAGE,
   UPDATE_PAGE,
+  UPDATE_SHEET,
 } from '../mutation-types'
 
 const sendPageParams = async (state, payload) => {
@@ -46,14 +49,26 @@ const sendPageParams = async (state, payload) => {
   return await updatePage(ids, { name: page.name, page_params: params })
 }
 
+const sendSheetParams = async ({ sheet, changes }) => {
+  const result = defaultsDeep(changes, sheet)
+  return await updateSheet({ game_id: 0, ...result })
+}
+
+const removeMe = (commit, sheet) => {
+  const key = Date.now()
+  commit(ADD_OPEN_MODAL, { name: 'sheet', key, id: sheet.id, sheetType: sheet.sheet_type })
+}
+
 export default {
   async loadGame({ commit }, id) {
     try {
       commit(GAME_LOADED, await loadGame(id))
-      commit(SHEETS_LOADED, await loadSheets(id))
+      const sheets = await loadSheets(id) // remove me
+      commit(SHEETS_LOADED, sheets) // rollback me
       commit(MESSAGES_LOADED, await loadMessages(id))
       commit(UPDATE_CURRENT_PAGE, 0)
       commit(SET_LOADED)
+      removeMe(commit, sheets[0])
     } catch (error) {
       handling(commit, error)
     }
@@ -77,10 +92,10 @@ export default {
     }
   },
 
-  async createSheet({ commit, state }, type) {
+  async createSheet({ commit, state }, sheet_type) {
     try {
       const game = state.info
-      commit(ADD_SHEET, await createSheet(game.id,{ type }))
+      commit(ADD_SHEET, await createSheet(game.id,{ sheet_type }))
     } catch (error) {
       handling(commit, error)
     }
@@ -153,6 +168,22 @@ export default {
     }
   },
 
+  async changeSheet({ commit }, payload) {
+    try {
+      commit(UPDATE_SHEET, await sendSheetParams(payload))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async saveSheet({ commit }, sheet) {
+    try {
+      commit(UPDATE_SHEET, await updateSheet({ game_id: 0, ...sheet }))
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
   async saveTargetColor({ commit, state }, obj) {
     try {
       switch (obj.target) {
@@ -170,6 +201,8 @@ export default {
   },
 
   async sendMessage({ commit, state }, body) {
+    console.log('body', body)
+
     try {
       const game = state.info
       await createMessage(game.id,{ body })

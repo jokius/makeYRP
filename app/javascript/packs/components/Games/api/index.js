@@ -82,3 +82,8 @@ export const createMessage = (game_id, params) =>
   axios
     .post(links.dynamic(links.base.messages, { game_id }), params)
     .then((response) => response.data)
+
+export const updateSheet = (params) =>
+  axios
+    .put(links.dynamic(links.base.sheet, params), params)
+    .then((response) => response.data)

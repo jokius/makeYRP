@@ -3,6 +3,7 @@
     :value="openDialog"
     width="710"
     scrollable
+    persistent
   >
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
@@ -116,6 +117,7 @@
         foldersLoaded: (state) => state.game.foldersLoaded,
         game: (state) => state.game.info,
         currentPage: (state) => state.game.currentPage,
+        sheets: (state) => state.game.sheets,
       }),
 
       title: {
@@ -144,11 +146,40 @@
 
       currentSelected: {
         get() {
+          return this[this.targetObj.target]
+        },
+        set(value) {
+          this[this.targetObj.target] = value
+        },
+      },
+
+      page: {
+        get() {
           return get(this.currentPage.params, 'background.image.id', 0)
         },
         set(value) {
-          const image = this.currentSelected !== value.id ?  value : null
+          const image = this.currentSelected.page !== value.id ?  value : null
           this.$store.dispatch('changePage', { background: { image } })
+        },
+      },
+
+      currentSheet: {
+        get() {
+          return this.sheets.find((sheet) => sheet.id === this.targetObj.id)
+        },
+      },
+
+      sheet: {
+        get() {
+          return get(this.currentSheet.params, 'img.id', 0)
+        },
+        set(value) {
+          const img = this.currentSheet.params.img || {}
+          const image = img.id !== value.id ?  value : null
+          this.$store.dispatch('changeSheet',
+                               { sheet: this.currentSheet,
+                                 changes: { params: { img: image } },
+                               })
         },
       },
     },

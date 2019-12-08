@@ -15,5 +15,5 @@ export const addSystem = (params) => {
 
 export const loadSystems = () =>
   axios
-    .get(links.base.systems)
+    .get(links.json(links.base.systems))
     .then((response) => response.data)
