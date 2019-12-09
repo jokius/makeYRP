@@ -24,6 +24,6 @@ class Game < ApplicationRecord
   has_many :messages
 
   def limit_messages(limit)
-    messages.limit(limit).order(created_at: :asc)
+    messages.order(created_at: :desc).limit(limit).reverse
   end
 end
