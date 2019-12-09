@@ -53,4 +53,26 @@ RSpec.describe Messages::Create, type: :interactor do
       expect(message.body).to match input[:body]
     end
   end
+
+  describe 'create new roll message' do
+    let(:input) do
+      {
+        game_id: game.id,
+        user_id: user.id,
+        body: {
+          'dices' => { 'd6' => 1 }
+        }
+      }
+    end
+
+    it 'save new message with roll' do
+      expect(interactor).to be_success
+
+      message = interactor.success
+      expect(message.game_id).to eq game.id
+      expect(message.user_id).to eq user.id
+      expect(message.body['dices']['d6']).to be_kind_of Array
+      expect(message.body['dices']['d6'].size).to eq 1
+    end
+  end
 end

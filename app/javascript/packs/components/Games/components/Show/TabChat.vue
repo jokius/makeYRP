@@ -1,6 +1,6 @@
 <template>
   <div class="chat">
-    <div v-chat-scroll class="messages">
+    <div v-chat-scroll="{ always: false, smooth: true, scrollonremoved: true }" class="messages">
       <chat-message v-for="item in messages" :key="item.id" :message="item" />
     </div>
 
@@ -87,7 +87,7 @@
 
   .messages {
     position:absolute;
-    height: 100%;
+    height: 90%;
     overflow: auto;
     bottom: 70px;
   }

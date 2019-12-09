@@ -4,6 +4,7 @@ module Images
   def images_version(name, add_versions: [])
     url(name)
     version(name, version: 'thumb', width: 200)
+    version(name, version: 'chat', width: 50)
     version(name, version: 'lazy', width: 10)
     add_versions.each do |av|
       raise 'add versions version is required' if av[:version].blank?

@@ -2,16 +2,16 @@
   <div class="grid-message">
     <div class="grid-info">
       <v-avatar tile color="indigo" size="50" class="avatar">
-        <img
-          v-if="user.avatar.chat"
-          :src="user.avatar.chat"
+        <v-img
+          v-if="avatar"
+          :src="avatar"
           :alt="user.name"
         />
         <v-icon
           v-else
           size="50"
           dark
-          :title="user.nikname"
+          :title="nickname"
         >
           mdi-account-circle
         </v-icon>
@@ -28,24 +28,64 @@
 
     <div class="grid-body">
       <span v-if="body.text">{{ body.text }}</span>
+      <myz-roll
+        v-if="body.dices && system === 'mutant_year_zero'"
+        :as="character.id"
+        :roll="body.dices"
+        :prev-success="body.prevSuccess || 0"
+        :prev-attribute-fails="body.prevAttributeFails || 0"
+        :prev-gear-fails="body.prevGearFails || 0"
+      />
     </div>
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
+  import MyzRoll from '../../../../Templates/components/MYZ/chat/MyzRoll'
   import * as dateTime from '../../../../../lib/dateTime'
 
   export default {
     name: 'ChatMessage',
+    components: { MyzRoll },
 
     props: {
       message: { type: Object, required: true },
     },
 
     computed: {
+      ...mapState({
+        system: (state) => state.game.info.system,
+        sheets: (state) => state.game.sheets,
+      }),
+
       user: {
         get() {
           return this.message.user
+        },
+      },
+
+      character: {
+        get() {
+          let character = {}
+          if (this.body.as) {
+            character = this.sheets.find((sheet) => sheet.id === this.body.as) || {}
+          }
+
+          return character
+        },
+      },
+
+      nickname: {
+        get() {
+          return this.character.name || this.user.nickname
+        },
+      },
+
+      avatar: {
+        get() {
+          return this.character.imgChat || this.user.imgChat
         },
       },
 

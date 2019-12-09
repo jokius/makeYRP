@@ -1,3 +1,5 @@
+import { get } from 'lodash'
+
 export class UserModel {
   id = null
   admin = false
@@ -10,5 +12,17 @@ export class UserModel {
     this.avatar = raw.avatar
     this.admin = Boolean(raw.admin)
     return this
+  }
+
+  get imgChat() {
+    return get(this, 'avatar.chat', null)
+  }
+
+  get imgThumb() {
+    return get(this, 'avatar.thumb', null)
+  }
+
+  get imgLazy() {
+    return get(this, 'avatar.lazy', null)
   }
 }

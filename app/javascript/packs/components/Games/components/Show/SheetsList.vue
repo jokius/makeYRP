@@ -6,8 +6,8 @@
     >
       <v-list-item-avatar size="24" color="indigo">
         <v-img
-          v-if="sheet.imgThumb"
-          :src="sheet.imgThumb"
+          v-if="sheet.imgChat"
+          :src="sheet.imgChat"
           :alt="sheet.name"
           @click="showSheet(sheet)"
         />

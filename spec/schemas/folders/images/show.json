@@ -9,6 +9,7 @@
       "required": ["url", "lazy", "thumb"],
       "properties": {
         "url": { "type": ["null", "string"] },
+        "chat": { "type": ["null", "string"] },
         "lazy": { "type": ["null", "string"] },
         "thumb": { "type": ["null", "string"] }
       }

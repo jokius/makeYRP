@@ -10,6 +10,7 @@ class Messages::Create
   end
 
   step :validate
+  map :parse_body
   step :create
 
   def validate(input)
@@ -19,6 +20,11 @@ class Messages::Create
     else
       Failure(message: result.errors.to_h, status: 422)
     end
+  end
+
+  def parse_body(input)
+    input[:body]['dices'] = RollDices.new.call(input[:body]['dices'], input[:game_id]) if input[:body]['dices']
+    input
   end
 
   def create(input)

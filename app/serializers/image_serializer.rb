@@ -5,6 +5,7 @@ class ImageSerializer < ActiveModel::Serializer
 
   attribute :versions do
     { url: object.image_url,
+      chat: object.image_chat,
       lazy: object.image_lazy,
       thumb: object.image_thumb }
   end
