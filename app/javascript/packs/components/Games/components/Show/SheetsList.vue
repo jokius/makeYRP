@@ -55,6 +55,7 @@
         sheets: (state) => state.game.sheets,
       }),
     },
+
     methods: {
       showSheet({ id, sheetType }) {
         const key = Date.now()

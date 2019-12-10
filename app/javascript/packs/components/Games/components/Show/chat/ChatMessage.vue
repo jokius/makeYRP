@@ -30,7 +30,7 @@
       <span v-if="body.text">{{ body.text }}</span>
       <myz-roll
         v-if="body.dices && system === 'mutant_year_zero'"
-        :as="character.id"
+        :as="character.id || -1"
         :roll="body.dices"
         :prev-success="body.prevSuccess || 0"
         :prev-attribute-fails="body.prevAttributeFails || 0"
