@@ -21,7 +21,6 @@ import {
 } from '../../api'
 import {
   ADD_PAGE,
-  ADD_SHEET,
   DELETE_FOLDER,
   DELETE_IMAGE,
   DELETE_PAGE,
@@ -87,7 +86,7 @@ export default {
   async createSheet({ commit, state }, sheet_type) {
     try {
       const game = state.info
-      commit(ADD_SHEET, await createSheet(game.id,{ sheet_type }))
+      await createSheet(game.id,{ sheet_type })
     } catch (error) {
       handling(commit, error)
     }
@@ -170,7 +169,7 @@ export default {
 
   async saveSheet({ commit }, sheet) {
     try {
-      commit(UPDATE_SHEET, await updateSheet({ game_id: 0, ...sheet }))
+      await updateSheet({ game_id: 0, ...sheet })
     } catch (error) {
       handling(commit, error)
     }

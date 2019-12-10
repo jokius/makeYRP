@@ -23,15 +23,30 @@
   import DraggableDialog from './DraggableDialog'
 
   import MutantSheet from '../../../Templates/components/MYZ/sheets/MutantSheet'
-  import { REMOVE_OPEN_MODAL } from '../../stores/mutation-types'
+  import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
     components: { MutantSheet, DraggableDialog },
+
     props: {
       uniqKey: { type: Number, required: true },
       id: { type: Number, required: true },
       sheetType: { type: String, required: true },
+    },
+
+    channels: {
+      SheetChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.$cable.unsubscribe('SheetChannel')
+            this.onClose()
+            this.$store.commit(DELETE_SHEET, obj.delete)
+          } else {
+            this.$store.commit(UPDATE_SHEET, obj)
+          }
+        },
+      },
     },
 
     computed: {
@@ -62,6 +77,14 @@
         },
       },
     },
+
+    mounted() {
+      this.$cable.subscribe({
+        channel: 'SheetChannel',
+        sheet_id: this.id,
+      })
+    },
+
     methods: {
       onClose() {
         this.$store.commit(REMOVE_OPEN_MODAL, this.uniqKey)

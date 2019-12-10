@@ -20,6 +20,7 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
+  import { ADD_MESSAGE, ADD_SHEET, DELETE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'ShowGame',
@@ -29,6 +30,24 @@
       HeadMenu,
       OpenModals,
       Loader,
+    },
+
+    channels: {
+      ChatChannel: {
+        received(message) {
+          this.$store.commit(ADD_MESSAGE, message)
+        },
+      },
+
+      SheetsChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.$store.commit(DELETE_SHEET, obj.delete)
+          } else {
+            this.$store.commit(ADD_SHEET, obj)
+          }
+        },
+      },
     },
 
     computed: {
@@ -43,6 +62,20 @@
 
     created() {
       this.$store.dispatch('loadGame', this.$route.params.id)
+    },
+
+    mounted() {
+      const gameId = this.$route.params.id
+
+      this.$cable.subscribe({
+        channel: 'ChatChannel',
+        game_id: gameId,
+      })
+
+      this.$cable.subscribe({
+        channel: 'SheetsChannel',
+        game_id: gameId,
+      })
     },
   }
 </script>

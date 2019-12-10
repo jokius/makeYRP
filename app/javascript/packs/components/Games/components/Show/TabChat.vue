@@ -30,8 +30,6 @@
 
   import ChatMessage from './chat/ChatMessage'
 
-  import { ADD_MESSAGE } from '../../stores/mutation-types'
-
   export default {
     name: 'TabChat',
     components: { ChatMessage },
@@ -42,25 +40,10 @@
       }
     },
 
-    channels: {
-      ChatChannel: {
-        received(message) {
-          this.$store.commit(ADD_MESSAGE, message)
-        },
-      },
-    },
-
     computed: {
       ...mapState({
         messages: (state) => state.game.messages,
       }),
-    },
-
-    mounted() {
-      this.$cable.subscribe({
-        channel: 'ChatChannel',
-        game_id: this.$route.params.id,
-      })
     },
 
     methods: {
