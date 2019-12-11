@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-app id="inspire">
     <loader v-if="!loaded" />
     <game-form v-if="loaded" :list="list" />
-  </div>
+  </v-app>
 </template>
 
 <script>

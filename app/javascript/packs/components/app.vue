@@ -1,16 +1,9 @@
 <template>
-  <v-app id="inspire">
-    <router-view />
-  </v-app>
+  <router-view />
 </template>
 
 <script>
+  import '../components/ui/css/style.scss'
+
   export default {}
 </script>
-
-<style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
-</style>

@@ -13,6 +13,6 @@
 #  updated_at :datetime         not null
 #
 
-class ShortUserSerializer < ActiveModel::Serializer
+class SystemSerializer < ActiveModel::Serializer
   attributes :id, :name
 end

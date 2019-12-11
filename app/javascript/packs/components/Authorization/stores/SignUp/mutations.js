@@ -4,7 +4,6 @@ import {
   UPDATE_NICKNAME,
   UPDATE_PASSWORD,
 } from '../mutation-types'
-
 import { UPDATE_ERRORS } from '../../../../helpers/mutation-types'
 
 export default {

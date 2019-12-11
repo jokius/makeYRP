@@ -19,6 +19,11 @@ const links = {
     page: 'games/:game_id/pages/:id',
     sheets: 'games/:game_id/sheets',
     sheet: 'games/:game_id/sheets/:id',
+    messages: 'games/:game_id/messages',
+    folder: 'folder',
+    folders: 'folders/:id',
+    folderImages: 'folders/:folder_id/images',
+    images: 'folders/:folder_id/images/:id',
   }),
 
   dynamic: (link, params) => {
@@ -27,6 +32,8 @@ const links = {
       params[parameter]))
     return resultLink
   },
+
+  json: (link) => `${link}.json`,
 }
 
 export default links

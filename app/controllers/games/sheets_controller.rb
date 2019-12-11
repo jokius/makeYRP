@@ -8,13 +8,20 @@ class Games::SheetsController < ApplicationController
 
   def create
     responds(Sheets::Create, params.merge(owner_id: current_user.id)) do |sheet|
-      respond_json json: sheet, status: :created
+      SheetsChannel.broadcast_to(game, SheetSerializer.new(sheet))
+    end
+  end
+
+  def update
+    responds(Sheets::Update, params) do |sheet|
+      SheetChannel.broadcast_to(sheet, SheetSerializer.new(sheet))
     end
   end
 
   def destroy
     sheet.delete
-    head :no_content
+    SheetChannel.broadcast_to(sheet, delete: sheet.id)
+    SheetsChannel.broadcast_to(game, delete: sheet.id)
   end
 
   private

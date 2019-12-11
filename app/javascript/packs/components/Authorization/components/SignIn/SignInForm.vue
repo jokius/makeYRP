@@ -1,68 +1,66 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
+  <v-content>
+    <v-container
+      class="fill-height"
+      fluid
+    >
+      <v-row
+        align="center"
+        justify="center"
       >
-        <v-row
-          align="center"
-          justify="center"
+        <v-col
+          cols="12"
+          sm="8"
+          md="4"
         >
-          <v-col
-            cols="12"
-            sm="8"
-            md="4"
-          >
-            <v-card class="elevation-12">
-              <v-toolbar
-                color="primary"
-                dark
-                flat
+          <v-card class="elevation-12">
+            <v-toolbar
+              color="primary"
+              dark
+              flat
+            >
+              <v-toolbar-title>Вход</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+              <v-form
+                ref="form"
+                v-model="isValid"
               >
-                <v-toolbar-title>Вход</v-toolbar-title>
-              </v-toolbar>
-              <v-card-text>
-                <v-form
-                  ref="form"
-                  v-model="isValid"
-                >
-                  <v-text-field
-                    v-model="email"
-                    required
-                    :rules="emailRules"
-                    label="Email"
-                    prepend-icon="mdi-email"
-                  />
+                <v-text-field
+                  v-model="email"
+                  required
+                  :rules="emailRules"
+                  label="Email"
+                  prepend-icon="mdi-email"
+                />
 
-                  <v-text-field
-                    v-model="password"
-                    required
-                    :rules="requiredRules"
-                    :error-messages="asyncPasswordErrors"
-                    label="Пароль"
-                    prepend-icon="mdi-lock"
-                    type="password"
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <router-link :to="signUp">Зарегистрироваться</router-link>
-                <v-spacer />
-                <v-btn
-                  :disabled="!isValid"
-                  color="primary"
-                  @click="validate"
-                >
-                  Войти
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
-  </v-app>
+                <v-text-field
+                  v-model="password"
+                  required
+                  :rules="requiredRules"
+                  :error-messages="asyncPasswordErrors"
+                  label="Пароль"
+                  prepend-icon="mdi-lock"
+                  type="password"
+                />
+              </v-form>
+            </v-card-text>
+            <v-card-actions>
+              <router-link :to="signUp">Зарегистрироваться</router-link>
+              <v-spacer />
+              <v-btn
+                :disabled="!isValid"
+                color="primary"
+                @click="validate"
+              >
+                Войти
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-content>
 </template>
 
 <script>

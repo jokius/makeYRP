@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-app id="inspire">
     <sign-in-form />
-  </div>
+  </v-app>
 </template>
 
 <script>

@@ -11,12 +11,12 @@
             <span>Мастер: </span>
             <v-avatar size="24" color="indigo">
               <img
-                v-if="game.master.avatar"
-                :src="game.master.avatar"
+                v-if="game.master.avatar.thumb"
+                :src="game.master.avatar.thumb"
                 :alt="game.master.nickname"
               />
               <v-icon
-                v-if="!game.master.avatar"
+                v-if="!game.master.avatar.thumb"
                 dark
                 :title="game.master.nickname"
               >
@@ -30,11 +30,11 @@
             <template v-for="user in game.users">
               <v-avatar :key="user.id" size="24" color="indigo">
                 <img
-                  v-if="user.avatar"
-                  :src="user.avatar"
+                  v-if="user.avatar.thumb"
+                  :src="user.avatar.thumb"
                   :alt="user.nickname"
                 />
-                <v-icon v-if="!user.avatar" dark>mdi-account-circle</v-icon>
+                <v-icon v-if="!user.avatar.thumb" dark>mdi-account-circle</v-icon>
               </v-avatar>
             </template>
           </v-list-item-subtitle>

@@ -1,0 +1,57 @@
+name: rpsec
+
+on: [push]
+
+jobs:
+  vm-job:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
+
+      # required to compile pg ruby gem
+      - name: install PostgreSQL client
+        run: sudo apt-get install libpq-dev
+
+      - name: Setup database
+        run: |
+          cp config/database.yml.example config/database.yml
+          cp config/storage.yml.example config/storage.yml
+
+      - name: Build and create DB
+        env:
+          # use localhost for the host here because we have specified a container for the job.
+          # If we were running the job on the VM this would be postgres
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          RAILS_ENV: test
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bin/rails db:setup
+
+      - name: Run rpsec
+        env:
+          # use localhost for the host here because we have specified a container for the job.
+          # If we were running the job on the VM this would be postgres
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          RAILS_ENV: test
+        run: |
+          bundle exec rspec

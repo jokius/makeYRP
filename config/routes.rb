@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     scope module: :games do
       resources :sheets
       resources :pages
+      resources :messages
     end
   end
 
@@ -16,4 +17,11 @@ Rails.application.routes.draw do
   end
 
   resources :systems, except: %i[delete update]
+
+  resource :folder, only: %i[create show]
+  resources :folders, only: %i[update destroy] do
+    scope module: :folders do
+      resources :images
+    end
+  end
 end

@@ -22,10 +22,16 @@
 
   export default {
     name: 'PageTabsList',
+
+    data() {
+      return {
+        currentPageIndex: 0,
+      }
+    },
+
     computed: {
       ...mapState({
         game: (state) => state.game.info,
-        currentPage: (state) => state.game.currentPage,
       }),
 
       pages() {
@@ -34,7 +40,7 @@
 
       current: {
         get() {
-          return this.currentPage
+          return this.currentPageIndex
         },
 
         set(index) {

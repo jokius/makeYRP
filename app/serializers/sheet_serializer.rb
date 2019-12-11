@@ -13,8 +13,9 @@
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  sheet_type :string           not null
 #
 
 class SheetSerializer < ActiveModel::Serializer
-  attributes :id, :name, :params
+  attributes :id, :name, :sheet_type, :params
 end

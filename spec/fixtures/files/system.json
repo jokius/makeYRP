@@ -1,5 +1,7 @@
 {
   "identifier": "test_system",
   "version": 1,
-  "other": "other key"
+  "public_key": "$public_key",
+  "private_key": "$private_key",
+  "empty_key": "$empty_key"
 }

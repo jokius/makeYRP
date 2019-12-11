@@ -52,7 +52,6 @@
     computed: {
       ...mapState({
         pageName: (state) => state.game.pageName,
-        currentMenu: (state) => state.game.currentMenu,
       }),
 
       isValid() {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_04_101909) do
+ActiveRecord::Schema.define(version: 2019_11_30_055512) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,30 @@ ActiveRecord::Schema.define(version: 2019_11_04_101909) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "folder_files", force: :cascade do |t|
+    t.bigint "folder_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["folder_id"], name: "index_folder_files_on_folder_id"
+  end
+
+  create_table "folders", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "name"
+    t.integer "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lft"], name: "index_folders_on_lft"
+    t.index ["parent_id"], name: "index_folders_on_parent_id"
+    t.index ["rgt"], name: "index_folders_on_rgt"
+    t.index ["user_id"], name: "index_folders_on_user_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.bigint "system_id", null: false
     t.bigint "master_id", null: false
@@ -56,6 +80,18 @@ ActiveRecord::Schema.define(version: 2019_11_04_101909) do
     t.index ["game_id"], name: "index_menus_on_game_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.bigint "game_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "whisper_to_id"
+    t.jsonb "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_messages_on_game_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["whisper_to_id"], name: "index_messages_on_whisper_to_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.bigint "game_id", null: false
     t.string "name", null: false
@@ -74,6 +110,7 @@ ActiveRecord::Schema.define(version: 2019_11_04_101909) do
     t.jsonb "params", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "sheet_type", null: false
     t.index ["game_id", "owner_id"], name: "index_sheets_on_game_id_and_owner_id"
     t.index ["game_id"], name: "index_sheets_on_game_id"
     t.index ["owner_id"], name: "index_sheets_on_owner_id"

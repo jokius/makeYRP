@@ -5,8 +5,8 @@ class Sheets::Create
   SHEETS_CREATE_SCHEMA = Dry::Schema.Params do
     required(:owner_id).filled(:integer)
     required(:game_id).filled(:integer)
-    required(:type).filled(:string)
-    optional(:name).filled(:string)
+    required(:sheet_type).filled(:string)
+    optional(:name).maybe(:string)
   end
 
   step :validate
@@ -34,7 +34,7 @@ class Sheets::Create
 
   def attrs_by(input)
     template = Game.find(input[:game_id]).system.template
-    input[:params] = template.dig('actors', input.delete(:type)) || {}
+    input[:params] = template.dig('template', 'sheets', input[:sheet_type]) || {}
     input[:name] = FFaker::Name.name if input[:name].blank?
     input
   end

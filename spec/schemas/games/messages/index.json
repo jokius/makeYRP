@@ -1,0 +1,30 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "user", "body", "created_at"],
+    "properties": {
+      "id": { "type": "number" },
+      "user": {
+        "type": "object",
+        "required": ["id", "nickname", "avatar"],
+        "properties": {
+          "id": { "type": "number" },
+          "nickname": { "type": "string" },
+          "avatar": {
+            "type": "object",
+            "required": ["url", "lazy", "thumb"],
+            "properties": {
+              "url": { "type": ["null", "string"] },
+              "lazy": { "type": ["null", "string"] },
+              "thumb": { "type": ["null", "string"] },
+              "chat": { "type": ["null", "string"] }
+            }
+          }
+        }
+      },
+      "body": { "type": "object" },
+      "created_at": { "type": "string" }
+    }
+  }
+}
