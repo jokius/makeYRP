@@ -1,46 +1,18 @@
-FROM ruby:2.6.5-alpine as builder
-
-RUN apk add --no-cache postgresql-dev openssh build-base git make nodejs yarn imagemagick tzdata gmp-dev
-
-RUN gem install bundler -v 2.0.2
-
-# Add working dir
-RUN mkdir -p /app
-WORKDIR /app
-
-# Install dependencies
-COPY Gemfile* /app/
-RUN bundle config --global frozen 1 \
- && bundle install --without development test -j4 --retry 3 \
- # Remove unneeded files (cached *.gem, *.o, *.c)
- && rm -rf /usr/local/bundle/cache/*.gem \
- && find /usr/local/bundle/gems/ -name "*.c" -delete \
- && find /usr/local/bundle/gems/ -name "*.o" -delete
-
-ENV NODE_ENV production
-# Install js dependencies
-COPY package.json babel.config.js postcss.config.js .browserslistrc yarn.lock /app/
-RUN yarn install
-
 FROM ruby:2.6.5-alpine
-RUN apk add --no-cache git nodejs imagemagick cmake tzdata yarn
 
-# Copy app with gems from former build stage
-COPY --from=Builder /usr/local/bundle/ /usr/local/bundle/
+ENV PROJECT_ROOT=/app
+WORKDIR $PROJECT_ROOT
 
-# Set Rails env
-ENV RAILS_ENV production
-ENV RAILS_LOG_TO_STDOUT true
-ENV RAILS_SERVE_STATIC_FILES true
+RUN apk update && \
+apk add -u --no-cache --progress \
+tzdata \
+build-base \
+postgresql-dev postgresql-client openssh git make \
+chromium chromium-chromedriver nodejs-current imagemagick yarn cmake less graphviz
 
-WORKDIR /app
-ADD . .
+COPY Gemfile* $PROJECT_ROOT/
+RUN gem install bundler -v 2.0.2
+RUN bundle check || BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --jobs 4 --retry 4
 
-RUN rails assets:precompile \
- && rm -rf node_modules
-
-# Expose Puma port
-EXPOSE 3000
-
-ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["app"]
+COPY package.json yarn.lock $PROJECT_ROOT/
+RUN yarn install
