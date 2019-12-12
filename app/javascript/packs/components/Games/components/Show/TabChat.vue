@@ -62,15 +62,15 @@
 
   .chat {
     position: relative;
-    height: calc(100% - 56px);
-    top:0;
-    bottom:0;
+    bottom: 0;
+    top: 69px;
+    height: calc(100% - 69px * 2);
     background-color: $grayC5;
   }
 
   .messages {
     position:absolute;
-    height: 90%;
+    height: 100%;
     overflow: auto;
     bottom: 70px;
     width: 100%;
