@@ -9,6 +9,8 @@
 
   import BackgroundImage from './body/BackgroundImage'
 
+  import { PageModel } from '../../../../models/PageModel'
+
   export default {
     name: 'BodyContent',
     components: { BackgroundImage },
@@ -20,8 +22,9 @@
 
       background: {
         get() {
-          return this.currentPage.params.background
-        }
+          const params = this.currentPage.params || new PageModel().defaultParams
+          return params.background
+        },
       },
 
       style: {

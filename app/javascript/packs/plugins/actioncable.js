@@ -2,10 +2,11 @@ import ActionCableVue from 'actioncable-vue'
 import Vue from 'vue'
 
 (function() {
+  const host = `${window.location.hostname}:${window.location.port}`
   Vue.use(ActionCableVue, {
     debug: true,
     debugLevel: 'error',
-    connectionUrl: process.env.WEBSOCKET_HOST || 'ws://localhost:3000/cable',
+    connectionUrl: `ws://${host}/cable`,
     connectImmediately: true,
   })
 }())

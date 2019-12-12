@@ -5,7 +5,6 @@ function app {
   bundle exec rails credentials:edit
   bundle exec rails assets:precompile
   bundle exec rails db:prepare
-  rm -rf node_modules
   bundle exec rails s -b 0.0.0.0 "$@"
 }
 
