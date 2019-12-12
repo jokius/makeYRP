@@ -105,4 +105,8 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  config.active_storage.service = :local
+  config.action_cable.allowed_request_origins =
+    ENV.fetch('ACTION_CABLE_ALLOWED_HOSTS') { 'http://localhost:3000' }.split(',')
 end
