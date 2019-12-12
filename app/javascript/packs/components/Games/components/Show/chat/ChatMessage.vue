@@ -118,7 +118,7 @@
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
     grid-row-gap: 5px;
-    margin: 5px;
+    margin-bottom: 5px;
     background-color: $white;
   }
 

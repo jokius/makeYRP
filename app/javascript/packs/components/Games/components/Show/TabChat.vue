@@ -73,6 +73,7 @@
     height: 90%;
     overflow: auto;
     bottom: 70px;
+    width: 100%;
   }
 
   .field-text {
