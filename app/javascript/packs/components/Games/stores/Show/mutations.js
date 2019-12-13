@@ -24,7 +24,9 @@ import {
   ADD_MESSAGE,
   MESSAGES_LOADED,
   UPDATE_SHEET,
-  UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS,
+  UPDATE_SHEET_PARAMS,
+  UPDATE_SHEETS,
+  UPDATE_SHEET_NAME,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -135,6 +137,11 @@ export default {
   [UPDATE_SHEET](state, raw) {
     const sheet = state.sheets.find((item) => item.id === raw.id)
     sheet.setInfo(raw)
+  },
+
+  [UPDATE_SHEETS](state, sheet) {
+    const index = state.sheets.findIndex((item) => item.id === sheet.id)
+    state.sheets[index] = state.sheets[index].setInfo(sheet)
   },
 
   [UPDATE_SHEET_NAME](state, { id, name }) {

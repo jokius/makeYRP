@@ -20,7 +20,7 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
-  import { ADD_MESSAGE, ADD_SHEET, DELETE_SHEET } from '../../stores/mutation-types'
+  import { ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
 
   export default {
     name: 'ShowGame',
@@ -44,7 +44,11 @@
           if (obj.delete) {
             this.$store.commit(DELETE_SHEET, obj.delete)
           } else {
-            this.$store.commit(ADD_SHEET, obj)
+            if (obj.new){
+              this.$store.commit(ADD_SHEET, obj.sheet)
+            } else {
+              this.$store.commit(UPDATE_SHEETS, obj.sheet)
+            }
           }
         },
       },
