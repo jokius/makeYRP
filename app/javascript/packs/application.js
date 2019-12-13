@@ -7,7 +7,6 @@ import vuetify from './plugins/vuetify'
 
 require('./plugins/axios')
 require('./plugins/actioncable')
-require('./plugins/chat_scroll')
 require('./plugins/zoomer')
 
 document.addEventListener('DOMContentLoaded', () => {
