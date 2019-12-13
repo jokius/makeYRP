@@ -5,7 +5,7 @@
         <v-img
           v-if="avatar"
           :src="avatar"
-          :alt="user.name"
+          :alt="nickname"
         />
         <v-icon
           v-else
@@ -17,7 +17,7 @@
         </v-icon>
       </v-avatar>
 
-      <b class="nickname">{{ user.nickname }}</b>
+      <b class="nickname">{{ nickname }}</b>
       <v-tooltip top class="time">
         <template v-slot:activator="{ on }">
           <i v-on="on">{{ time }}</i>

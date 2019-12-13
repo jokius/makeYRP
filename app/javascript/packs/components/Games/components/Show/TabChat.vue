@@ -1,6 +1,6 @@
 <template>
   <div class="chat">
-    <div v-chat-scroll="{ always: false, smooth: true, scrollonremoved: true }" class="messages">
+    <div ref="messages" class="messages">
       <chat-message v-for="item in messages" :key="item.id" :message="item" />
     </div>
 
@@ -46,7 +46,30 @@
       }),
     },
 
+    activated() {
+      this.$nextTick(function () {
+        this.scrollDown()
+      })
+    },
+
+    mounted() {
+      this.$nextTick(function () {
+        this.scrollDown()
+      })
+    },
+
+    updated() {
+      this.$nextTick(function () {
+        this.scrollDown()
+      })
+    },
+
     methods: {
+      scrollDown() {
+        const messages = this.$refs.messages
+        messages.scrollTop = messages.scrollHeight
+      },
+
       sendMessage() {
         if (this.text === '') return
 
