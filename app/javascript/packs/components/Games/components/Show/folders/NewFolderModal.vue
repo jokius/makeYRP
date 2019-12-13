@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="openDialog" width="300">
+  <v-dialog :value="openDialog" width="300" persistent>
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
         Новая папка
