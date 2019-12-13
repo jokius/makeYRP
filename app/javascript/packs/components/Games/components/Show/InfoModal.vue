@@ -1,5 +1,11 @@
 <template>
-  <draggable-dialog :on-close="onClose" :title="title" :width="600" :height="500">
+  <draggable-dialog
+    :on-close="onClose"
+    :title="title"
+    :width="600"
+    :height="500"
+    resizable
+  >
     <template v-slot:body>
       <v-container class="fill-height" fluid>
         <div v-html="description" />
