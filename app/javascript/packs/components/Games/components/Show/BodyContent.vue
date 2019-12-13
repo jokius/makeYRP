@@ -1,6 +1,6 @@
 <template>
   <div class="map-body" :style="style">
-    <background-image v-if="background.image" />
+<!--    <background-image v-if="background.image" />-->
   </div>
 </template>
 

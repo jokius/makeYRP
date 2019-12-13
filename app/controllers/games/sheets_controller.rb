@@ -8,13 +8,15 @@ class Games::SheetsController < ApplicationController
 
   def create
     responds(Sheets::Create, params.merge(owner_id: current_user.id)) do |sheet|
-      SheetsChannel.broadcast_to(game, SheetSerializer.new(sheet))
+      SheetsChannel.broadcast_to(game, sheet: SheetSerializer.new(sheet), new: true)
     end
   end
 
   def update
-    responds(Sheets::Update, params) do |sheet|
-      SheetChannel.broadcast_to(sheet, SheetSerializer.new(sheet))
+    responds(Sheets::Update, params) do |raw|
+      sheet = SheetSerializer.new(raw)
+      SheetChannel.broadcast_to(raw, sheet)
+      SheetsChannel.broadcast_to(game, sheet: sheet, new: false)
     end
   end
 
