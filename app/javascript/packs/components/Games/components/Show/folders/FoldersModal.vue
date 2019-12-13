@@ -54,18 +54,19 @@
         <v-btn
           color="indigo"
           text
-          @click="openDropzone = true"
-        >
-          Загрузить файлы
-        </v-btn>
-
-        <v-spacer />
-        <v-btn
-          color="indigo"
-          text
           @click="$emit('close')"
         >
           Закрыть
+        </v-btn>
+
+        <v-spacer />
+
+        <v-btn
+          color="indigo"
+          text
+          @click="openDropzone = true"
+        >
+          Загрузить файлы
         </v-btn>
       </v-card-actions>
     </v-card>
