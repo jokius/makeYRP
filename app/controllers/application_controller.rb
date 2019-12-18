@@ -6,9 +6,7 @@ class ApplicationController < ActionController::Base
   before_action do
     class_name = 'ActiveStorage::Service::DiskService'
     next unless ActiveStorage::Blob.service.class.name == class_name
-
-    ActiveStorage::Current.host = request.base_url
-    Rails.application.routes.default_url_options[:host] = request.base_url
+    Rails.application.routes.default_url_options[:only_path] = true
   end
 
   protected
