@@ -1,19 +1,19 @@
 <template>
-  <div class="map-body" :style="style">
-<!--    <background-image v-if="background.image" />-->
+  <div :key="currentPage.id" :style="style">
+    <board />
   </div>
 </template>
 
 <script>
   import { mapState } from 'vuex'
 
-  import BackgroundImage from './body/BackgroundImage'
+  import Board from './body/Board'
 
   import { PageModel } from '../../../../models/PageModel'
 
   export default {
     name: 'BodyContent',
-    components: { BackgroundImage },
+    components: { Board },
 
     computed: {
       ...mapState({
@@ -39,8 +39,4 @@
 </script>
 
 <style scoped lang="scss">
-  .map-body {
-    width: 100%;
-    height: 100%;
-  }
 </style>
