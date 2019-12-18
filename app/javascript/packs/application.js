@@ -7,7 +7,7 @@ import vuetify from './plugins/vuetify'
 
 require('./plugins/axios')
 require('./plugins/actioncable')
-require('./plugins/zoomer')
+require('./plugins/panzoom')
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('application'))
