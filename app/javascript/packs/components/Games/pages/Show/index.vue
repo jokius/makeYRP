@@ -85,6 +85,8 @@
 </script>
 
 <style scoped lang="scss">
+  @import 'app/javascript/packs/components/ui/css/colors';
+
   .menu-grid {
     display: grid;
     grid-template-columns: auto auto max-content;
@@ -100,13 +102,20 @@
 
   .head-menu {
     grid-area: head-menu;
+    position: relative;
+    z-index: 2;
+    background-color: $white;
   }
 
   .body-menu {
     grid-area: body-menu;
+    position: relative;
+    z-index: 2;
   }
 
   .body-content {
     grid-area: body-content;
+    position: relative;
+    z-index: 1;
   }
 </style>
