@@ -7,6 +7,9 @@
 * {
   font-family: 'Xolonium', serif;
   font-size: 14px;
+  :focus {
+    outline: none;
+  }
 }
 
 html {
