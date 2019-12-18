@@ -1,19 +1,19 @@
 <template>
   <div class="grid">
     <v-btn
-      class="bgButton"
+      class="bg-button"
       :style="style"
       outlined
       @click="openSelect = true"
     >
-      <span v-if="!background.image" class="bgText">Нажмите что бы выбрать фон</span>
+      <span v-if="!background.image" class="bg-text">Нажмите что бы выбрать фон</span>
       <v-img
         v-else
         :src="background.image.versions.thumb"
         :lazy-src="background.image.versions.lazy"
         aspect-ratio="1"
         position="center"
-        class="bgImage"
+        class="bg-image"
         max-width="292px"
         max-height="192px"
       >
@@ -29,31 +29,47 @@
       </v-img>
     </v-btn>
 
-    <div class="subGrid">
-      <span class="colorText">Цвет фона</span>
-      <div :style="style" class="currentColor" @click="openColorSelect" />
-      <span class="gridSelectText">Тип сетки</span>
+    <div class="grid-sub">
+      <span class="color-text">Цвет фона</span>
+      <div :style="style" class="color-current" @click="openColorSelect" />
+      <span class="grid-select-text">Ширина доски</span>
+      <v-text-field
+        v-model.number="boardWidth"
+        required
+        color="indigo"
+        class="grid-size"
+        type="number"
+      />
+      <span class="grid-select-text">Высота доски</span>
+      <v-text-field
+        v-model.number="boardHeight"
+        required
+        color="indigo"
+        class="grid-size"
+        type="number"
+      />
+      <span class="grid-select-text">Тип сетки</span>
       <v-select
         v-model="grid"
         :items="gridItems"
-        class="gridSelect"
+        class="grid-select"
       />
       <v-text-field
         v-if="grid"
-        v-model="gridWith"
+        v-model.number="gridWidth"
         required
         color="indigo"
         label="Ширина клетки"
-        class="gridSize"
+        class="grid-size"
         type="number"
       />
       <v-text-field
         v-if="grid"
-        v-model="gridHeight"
+        v-model.number="gridHeight"
         required
         color="indigo"
         label="Высота клетки"
-        class="gridSize gridHeight"
+        class="grid-size"
         type="number"
       />
     </div>
@@ -132,23 +148,43 @@
         },
       },
 
-      gridWith: {
+      gridWidth: {
         get() {
-          return this.params.gridWith || 70
+          return this.params.gridWidth || 70
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { gridWith: value })
+          this.$store.dispatch('changePage', { gridWidth: value })
         },
       },
 
       gridHeight: {
         get() {
-          return this.params.gridWith || 70
+          return this.params.gridHeight || 70
         },
 
         set(value) {
           this.$store.dispatch('changePage', { gridHeight: value })
+        },
+      },
+
+      boardWidth: {
+        get() {
+          return this.params.width || 800
+        },
+
+        set(value) {
+          this.$store.dispatch('changePage', { width: value })
+        },
+      },
+
+      boardHeight: {
+        get() {
+          return this.params.height || 600
+        },
+
+        set(value) {
+          this.$store.dispatch('changePage', { height: value })
         },
       },
     },
@@ -170,6 +206,9 @@
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
 
+  $color_height: 25px;
+  $grid_select_height: 60px;
+
   .grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -179,7 +218,7 @@
     color: $black;
   }
 
-  .subGrid {
+  .grid-sub {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-column-gap: 1px;
@@ -187,7 +226,7 @@
     grid-row-gap: 10px;
   }
 
-  .bgButton.v-size--default {
+  .bg-button.v-size--default {
     height: 200px;
     border-width: 2px;
     border-radius: 2px;
@@ -200,21 +239,19 @@
     }
   }
 
-  .bgImage {
+  .bg-image {
     position: relative;
     width: 300px;
     height: 200px;
   }
 
-  .bgText {
+  .bg-text {
     position: relative;
     z-index: 2;
     background-color: #fff3;
   }
 
-  $color_height: 25px;
-
-  .currentColor {
+  .color-current {
     justify-self: end;
     cursor: pointer;
     width: 50px;
@@ -222,31 +259,26 @@
     border:  1px solid $black;
   }
 
-  .colorText {
+  .color-text {
     vertical-align: middle;
     line-height: $color_height;
   }
 
-  $grid_select_height: 60px;
-
-  .gridSelect {
+  .grid-select {
     justify-self: end;
     height: $grid_select_height;
   }
 
-  .gridSelectText {
+  .grid-select-text {
     vertical-align: middle;
     line-height: $grid_select_height;
   }
 
-  .gridSize {
+  .grid-size {
     width: 120px;
+    justify-self: end;
     &::after {
       content: 'px';
     }
-  }
-
-  .gridHeight {
-    justify-self: end;
   }
 </style>

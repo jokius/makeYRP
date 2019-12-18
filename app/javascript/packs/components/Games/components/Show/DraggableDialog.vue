@@ -6,6 +6,9 @@
     :x="xPoint"
     :y="yPoint"
     :z="zModal"
+    :resizable="resizable"
+    :active="resizable"
+    class-name-active="resize-boards"
   >
     <v-card>
       <v-toolbar dark color="indigo" class="header drag-handle">
@@ -15,11 +18,13 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
-      <slot name="body" />
-      <v-divider />
-      <v-card-actions v-if="hasActionsSlot">
-        <slot name="actions" />
-      </v-card-actions>
+      <div :style="{ width, height, overflow: 'auto' }">
+        <slot name="body" />
+        <v-divider />
+        <v-card-actions v-if="hasActionsSlot">
+          <slot name="actions" />
+        </v-card-actions>
+      </div>
     </v-card>
   </vue-draggable-resizable>
 </template>
@@ -27,6 +32,7 @@
 <script>
   import { mapState } from 'vuex'
   import VueDraggableResizable from 'vue-draggable-resizable'
+  import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
   export default {
     name: 'DraggableDialog',
@@ -36,6 +42,7 @@
       onClose: { type: Function, required: true },
       width: { type: Number, default: 200 },
       height: { type: Number, default: 200 },
+      resizable: { type: Boolean, default: false },
     },
     data() {
       return {

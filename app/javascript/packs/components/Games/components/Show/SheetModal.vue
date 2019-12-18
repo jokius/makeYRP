@@ -1,5 +1,11 @@
 <template>
-  <draggable-dialog :on-close="onClose" title="Имя персонажа" :width="size.width" :height="size.height">
+  <draggable-dialog
+    :on-close="onClose"
+    title="Имя персонажа"
+    :width="size.width"
+    :height="size.height"
+    resizable
+  >
     <template v-slot:body>
       <mutant-sheet v-if="sheet === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
       <v-alert
