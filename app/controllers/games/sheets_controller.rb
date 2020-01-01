@@ -21,9 +21,10 @@ class Games::SheetsController < ApplicationController
   end
 
   def destroy
+    sheet_id = sheet.id
     sheet.delete
-    SheetChannel.broadcast_to(sheet, delete: sheet.id)
-    SheetsChannel.broadcast_to(game, delete: sheet.id)
+    SheetChannel.broadcast_to(sheet, delete: sheet_id)
+    SheetsChannel.broadcast_to(game, delete: sheet_id)
   end
 
   private

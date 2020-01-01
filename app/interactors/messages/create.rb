@@ -23,7 +23,9 @@ class Messages::Create
   end
 
   def parse_body(input)
-    input[:body]['dices'] = RollDices.new.call(input[:body]['dices'], input[:game_id]) if input[:body]['dices']
+    body = input[:body]
+    dices = body['dices']
+    body['dices'] = RollDices.new.call(dices, input[:game_id]) if dices
     input
   end
 

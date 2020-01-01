@@ -65,10 +65,11 @@ RSpec.describe Games::SheetsController, type: :request do
   private
 
   def create_sheet
-    post "/games/#{game.id}/sheets",
+    game_id = game.id
+    post "/games/#{game_id}/sheets",
          **headers,
          params: {
-           game_id: game.id,
+           game_id: game_id,
            sheet_type: 'character'
          }
   end

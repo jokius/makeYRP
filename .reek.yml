@@ -11,5 +11,7 @@ detectors:
     max_allowed_nesting: 2
   TooManyStatements:
     max_statements: 10
+  NilCheck:
+    enabled: false
 exclude_paths:
   - db/migrate
