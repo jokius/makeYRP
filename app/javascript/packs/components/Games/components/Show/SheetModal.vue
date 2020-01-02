@@ -2,13 +2,14 @@
   <draggable-dialog
     v-model="size"
     :on-close="onClose"
-    title="Имя персонажа"
+    :title="sheet.name"
     :width="size.width"
     :height="size.height"
     resizable
   >
     <template v-slot:body>
-      <mutant-sheet v-if="sheet === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
+      <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
+      <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
       <v-alert
         v-else
         :key="key"
@@ -17,9 +18,8 @@
         class="alert"
         type="error"
       >
-        {{ sheet }} не существует
+        {{ sheetName }} не существует
       </v-alert>
-      <div />
     </template>
   </draggable-dialog>
 </template>
@@ -30,11 +30,12 @@
   import DraggableDialog from './DraggableDialog'
 
   import MutantSheet from '../../../Templates/components/MYZ/sheets/MutantSheet'
+  import BidCharacterSheet from '../../../Templates/components/BladeInTheDarck/sheets/CharacterSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, DraggableDialog },
+    components: { MutantSheet, BidCharacterSheet, DraggableDialog },
 
     props: {
       uniqKey: { type: Number, required: true },
@@ -65,10 +66,17 @@
 
     computed: {
       ...mapState({
-        game: state => state.game.info,
+        game: (state) => state.game.info,
+        sheets: (state) => state.game.sheets,
       }),
 
       sheet: {
+        get() {
+          return this.sheets.find((sheet) => sheet.id === this.id)
+        },
+      },
+
+      sheetName: {
         get() {
           return `${this.game.system}-${this.sheetType}`
         },
@@ -76,15 +84,17 @@
 
       key: {
         get() {
-          return `${this.sheet}-${this.id}`
+          return `${this.sheetName}-${this.id}`
         },
       },
 
       size: {
         get() {
-          switch (this.sheet) {
+          switch (this.sheetName) {
             case 'mutant_year_zero-mutant':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'blade_in_the_dark-character':
+              return {  width: 950, height: 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
           }
