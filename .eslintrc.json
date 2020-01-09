@@ -136,7 +136,7 @@
     "vue/v-on-function-call": "error",
     "vue/no-v-html": "off",
 
-    "arrow-parens": ["error", "always"],
+    "arrow-parens": ["error", "as-needed"],
     "array-bracket-spacing": "error",
     "arrow-spacing": "error",
     "arrow-body-style": "error",
