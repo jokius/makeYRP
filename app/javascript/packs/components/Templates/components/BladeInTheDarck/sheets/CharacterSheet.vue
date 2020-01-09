@@ -10,7 +10,7 @@
         <span class="xolonium-font">О персанаже</span>
       </v-tab>
       <v-tab class="tab" active-class="tab-active">
-        <span class="xolonium-font">Описание и отношения</span>
+        <span class="xolonium-font">Навыки и снаряжение</span>
       </v-tab>
     </v-tabs>
 
@@ -18,15 +18,20 @@
       <v-tab-item>
         <main-body :id="id" />
       </v-tab-item>
+      <v-tab-item>
+        <skill-body :id="id" />
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-  import MainBody from '../../BladeInTheDarck/sheets/MainBody'
+  import SkillBody from './SkillBody'
+  import MainBody from './MainBody'
+
   export default {
     name: 'CharacterSheet',
-    components: { MainBody },
+    components: { SkillBody, MainBody },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },

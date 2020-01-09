@@ -1,7 +1,12 @@
 @font-face {
   font-family: 'Xolonium';
   src: url('fonts/Xolonium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: "Xolonium";
   src: url('fonts/XoloniumBold.ttf') format('truetype');
+  font-weight: bold;
 }
 
 * {

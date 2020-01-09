@@ -10,7 +10,6 @@
             label="Роль"
             class="role"
             color="indigo"
-            @change="saveSheet"
           />
           <v-text-field
             v-model="team"
@@ -89,14 +88,15 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { get } from 'lodash'
 
   import Stress from './Stress'
   import DamageAndHeal from './DamageAndHeal'
+  import CharacterExp from './CharacterExp'
 
   import { UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS } from '../../../../Games/stores/mutation-types'
   import { BiD } from '../../../../../lib/BiD'
   import Avatar from '../../BladeInTheDarck/sheets/Avatar'
-  import CharacterExp from './CharacterExp'
 
   export default {
     name: 'MainBody',
@@ -107,13 +107,13 @@
 
     computed: {
       ...mapState({
-        sheets: (state) => state.game.sheets,
-        tables: (state) => state.game.info.template.tables,
+        sheets: state => state.game.sheets,
+        tables: state => state.game.info.template.tables,
       }),
 
       sheet: {
         get() {
-          return this.sheets.find((sheet) => sheet.id === this.id)
+          return this.sheets.find(sheet => sheet.id === this.id)
         },
       },
 
@@ -192,7 +192,8 @@
         },
 
         set(value) {
-          this.input('role', value)
+          this.changeRole(value)
+          this.saveSheet()
         },
       },
 
@@ -240,12 +241,20 @@
 
     created() {
       if (this.params.info.role === '@random') {
-        this.input('role', BiD.randomRole(this.roles).value)
+        this.changeRole(BiD.randomRole(this.roles).value)
         this.saveSheet()
       }
     },
 
     methods: {
+      changeRole(roleName) {
+        this.input('role', roleName)
+        this.changeTalents(roleName)
+        this.changeRelationship(roleName)
+        this.changeAttributes(roleName)
+        this.changeGear(roleName)
+      },
+
       input(target, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
@@ -254,6 +263,63 @@
                              value: value,
                            })
 
+      },
+
+      changeTalents(role) {
+        const list = this.params.talents.filter(talent => talent.enable)
+
+        const roleTalents = this.tables.characterTalents[role] || []
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `talents`,
+                             value: roleTalents.concat(list),
+                           })
+      },
+
+      changeRelationship(role) {
+        const list = this.params.relationship.filter(relation => relation.respect !== 0)
+
+        const roleRelationship = this.tables.characterRelationships[role] || []
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `relationship`,
+                             value: roleRelationship.concat(list),
+                           })
+      },
+
+      // Find skill index by role skill name. Update skill value if current value lower.
+      changeAttributes(roleName) {
+        const skills = get(this.tables.roles[roleName], 'skills', null)
+        if (!skills) return
+
+        this.params.attributes.forEach((attribute, index) => {
+          const attributeSkills = attribute.skills
+          for (const key in skills) {
+            const skillIndex = attributeSkills.findIndex(item => item.key === key)
+            if (skillIndex > -1) {
+              const value = skills[key]
+              if (attributeSkills[skillIndex].current < value) {
+                this.$store.commit(UPDATE_SHEET_PARAMS,
+                                   {
+                                     id: this.sheet.id,
+                                     path: `attributes[${index}].skills[${skillIndex}].current`,
+                                     value,
+                                   })
+              }
+            }
+          }
+        })
+      },
+
+      changeGear(role) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `gear`,
+                             value: this.tables.characterGear[role] || [],
+                           })
       },
 
       saveSheet() {
