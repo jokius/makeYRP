@@ -103,7 +103,7 @@
 
   .circle {
     cursor: pointer;
-    background-color: #FFFFFF;
+    background-color: $white;
     width: 50%;
     height: 50%;
     border-radius: 50%;

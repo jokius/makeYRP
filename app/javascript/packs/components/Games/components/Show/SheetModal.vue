@@ -10,6 +10,7 @@
     <template v-slot:body>
       <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
       <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
+      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size" />
       <v-alert
         v-else
         :key="key"
@@ -31,11 +32,12 @@
 
   import MutantSheet from '../../../Templates/components/MYZ/sheets/MutantSheet'
   import BidCharacterSheet from '../../../Templates/components/BladeInTheDarck/sheets/CharacterSheet'
+  import BidTeamSheet from '../../../Templates/components/BladeInTheDarck/sheets/TeamSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, BidCharacterSheet, DraggableDialog },
+    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog },
 
     props: {
       uniqKey: { type: Number, required: true },
@@ -94,6 +96,8 @@
             case 'mutant_year_zero-mutant':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-character':
+              return {  width: 950, height: 600 }
+            case 'blade_in_the_dark-team':
               return {  width: 950, height: 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }

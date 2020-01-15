@@ -99,7 +99,7 @@
   import Avatar from '../../BladeInTheDarck/sheets/Avatar'
 
   export default {
-    name: 'MainBody',
+    name: 'CharacterMainBody',
     components: { CharacterExp, DamageAndHeal, Stress, Avatar },
     props: {
       id: { type: Number, required: true },

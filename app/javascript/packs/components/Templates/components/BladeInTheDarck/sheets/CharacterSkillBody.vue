@@ -22,7 +22,7 @@
   import ThingsAndGear from './ThingsAndGear'
 
   export default {
-    name: 'SkillBody',
+    name: 'CharacterSkillBody',
     components: { ThingsAndGear, Attributes, CharacterMoney, CharacterRelationship, Talents },
     props: {
       id: { type: Number, required: true },

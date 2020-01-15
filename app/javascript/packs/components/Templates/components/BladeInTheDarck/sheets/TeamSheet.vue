@@ -7,30 +7,36 @@
       height="30"
     >
       <v-tab class="tab" active-class="tab-active">
-        <span class="xolonium-font">О персанаже</span>
+        <span class="xolonium-font">О команде</span>
       </v-tab>
       <v-tab class="tab" active-class="tab-active">
         <span class="xolonium-font">Навыки и снаряжение</span>
+      </v-tab>
+      <v-tab class="tab" active-class="tab-active">
+        <span class="xolonium-font">Тюрьма</span>
       </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab" continuous>
       <v-tab-item>
-        <character-main-body :id="id" />
+        <team-main-body :id="id" />
       </v-tab-item>
       <v-tab-item>
-        <character-skill-body :id="id" />
+<!--        <skill-body :id="id" />-->
+      </v-tab-item>
+      <v-tab-item>
+        <!--        <skill-body :id="id" />-->
       </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
-  import CharacterMainBody from './CharacterMainBody'
-  import CharacterSkillBody from './CharacterSkillBody'
+  import TeamMainBody from './TeamMainBody'
+
   export default {
-    name: 'CharacterSheet',
-    components: { CharacterSkillBody, CharacterMainBody },
+    name: 'TeamSheet',
+    components: { TeamMainBody },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },
