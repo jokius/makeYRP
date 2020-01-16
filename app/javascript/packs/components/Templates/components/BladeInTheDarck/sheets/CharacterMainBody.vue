@@ -225,7 +225,7 @@
         },
       },
 
-      roles: {
+      tableRoles: {
         get() {
           const list = []
           const raw = this.tables.roles
@@ -233,15 +233,20 @@
             list.push({ value: item, text: raw[item].name })
           }
 
-          list.push({ value: null, text: 'Свой ваниарт' })
           return list
+        },
+      },
+
+      roles: {
+        get() {
+          return [...this.tableRoles, { value: null, text: 'Свой ваниарт' }]
         },
       },
     },
 
     created() {
       if (this.params.info.role === '@random') {
-        this.changeRole(BiD.randomRole(this.roles).value)
+        this.changeRole(BiD.randomRole(this.tableRoles).value)
         this.saveSheet()
       }
     },
@@ -280,7 +285,7 @@
       changeRelationship(role) {
         const list = this.params.relationship.filter(relation => relation.respect !== 0)
 
-        const roleRelationship = this.tables.characterRelationships[role] || []
+        const roleRelationship = this.tables.characterRelationship[role] || []
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
