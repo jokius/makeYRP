@@ -50,25 +50,25 @@
     </div>
     <div class="main-row2">
       <reputation-and-control :sheet="sheet" />
-      <projects :sheet="sheet" />
+      <projects-grid :sheet="sheet" :projects="params.projects" projects-key="projects" />
       <div class="grid-money-suspicions">
         <team-money :sheet="sheet" />
         <suspicions :sheet="sheet" />
       </div>
 
-    <v-textarea
-      v-model="notes"
-      auto-grow
-      no-resize
-      rows="2"
-      color="indigo"
+      <v-textarea
+        v-model="notes"
+        auto-grow
+        no-resize
+        rows="2"
+        color="indigo"
         class="input bgw notes"
-      hide-details
-      label="Заметки"
-      @change="saveSheet"
-    />
+        hide-details
+        label="Заметки"
+        @change="saveSheet"
+      />
       <div class="footer" />
-  </div>
+    </div>
   </div>
 </template>
 
@@ -77,9 +77,9 @@
   import { get } from 'lodash'
 
   import ReputationAndControl from './ReputationAndControl'
-  import Projects from './Projects'
   import TeamMoney from './TeamMoney'
   import Suspicions from './Suspicions'
+  import ProjectsGrid from './ProjectsGrid'
 
   import Avatar from '../../BladeInTheDarck/sheets/Avatar'
   import { BiD } from '../../../../../lib/BiD'
@@ -87,7 +87,7 @@
 
   export default {
     name: 'TeamMainBody',
-    components: { Suspicions, TeamMoney, Projects, ReputationAndControl, Avatar },
+    components: { ProjectsGrid, Suspicions, TeamMoney, ReputationAndControl, Avatar },
     props: {
       id: { type: Number, required: true },
     },

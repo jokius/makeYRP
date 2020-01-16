@@ -24,18 +24,14 @@
   import { UPDATE_SHEET_PARAMS } from '../../../../Games/stores/mutation-types'
 
   export default {
-    name: 'Projects',
+    name: 'ProjectsGrid',
     props: {
       sheet: { type: Object, required: true },
+      projects: { type: Array, required: true },
+      projectsKey: { type: String, required: true },
     },
 
     computed: {
-      projects: {
-        get() {
-          return this.sheet.params.projects
-        },
-      },
-
       lastRow: {
         get() {
           return this.getMaxAttribute('row')
@@ -79,7 +75,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `projects[${index}].enable`,
+                             path: `${this.projectsKey}[${index}].enable`,
                              value,
                            })
 
