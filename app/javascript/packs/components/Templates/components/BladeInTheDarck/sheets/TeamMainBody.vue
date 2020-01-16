@@ -55,18 +55,20 @@
         <team-money :sheet="sheet" />
         <suspicions :sheet="sheet" />
       </div>
-    </div>
+
     <v-textarea
       v-model="notes"
       auto-grow
       no-resize
       rows="2"
       color="indigo"
-      class="input bgw"
+        class="input bgw notes"
       hide-details
       label="Заметки"
       @change="saveSheet"
     />
+      <div class="footer" />
+  </div>
   </div>
 </template>
 
@@ -271,6 +273,7 @@
     grid-template-rows: auto auto;
     grid-gap: 5px 1vw;
     margin-left: 15px;
+    margin-right: 15px;
   }
 
   .main-row2-col1 {
@@ -309,5 +312,14 @@
   .grid-money-suspicions {
     display: grid;
     grid-template-columns: 1fr 1fr;
+  }
+
+  .notes {
+    margin-right: 15px;
+  }
+
+  .footer {
+    width: 100%;
+    height: 5px;
   }
 </style>
