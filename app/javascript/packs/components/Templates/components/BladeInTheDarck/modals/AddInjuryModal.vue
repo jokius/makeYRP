@@ -70,13 +70,13 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       injuries: {
         get() {
           const list = differenceBy(this.tables.injuries, this.currentInjuries, 'name')
-          return list.map((item) => ({ text: item.name, value: item }))
+          return list.map(item => ({ text: item.name, value: item }))
         },
       },
     },
