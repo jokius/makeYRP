@@ -1,1 +1,1 @@
-export const mousePosition = (event) => ({ x: event.pageX, y: event.pageY })
+export const mousePosition = event => ({ x: event.pageX, y: event.pageY })

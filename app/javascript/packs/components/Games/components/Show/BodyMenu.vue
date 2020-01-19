@@ -80,12 +80,12 @@
 
     computed: {
       ...mapState({
-        menus: (state) => state.game.info.menus,
+        menus: state => state.game.info.menus,
       }),
 
       items: {
         get() {
-          const list = this.menus.map((menu) => ({ label: menu.label, ...menu.params }))
+          const list = this.menus.map(menu => ({ label: menu.label, ...menu.params }))
           return list.concat([
             { label: 'Чат', icon: 'mdi-chat', type: 'chat' },
             { label: 'Персонажи', icon: 'mdi-account', type: 'sheets' },

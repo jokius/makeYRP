@@ -41,7 +41,7 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       conditions: {
@@ -58,7 +58,7 @@
     methods: {
       buildInfo() {
         let list = []
-        this.conditions.forEach((condition) => {
+        this.conditions.forEach(condition => {
           if (condition.status) {
             list = list.concat(this.tables[condition.target] || [])
           }

@@ -52,7 +52,7 @@
     },
     computed: {
       ...mapState({
-        openModals: (state) => state.game.openModals,
+        openModals: state => state.game.openModals,
       }),
 
       zModal() {

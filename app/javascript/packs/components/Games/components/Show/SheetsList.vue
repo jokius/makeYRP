@@ -52,7 +52,7 @@
 
     computed: {
       ...mapState({
-        sheets: (state) => state.game.sheets,
+        sheets: state => state.game.sheets,
       }),
     },
 

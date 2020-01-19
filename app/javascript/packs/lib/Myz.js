@@ -77,9 +77,9 @@ export class Myz {
     let result = undefined
     do {
       const key = `${d6roll()}${d6roll()}`
-      const mutation = mutations.find((item) => item.key === key)
+      const mutation = mutations.find(item => item.key === key)
       const currentMutation = currentMutations
-        .find((item) => item !== '@random' && item.key === key)
+        .find(item => item !== '@random' && item.key === key)
 
       if (mutation && !currentMutation) result = mutation
     } while (!result)
@@ -88,7 +88,7 @@ export class Myz {
   }
 
   static getMutationByKey(mutations, key) {
-    return mutations.find((item) => item.key === key)
+    return mutations.find(item => item.key === key)
   }
 
   static randomMisfire(misfires) {

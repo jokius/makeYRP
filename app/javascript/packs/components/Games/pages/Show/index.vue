@@ -56,7 +56,7 @@
 
     computed: {
       ...mapState({
-        game: (state) => state.game,
+        game: state => state.game,
       }),
 
       loaded() {

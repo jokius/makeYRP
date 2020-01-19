@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import links from '../../../helpers/links'
 
-export const addSystem = (params) => {
+export const addSystem = params => {
   const formData = new FormData()
   formData.append('name', params.name)
   formData.append('file', params.file)
@@ -16,4 +16,4 @@ export const addSystem = (params) => {
 export const loadSystems = () =>
   axios
     .get(links.json(links.base.systems))
-    .then((response) => response.data)
+    .then(response => response.data)

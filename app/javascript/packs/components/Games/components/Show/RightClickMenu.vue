@@ -52,7 +52,7 @@
 
     computed: {
       ...mapState({
-        currentRightClickMenu: (state) => state.game.currentRightClickMenu,
+        currentRightClickMenu: state => state.game.currentRightClickMenu,
       }),
 
       show: {

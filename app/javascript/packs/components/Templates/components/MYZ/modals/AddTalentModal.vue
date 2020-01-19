@@ -69,7 +69,7 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       talents: {
@@ -84,7 +84,7 @@
 
     methods: {
       rolesToSelect(roles) {
-        return roles.map((item) => ({ text: item.name, value: item }))
+        return roles.map(item => ({ text: item.name, value: item }))
       },
 
       add() {
