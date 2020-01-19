@@ -8,6 +8,9 @@
       >
         <div class="title-grid black">
           <span class="title">{{ attribute.name }}</span>
+          <div class="d6" @click="rollModal(attributeLevel(attribute), attribute.name)">
+            <span class="text">d6</span>
+          </div>
           <div class="exp-list">
             <div
               v-for="number in 6"
@@ -32,13 +35,18 @@
                 :class="`circle ${skillColorClass(index, skillIndex, skillNumber)}`"
                 @click="changeExp(`attributes[${index}].skills[${skillIndex}].current`,skill.current < skillNumber)"
               />
-              <span v-if="skillNumber === 1" class="right-border" />
+              <div v-if="skillNumber === attributeLevel(attribute)" class="right-border" />
             </div>
             <span class="skill-title">{{ skill.name }}</span>
+            <div class="d6" @click="rollModal(skill.current, skill.name)">
+              <span class="text">d6</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <roll-modifier-modal v-model="obj" :sheet="sheet" />
   </div>
 </template>
 
@@ -46,18 +54,41 @@
   import { get } from 'lodash'
 
   import { UPDATE_SHEET_PARAMS } from '../../../../Games/stores/mutation-types'
-  import { BiD } from '../../../../../lib/BiD'
+  import RollModifierModal from '../modals/RollModifierModal'
 
   export default {
     name: 'Attributes',
+    components: { RollModifierModal },
     props: {
       sheet: { type: Object, required: true },
+    },
+
+    data() {
+      return {
+        dicesProps: {
+          name: '',
+          dices: 0,
+        },
+
+        modalOpen: false,
+      }
     },
 
     computed: {
       attributes: {
         get() {
           return this.sheet.params.attributes
+        },
+      },
+
+      obj: {
+        get() {
+          return { open: this.modalOpen, modifier: 0 }
+        },
+
+        set({ open, modifier, isClose }) {
+          if (!isClose) this.roll(parseInt(this.dicesProps.dices) + parseInt(modifier))
+          this.modalOpen = open
         },
       },
     },
@@ -84,8 +115,34 @@
         this.saveSheet()
       },
 
+      attributeLevel(attribute) {
+        let level = 0
+
+        for (let i = 0; attribute.skills[0].max >= i; i++) {
+          const filterSkills = attribute.skills.filter(item => item.current >= i)
+          if (filterSkills.length === attribute.skills.length) level++
+        }
+
+        return level
+      },
+
       saveSheet() {
         this.$store.dispatch('saveSheet', this.sheet)
+      },
+
+      rollModal(dices, name) {
+        this.dicesProps.dices = dices
+        this.dicesProps.name = name
+        this.modalOpen = true
+      },
+
+      roll(quantity) {
+        const dices = { d6: quantity }
+        this.$store.dispatch('sendMessage', {
+          as: this.sheet.id,
+          name: this.dicesProps.name,
+          dices,
+        })
       },
     },
   }
@@ -97,12 +154,20 @@
   .black {
     background-color: $black;
     color: $white;
+    .d6 {
+      border: 1px solid $white;
+      background-color: $white;
+      color: $black;
+      margin-top: 3px;
+      margin-left: 10px;
+    }
   }
 
   .title-grid {
     display: grid;
-    grid-template-columns: 1fr max-content;
+    grid-template-columns: max-content 1fr max-content;
     height: 30px;
+    margin-top: 5px;
   }
 
   .title {
@@ -116,14 +181,14 @@
 
   .skill {
     display: grid;
-    grid-template-columns: repeat(4, 25px) max-content;
+    grid-template-columns: repeat(4, 25px) 1fr max-content;
     grid-auto-rows: 25px;
     margin-left: 10px;
     margin-top: 5px;
   }
 
   .skill-title {
-    margin-top: -10px;
+    margin-top: -4px;
   }
 
   .skill-exp {
@@ -136,11 +201,12 @@
   }
 
   .right-border {
-    border-right: 1px solid $black;
     position: relative;
-    left: 75%;
-    bottom: 18px;
-    padding-top: 15px;
+    left: 18px;
+    bottom: 16px;
+    width: 1px;
+    height: 30px;
+    background-color: $black;
   }
 
   .button {
@@ -172,5 +238,25 @@
 
   .not-select {
     background: $white;
+  }
+
+  .button-roll {
+    margin-top: -4px;
+  }
+
+  .d6 {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    border: 1px solid $black;
+    background-color: $black;
+    color: $white;
+    margin-right: 10px;
+    .text {
+      position: relative;
+      top: 1px;
+      left: 2px;
+    }
   }
 </style>
