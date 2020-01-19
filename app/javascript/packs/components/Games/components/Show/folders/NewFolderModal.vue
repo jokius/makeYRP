@@ -64,8 +64,8 @@
 
     computed: {
       ...mapState({
-        folder: (state) => state.game.folder,
-        foldersLoaded: (state) => state.game.foldersLoaded,
+        folder: state => state.game.folder,
+        foldersLoaded: state => state.game.foldersLoaded,
       }),
 
       isValid() {

@@ -36,8 +36,8 @@
     components: { Actions, Tabs, Loader },
     computed: {
       ...mapState({
-        games: (state) => state.games,
-        currentUser: (state) => state.currentUser,
+        games: state => state.games,
+        currentUser: state => state.currentUser,
       }),
 
       loaded() {

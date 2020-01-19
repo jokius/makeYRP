@@ -57,7 +57,7 @@
 
     computed: {
       ...mapState({
-        game: (state) => state.game.info,
+        game: state => state.game.info,
       }),
 
       sheet: {

@@ -61,15 +61,15 @@
 
     computed: {
       ...mapState({
-        system: (state) => state.game.info.system,
+        system: state => state.game.info.system,
       }),
 
       success: {
         get() {
           let success = this.prevSuccess
-          this.roll.attribute.forEach((item) => success += (item === 6 ? 1 : 0))
-          this.roll.skill.forEach((item) => success += (item === 6 ? 1 : 0))
-          this.roll.gear.forEach((item) => success += (item === 6 ? 1 : 0))
+          this.roll.attribute.forEach(item => success += (item === 6 ? 1 : 0))
+          this.roll.skill.forEach(item => success += (item === 6 ? 1 : 0))
+          this.roll.gear.forEach(item => success += (item === 6 ? 1 : 0))
           return success
         },
       },
@@ -77,7 +77,7 @@
       attributeFails: {
         get() {
           let fails = this.prevAttributeFails
-          this.roll.attribute.forEach((item) => fails += (item === 1 ? 1 : 0))
+          this.roll.attribute.forEach(item => fails += (item === 1 ? 1 : 0))
           return fails
         },
       },
@@ -85,7 +85,7 @@
       gearFails: {
         get() {
           let fails = this.prevGearFails
-          this.roll.gear.forEach((item) => fails += (item === 1 ? 1 : 0))
+          this.roll.gear.forEach(item => fails += (item === 1 ? 1 : 0))
           return fails
         },
       },
@@ -93,7 +93,7 @@
       otherAttributes: {
         get() {
           let other = 0
-          this.roll.attribute.forEach((item) => other += (item !== 1 && item !== 6 ? 1 : 0))
+          this.roll.attribute.forEach(item => other += (item !== 1 && item !== 6 ? 1 : 0))
           return other
         },
       },
@@ -101,7 +101,7 @@
       otherSkills: {
         get() {
           let other = 0
-          this.roll.skill.forEach((item) => other += (item !== 6 ? 1 : 0))
+          this.roll.skill.forEach(item => other += (item !== 6 ? 1 : 0))
           return other
         },
       },
@@ -109,7 +109,7 @@
       otherGear: {
         get() {
           let other = 0
-          this.roll.gear.forEach((item) => other += (item !== 1 && item !== 6 ? 1 : 0))
+          this.roll.gear.forEach(item => other += (item !== 1 && item !== 6 ? 1 : 0))
 
           return other
         },

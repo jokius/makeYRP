@@ -16,9 +16,9 @@ export class GameModel {
     this.id = raw.id
     this.name = raw.name
     this.master = new UserModel().setInfo(raw.master)
-    this.users = (raw.users || []).map((user) => new UserModel().setInfo(user))
-    this.menus = (raw.menus || []).map((menu) => new MenuModel().setInfo(menu))
-    this.pages = (raw.pages || []).map((page) => new PageModel().setInfo(page))
+    this.users = (raw.users || []).map(user => new UserModel().setInfo(user))
+    this.menus = (raw.menus || []).map(menu => new MenuModel().setInfo(menu))
+    this.pages = (raw.pages || []).map(page => new PageModel().setInfo(page))
     this.system = raw.system
     this.template = raw.template || {}
 
@@ -36,14 +36,14 @@ export class GameModel {
   }
 
   updatePage(updatedPage) {
-    const page = this.pages.find((item) => item.id === updatedPage.id)
+    const page = this.pages.find(item => item.id === updatedPage.id)
     page.setInfo(updatedPage)
 
     return this
   }
 
   deletePage(id) {
-    this.pages = this.pages.filter((page) => page.id !== id)
+    this.pages = this.pages.filter(page => page.id !== id)
 
     return this
   }
@@ -51,7 +51,7 @@ export class GameModel {
 
   changePageBackgroundColor(obj) {
     const { params, color } = obj
-    const page = this.pages.find((page) => page.id === params.id)
+    const page = this.pages.find(page => page.id === params.id)
     page.changeBackgroundColor(color)
 
     return this

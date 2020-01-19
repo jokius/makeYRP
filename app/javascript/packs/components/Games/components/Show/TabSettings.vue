@@ -106,8 +106,8 @@
 
     computed: {
       ...mapState({
-        game: (state) => state.game.info,
-        currentPage: (state) => state.game.currentPage,
+        game: state => state.game.info,
+        currentPage: state => state.game.currentPage,
       }),
 
       params: {

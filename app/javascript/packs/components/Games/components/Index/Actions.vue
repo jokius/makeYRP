@@ -36,7 +36,7 @@
 
     computed: {
       ...mapState({
-        currentUser: (state) => state.currentUser.info,
+        currentUser: state => state.currentUser.info,
       }),
 
       admin() {

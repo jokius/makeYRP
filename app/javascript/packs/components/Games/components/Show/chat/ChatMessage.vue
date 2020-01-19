@@ -56,8 +56,8 @@
 
     computed: {
       ...mapState({
-        system: (state) => state.game.info.system,
-        sheets: (state) => state.game.sheets,
+        system: state => state.game.info.system,
+        sheets: state => state.game.sheets,
       }),
 
       user: {
@@ -70,7 +70,7 @@
         get() {
           let character = {}
           if (this.body.as) {
-            character = this.sheets.find((sheet) => sheet.id === this.body.as) || {}
+            character = this.sheets.find(sheet => sheet.id === this.body.as) || {}
           }
 
           return character

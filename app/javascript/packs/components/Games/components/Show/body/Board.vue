@@ -34,7 +34,7 @@ import { Loader } from "pixi.js"
 
     computed: {
       ...mapState({
-        currentPage: (state) => state.game.currentPage || new PageModel(),
+        currentPage: state => state.game.currentPage || new PageModel(),
       }),
 
       params: {

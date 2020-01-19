@@ -23,11 +23,11 @@
 
     computed: {
       ...mapState({
-        sheetTypes: (state) => state.game.info.sheetTypes,
+        sheetTypes: state => state.game.info.sheetTypes,
       }),
 
       items() {
-        return this.sheetTypes.map((type) => ({
+        return this.sheetTypes.map(type => ({
           text: type.text,
           callback: () => this.$store.dispatch('createSheet', type.value ),
         }))

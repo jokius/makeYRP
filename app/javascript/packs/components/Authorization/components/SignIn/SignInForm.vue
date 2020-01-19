@@ -73,14 +73,14 @@
   } from '../../stores/mutation-types'
   import links from '../../../../helpers/links'
 
-  const requiredField = (v) => !!v || 'обязательное поле'
+  const requiredField = v => !!v || 'обязательное поле'
 
   export default {
     data: () => ({
       signUp: links.base.signUp,
       emailRules: [
         requiredField,
-        (v) => /.+@.+\..+/.test(v) || 'E-mail не корректен',
+        v => /.+@.+\..+/.test(v) || 'E-mail не корректен',
       ],
       requiredRules: [
         requiredField,
@@ -89,7 +89,7 @@
 
     computed: {
       ...mapState({
-        store: (state) => state.signIn,
+        store: state => state.signIn,
       }),
 
       isValid: {
