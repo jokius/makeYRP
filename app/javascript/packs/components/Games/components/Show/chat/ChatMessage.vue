@@ -36,6 +36,7 @@
         :prev-attribute-fails="body.prevAttributeFails || 0"
         :prev-gear-fails="body.prevGearFails || 0"
       />
+      <default-roll v-else-if="body.dices" :roll="body.dices" />
     </div>
   </div>
 </template>
@@ -43,12 +44,14 @@
 <script>
   import { mapState } from 'vuex'
 
+  import DefaultRoll from './DefaultRoll'
+
   import MyzRoll from '../../../../Templates/components/MYZ/chat/MyzRoll'
   import * as dateTime from '../../../../../lib/dateTime'
 
   export default {
     name: 'ChatMessage',
-    components: { MyzRoll },
+    components: { DefaultRoll, MyzRoll },
 
     props: {
       message: { type: Object, required: true },
