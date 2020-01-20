@@ -96,7 +96,7 @@
             case 'mutant_year_zero-mutant':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-character':
-              return {  width: 950, height: 600 }
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-team':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 700 }
             default:
