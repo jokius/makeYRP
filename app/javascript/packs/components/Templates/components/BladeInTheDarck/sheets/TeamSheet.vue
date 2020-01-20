@@ -1,5 +1,5 @@
 <template>
-  <div class="sheet-body" :style="{ width, height }">
+  <div class="sheet-body">
     <v-tabs
       v-model="tab"
       color="basil"
@@ -40,29 +40,12 @@
     components: { PrisonBody, TeamMainBody },
     props: {
       id: { type: Number, required: true },
-      size: { type: Object, required: true },
     },
 
     data() {
       return {
         tab: null,
       }
-    },
-
-    computed: {
-      width: {
-        get() {
-          const width = this.size.width
-          return typeof width === 'number' ? `${width}px` : width
-        },
-      },
-
-      height: {
-        get() {
-          const height = this.size.height
-          return typeof height === 'number' ? `${height}px` : height
-        },
-      },
     },
   }
 </script>
