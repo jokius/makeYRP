@@ -1,5 +1,6 @@
 <template>
   <draggable-dialog
+    v-model="size"
     :on-close="onClose"
     title="Имя персонажа"
     :width="size.width"
@@ -41,6 +42,13 @@
       sheetType: { type: String, required: true },
     },
 
+    data() {
+      return {
+        privateWidth: null,
+        privateHeight: null,
+      }
+    },
+
     channels: {
       SheetChannel: {
         received(obj) {
@@ -76,10 +84,15 @@
         get() {
           switch (this.sheet) {
             case 'mutant_year_zero-mutant':
-              return { width: 950, height: 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
-              return { width: 950, height: 700 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
           }
+        },
+
+        set({ width, height }) {
+          this.privateWidth = width
+          this.privateHeight = height
         },
       },
     },
