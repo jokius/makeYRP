@@ -85,13 +85,22 @@
 
       items: {
         get() {
-          const list = this.menus.map(menu => ({ label: menu.label, ...menu.params }))
-          return list.concat([
+          const beforeSystem = [
             { label: 'Чат', icon: 'mdi-chat', type: 'chat' },
             { label: 'Персонажи', icon: 'mdi-account', type: 'sheets' },
             { label: 'Карты', icon: 'mdi-map', type: 'maps' },
+          ]
+          const afterSystem = [
             { label: 'Настройки страници', icon: 'mdi-settings', type: 'settings' },
-          ])
+          ]
+
+          const system = this.menus.map(menu => ({
+            label: menu.params.name,
+            icon: menu.params.icon,
+            type: menu.params.type,
+          }))
+
+          return beforeSystem.concat(system).concat(afterSystem)
         },
       },
 

@@ -54,8 +54,18 @@
         "required": ["id", "name", "params"],
         "properties": {
           "id": { "type": "number" },
-          "name": { "type": "string" },
-          "params": { "type": "object" }
+          "params": { "type": "object" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "params"],
+              "properties": {
+                "id": { "type": "number" },
+                "params": { "type": "object" }
+              }
+            }
+          }
         }
       }
     },
