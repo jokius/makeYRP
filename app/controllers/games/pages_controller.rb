@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Games::PagesController < ApplicationController
+class Games::PagesController < Games::ApplicationController
   def create
     responds(Pages::Create, params, status: :created)
   end

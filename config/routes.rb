@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :sheets
       resources :pages
       resources :messages
+      resources :menus_items
     end
   end
 

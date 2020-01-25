@@ -2,17 +2,16 @@
 
 # == Schema Information
 #
-# Table name: menus
+# Table name: menus_items
 #
 #  id         :bigint           not null, primary key
-#  game_id    :bigint           not null
+#  menu_id    :bigint           not null
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  identifier :string           not null
 #
 
-class MenuSerializer < ActiveModel::Serializer
-  attributes :id, :params
-  has_many :items, serializer: MenuItemSerializer
+FactoryBot.define do
+  factory :menus_item, class: 'Menus::Item' do
+  end
 end

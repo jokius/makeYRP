@@ -27,5 +27,23 @@ FactoryBot.define do
         }
       }
     end
+
+    trait :with_menu do
+      template do
+        {
+          template: {
+            sheets: {
+              test_actor: { test: 'test_attr' }
+            },
+            menus: [
+              {
+                type: 'test_menu',
+                name: 'test_menu'
+              }
+            ]
+          }
+        }
+      end
+    end
   end
 end

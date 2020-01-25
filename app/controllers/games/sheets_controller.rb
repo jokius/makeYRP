@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Games::SheetsController < ApplicationController
+class Games::SheetsController < Games::ApplicationController
   def index
     # TODO: add pundit scope
     respond_json json: Sheet.where(game: game)
@@ -28,10 +28,6 @@ class Games::SheetsController < ApplicationController
   end
 
   private
-
-  def game
-    @game ||= Game.find(params[:game_id])
-  end
 
   def sheet
     @sheet ||= Sheet.find(params[:id])
