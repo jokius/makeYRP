@@ -25,6 +25,7 @@
         <tab-sheets v-else-if="currentItem.type === 'sheets'" />
         <tab-settings v-else-if="currentItem.type === 'settings'" />
         <bid-tab-clock v-else-if="currentItem.type === 'bid-clock'" />
+        <span v-else>В разработке</span>
       </keep-alive>
     </v-navigation-drawer>
     <v-navigation-drawer
