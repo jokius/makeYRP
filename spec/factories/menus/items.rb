@@ -13,5 +13,6 @@
 
 FactoryBot.define do
   factory :menus_item, class: 'Menus::Item' do
+    menu
   end
 end

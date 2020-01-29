@@ -24,6 +24,7 @@
         <tab-chat v-if="currentItem.type === 'chat'" />
         <tab-sheets v-else-if="currentItem.type === 'sheets'" />
         <tab-settings v-else-if="currentItem.type === 'settings'" />
+        <bid-tab-clock v-else-if="currentItem.type === 'bid-clock'" />
       </keep-alive>
     </v-navigation-drawer>
     <v-navigation-drawer
@@ -64,9 +65,11 @@
   import TabSheets from './TabSheets'
   import TabSettings from './TabSettings'
 
+  import BidTabClock from '../../../Templates/components/BladeInTheDarck/menus/BidTabClock'
+
   export default {
     name: 'BodyMenu',
-    components: { TabSettings, TabSheets, TabChat },
+    components: { BidTabClock, TabSettings, TabSheets, TabChat },
 
     data() {
       return {
@@ -156,7 +159,7 @@
             document.removeEventListener('mousemove', resize, false)
           },
           false
-        );
+        )
       },
     },
   }
