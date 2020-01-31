@@ -60,7 +60,7 @@
   import { BiD } from '../../../../../lib/BiD'
 
   export default {
-    name: 'Talents',
+    name: 'CharacterTalents',
     props: {
       sheet: { type: Object, required: true },
     },

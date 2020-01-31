@@ -1,13 +1,15 @@
 <template>
   <div class="sheet-body">
     <div class="left-column">
-      <character-talents :sheet="sheet" />
-      <character-relationship :sheet="sheet" />
+      <team-talents :sheet="sheet" />
+      <team-exp :sheet="sheet" />
+      <team-relationship :sheet="sheet" />
+      <team-improvements :sheet="sheet" />
+      <special-places :sheet="sheet" />
     </div>
     <div class="right-column">
-      <character-money :sheet="sheet" />
-      <attributes :sheet="sheet" />
-      <things-and-gear :sheet="sheet" />
+      <team-minions :sheet="sheet" />
+      <team-den-improvements :sheet="sheet" />
     </div>
   </div>
 </template>
@@ -15,15 +17,17 @@
 <script>
   import { mapState } from 'vuex'
 
-  import CharacterRelationship from './CharacterRelationship'
-  import CharacterMoney from './CharacterMoney'
-  import Attributes from './Attributes'
-  import ThingsAndGear from './ThingsAndGear'
-  import CharacterTalents from './CharacterTalents'
+  import TeamTalents from './TeamTalents'
+  import TeamExp from './TeamExp'
+  import TeamRelationship from './TeamRelationship'
+  import TeamImprovements from './TeamImprovements'
+  import SpecialPlaces from './SpecialPlaces'
+  import TeamMinions from './TeamMinions'
+  import TeamDenImprovements from './TeamDenImprovements'
 
   export default {
-    name: 'CharacterSkillBody',
-    components: { CharacterTalents, ThingsAndGear, Attributes, CharacterMoney, CharacterRelationship },
+    name: 'TeamSkillBody',
+    components: { TeamDenImprovements, TeamMinions, SpecialPlaces, TeamImprovements, TeamRelationship, TeamExp, TeamTalents },
     props: {
       id: { type: Number, required: true },
     },

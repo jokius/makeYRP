@@ -22,7 +22,7 @@
         <team-main-body :id="id" />
       </v-tab-item>
       <v-tab-item>
-        <!--<skill-body :id="id" />-->
+        <team-skill-body :id="id" />
       </v-tab-item>
       <v-tab-item>
         <prison-body :id="id" />
@@ -34,10 +34,11 @@
 <script>
   import TeamMainBody from './TeamMainBody'
   import PrisonBody from './PrisonBody'
+  import TeamSkillBody from './TeamSkillBody'
 
   export default {
     name: 'TeamSheet',
-    components: { PrisonBody, TeamMainBody },
+    components: { TeamSkillBody, PrisonBody, TeamMainBody },
     props: {
       id: { type: Number, required: true },
     },
