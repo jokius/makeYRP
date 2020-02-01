@@ -9,6 +9,15 @@
       <open-modals />
     </v-content>
     <loader v-else />
+
+    <v-overlay :value="overlay">
+      <v-card>
+        <v-card-text class="disconnect-message">
+          <h1>Соединение с сервером потерено</h1>
+          <p>Обновите страницу либо подождите востонавления соеденения</p>
+        </v-card-text>
+      </v-card>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -32,8 +41,21 @@
       Loader,
     },
 
+    data() {
+      return {
+        overlay: false
+      }
+    },
+
     channels: {
       ChatChannel: {
+        connected() {
+          this.overlay = false
+        },
+        disconnected() {
+          this.overlay = true
+        },
+
         received(message) {
           this.$store.commit(ADD_MESSAGE, message)
         },
@@ -86,6 +108,14 @@
 
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
+
+  .disconnect-message {
+    text-align: center;
+
+    h1 {
+      font-size: 2em;
+    }
+  }
 
   .menu-grid {
     display: grid;
