@@ -8,7 +8,7 @@ class Games::MenusItemsController < Games::ApplicationController
   end
 
   def update
-    item.update(params: item_params)
+    item.update(params: params[:params])
     MenusItemChannel.broadcast_to(item, Menus::ItemSerializer.new(item))
   end
 
@@ -21,9 +21,5 @@ class Games::MenusItemsController < Games::ApplicationController
 
   def item
     @item ||= Menus::Item.find(params[:id])
-  end
-
-  def item_params
-    params.require(:params).permit!
   end
 end
