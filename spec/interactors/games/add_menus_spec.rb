@@ -11,6 +11,6 @@ RSpec.describe Games::AddMenus, type: :interactor do
 
   it 'add system menus' do
     expect(interactor).to be_success
-    expect(game.menus.size).to eq 1
+    expect(game.menus.size).to eq 2
   end
 end

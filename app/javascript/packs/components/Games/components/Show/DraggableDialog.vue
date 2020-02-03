@@ -21,7 +21,7 @@
         </v-btn>
       </v-toolbar>
       <slot name="body" />
-      <v-divider />
+      <v-divider v-if="hasActionsSlot" />
       <v-card-actions v-if="hasActionsSlot">
         <slot name="actions" />
       </v-card-actions>
@@ -50,6 +50,7 @@
       width: { type: Number, default: 200 },
       height: { type: Number, default: 200 },
       resizable: { type: Boolean, default: false },
+      disableActions: { type: Boolean, default: false },
     },
 
     data() {
@@ -72,7 +73,7 @@
 
       hasActionsSlot: {
         get() {
-          return !!this.$slots.actions
+          return !!this.$slots.actions && this.disableActions
         },
       },
 
