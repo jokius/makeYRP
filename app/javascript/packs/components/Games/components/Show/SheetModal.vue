@@ -10,7 +10,7 @@
     <template v-slot:body>
       <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
       <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
-      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" />
+      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size" />
       <v-alert
         v-else
         :key="key"
@@ -98,7 +98,7 @@
             case 'blade_in_the_dark-character':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-team':
-              return {  width: this.privateWidth || 950, height: this.privateHeight || 700 }
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
           }

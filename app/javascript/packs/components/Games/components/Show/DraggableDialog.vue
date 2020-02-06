@@ -82,7 +82,7 @@
           let width = this.dataWidth || this.width
           let height = this.dataHeight || this.height
 
-          return { width: `${width}px`, height: `${height - 2}px`, overflow: 'auto' }
+          return { width: `${width}px`, height: `${height - 2}px` }
         },
       },
     },
