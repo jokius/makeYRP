@@ -21,7 +21,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    respond_json json: game
+    respond_json json: game, include: %w[master users pages menus.items]
   end
 
   private

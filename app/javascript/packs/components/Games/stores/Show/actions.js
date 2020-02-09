@@ -3,11 +3,13 @@ import { defaultsDeep } from 'lodash'
 import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
+  createMenuItem,
   createMessage,
   createPage,
   createSheet,
   deleteFolder,
   deleteImage,
+  deleteMenuItem,
   deletePage,
   deleteSheet,
   loadFolder,
@@ -16,6 +18,7 @@ import {
   loadSheets,
   updateFolder,
   updateImage,
+  updateMenuItem,
   updatePage,
   updateSheet,
 } from '../../api'
@@ -194,6 +197,31 @@ export default {
     try {
       const game = state.info
       await createMessage(game.id,{ body })
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async createMenuItem({ commit, state }, params) {
+    try {
+      const game = state.info
+      await createMenuItem(game.id, params)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async updateMenuItem({ commit }, { id, params }) {
+    try {
+      await updateMenuItem(id, params)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async deleteMenuItem({ commit }, id) {
+    try {
+      await deleteMenuItem(id)
     } catch (error) {
       handling(commit, error)
     }

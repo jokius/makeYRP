@@ -182,7 +182,8 @@
       ],
       "accessorPairPositioning": "together"
     }],
-    "import/named": "off"
+    "import/named": "off",
+    "no-constant-condition": ["error", { "checkLoops": false }]
   },
 
   "overrides": [

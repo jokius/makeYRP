@@ -24,6 +24,16 @@
         :title="modal.title"
         :description="modal.description"
       />
+      <note-modal
+        v-else-if="modal.name === 'note'"
+        :id="modal.id"
+        :key="`note_${modal.key}`"
+        :uniq-key="modal.key"
+        :title="modal.title"
+        :text="modal.text"
+        :is-edit="modal.isEdit"
+        :is-new="modal.isNew"
+      />
       <v-alert
         v-else
         :key="modal.key"
@@ -44,12 +54,12 @@
   import ColorPickerModal from './ColorPickerModal'
   import SheetModal from './SheetModal'
   import InfoModal from './InfoModal'
-
-  import PageModal from '../../components/Show/PageModal'
+  import NoteModal from './NoteModal'
+  import PageModal from './PageModal'
 
   export default {
     name: 'OpenModals',
-    components: { InfoModal, SheetModal, ColorPickerModal, PageModal },
+    components: { NoteModal, InfoModal, SheetModal, ColorPickerModal, PageModal },
     data () {
       return {
         alert: true,

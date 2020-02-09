@@ -23,7 +23,10 @@
       <keep-alive>
         <tab-chat v-if="currentItem.type === 'chat'" />
         <tab-sheets v-else-if="currentItem.type === 'sheets'" />
+        <tab-notes v-else-if="currentItem.type === 'notes'" />
         <tab-settings v-else-if="currentItem.type === 'settings'" />
+        <bid-tab-clock v-else-if="currentItem.type === 'bid-clock'" />
+        <span v-else>В разработке</span>
       </keep-alive>
     </v-navigation-drawer>
     <v-navigation-drawer
@@ -63,10 +66,13 @@
   import TabChat from './TabChat'
   import TabSheets from './TabSheets'
   import TabSettings from './TabSettings'
+  import TabNotes from './notes/TabNotes'
+
+  import BidTabClock from '../../../Templates/components/BladeInTheDarck/menus/BidTabClock'
 
   export default {
     name: 'BodyMenu',
-    components: { TabSettings, TabSheets, TabChat },
+    components: { TabNotes, BidTabClock, TabSettings, TabSheets, TabChat },
 
     data() {
       return {
@@ -156,7 +162,7 @@
             document.removeEventListener('mousemove', resize, false)
           },
           false
-        );
+        )
       },
     },
   }

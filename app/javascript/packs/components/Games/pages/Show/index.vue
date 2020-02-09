@@ -29,7 +29,7 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
-  import { ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
+  import { ADD_MENU_ITEM, ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
 
   export default {
     name: 'ShowGame',
@@ -74,6 +74,12 @@
           }
         },
       },
+
+      MenusItemsChannel: {
+        received(message) {
+          this.$store.commit(ADD_MENU_ITEM, message)
+        },
+      },
     },
 
     computed: {
@@ -100,6 +106,11 @@
 
       this.$cable.subscribe({
         channel: 'SheetsChannel',
+        game_id: gameId,
+      })
+
+      this.$cable.subscribe({
+        channel: 'MenusItemsChannel',
         game_id: gameId,
       })
     },

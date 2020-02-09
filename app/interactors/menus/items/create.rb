@@ -4,8 +4,7 @@ class Menus::Items::Create
   include Dry::Transaction
 
   ITEMS_CREATE_SCHEMA = Dry::Schema.Params do
-    required(:type).filled(:string)
-    required(:game_id).filled(:integer)
+    required(:menu_id).filled(:integer)
     required(:params).filled(:hash)
   end
 
@@ -23,7 +22,7 @@ class Menus::Items::Create
   end
 
   def fetch_menu(input)
-    menu = Menu.find_by(game_id: input[:game_id], identifier: input[:type])
+    menu = Menu.find(input[:menu_id])
     { menu: menu, params: input[:params] }
   end
 

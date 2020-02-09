@@ -27,6 +27,9 @@ import {
   UPDATE_SHEET_PARAMS,
   UPDATE_SHEETS,
   UPDATE_SHEET_NAME,
+  ADD_MENU_ITEM,
+  UPDATE_MENU_ITEM,
+  DELETE_MENU_ITEM,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -157,5 +160,21 @@ export default {
       mutVal.splice(value, 1)
     }
     set(state.sheets[index].params, path, mutVal)
+  },
+
+  [ADD_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    menu.addItem(raw)
+  },
+
+  [UPDATE_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    const item = menu.items.find(item => item.id === raw.id)
+    item.setInfo(raw)
+  },
+
+  [DELETE_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    menu.items = menu.items.filter(item => item.id !== raw.id)
   },
 }

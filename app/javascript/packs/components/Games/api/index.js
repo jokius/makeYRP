@@ -87,3 +87,15 @@ export const updateSheet = params =>
   axios
     .put(links.dynamic(links.base.sheet, params), params)
     .then(response => response.data)
+
+export const createMenuItem = (game_id, params) =>
+  axios
+    .post(links.dynamic(links.base.menuItems, { game_id }), params)
+
+export const updateMenuItem = (id, params) =>
+  axios
+    .put(links.dynamic(links.base.menuItem, { game_id: 0, id }), { params })
+
+export const deleteMenuItem = id =>
+  axios
+    .delete(links.dynamic(links.base.menuItem, { game_id: 0, id }))

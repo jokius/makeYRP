@@ -5,14 +5,12 @@ require 'rails_helper'
 RSpec.describe Menus::Items::Create, type: :interactor do
   subject(:interactor) { described_class.new.call(input) }
 
-  let(:game) { create(:game) }
-  let(:menu) { create(:menu, game: game) }
+  let(:menu) { create(:menu) }
 
   describe 'create new menu item' do
     let(:input) do
       {
-        game_id: game.id,
-        type: menu.identifier,
+        menu_id: menu.id,
         params: { name: 'test' }
       }
     end
