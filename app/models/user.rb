@@ -35,4 +35,30 @@ class User < ApplicationRecord
   def create_root_folder
     folders.create(name: 'Корневая папка')
   end
+
+  def avatars
+    avatar.attached? ? image_avatars : gravatar_avatars
+  end
+
+  private
+
+  def image_avatars
+    {
+      url: avatar_url,
+      lazy: avatar_lazy,
+      thumb: avatar_thumb,
+      chat: avatar_chat
+    }
+  end
+
+  def gravatar_avatars
+    hash = Digest::MD5.hexdigest(email)
+    url = "https://www.gravatar.com/avatar/#{hash}"
+    {
+      url: url,
+      thumb: url + "?s=#{Images::THUMB}",
+      chat: url + "?s=#{Images::CHAT}",
+      lazy: url + "?s=#{Images::LAZY}"
+    }
+  end
 end
