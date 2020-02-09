@@ -7,6 +7,7 @@
       color="indigo"
       segmented
       item-color="indigo"
+      @change="value => $store.dispatch('createSheet', value)"
     />
     <sheets-list />
   </div>
@@ -29,7 +30,8 @@
       items() {
         return this.sheetTypes.map(type => ({
           text: type.text,
-          callback: () => this.$store.dispatch('createSheet', type.value ),
+          value: type.value,
+          callback: () => this.$store.dispatch('createSheet', type.value),
         }))
       },
     },
