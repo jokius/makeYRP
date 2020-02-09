@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-function app {
+app() {
   bundle
   bundle exec rails credentials:edit
   bundle exec rails assets:precompile
@@ -8,11 +8,11 @@ function app {
   bundle exec rails s -b 0.0.0.0 "$@"
 }
 
-function rake {
+rake() {
   bundle exec rails "$@"
 }
 
-function rails {
+rails() {
   bundle exec rails "$@"
 }
 
