@@ -2,11 +2,5 @@
 
 class ShortUserSerializer < ActiveModel::Serializer
   attributes :id, :nickname, :avatar, :admin
-
-  attribute :avatar do
-    { url: object.avatar_url,
-      lazy: object.avatar_lazy,
-      thumb: object.avatar_thumb,
-      chat: object.avatar_chat }
-  end
+  attribute :avatars, key: :avatar
 end

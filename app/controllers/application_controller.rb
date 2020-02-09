@@ -10,6 +10,18 @@ class ApplicationController < ActionController::Base
     Rails.application.routes.default_url_options[:only_path] = true
   end
 
+  def access_denied(exception)
+    redirect_to root_path, alert: exception.message
+  end
+
+  def authenticate_admin_user!
+    if current_user&.admin?
+      current_user
+    else
+      redirect_to root_path
+    end
+  end
+
   protected
 
   def responds(interactor, input, status: :ok, &block)
