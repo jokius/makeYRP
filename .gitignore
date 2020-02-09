@@ -39,3 +39,4 @@ yarn-debug.log*
 docker-compose.yml
 Dockerfile
 /systems_templates
+/vendor/bundle/*
