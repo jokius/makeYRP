@@ -2,6 +2,9 @@
 
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
+  devise_for :admin_users, ActiveAdmin::Devise.config.merge(class_name: 'User')
+  ActiveAdmin.routes(self)
+
   root 'games#index'
 
   resources :games, except: %i[update delete] do
