@@ -109,14 +109,12 @@
 
   .grid-title {
     margin-bottom: 10px;
-    height: 25px;
+    height: 40px;
   }
 
   .title {
-    width: max-content;
-    position: relative;
-    left: 3px;
-    bottom: 25px;
+    line-height: 40px;
+    margin-left: 5px;
   }
 
   .button {

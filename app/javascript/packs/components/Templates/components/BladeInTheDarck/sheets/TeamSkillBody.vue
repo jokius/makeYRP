@@ -58,13 +58,13 @@
     grid-template-columns: 600px 1fr;
     grid-template-rows: auto;
     grid-row-gap: 5px;
-    grid-column-gap: 15px;
   }
 
   .left-column {
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: max-content;
+    grid-row-gap: 5px;
   }
 
   .right-column {

@@ -194,6 +194,7 @@
         this.changeTeamImprovements(roleName)
         this.changeSpecialPlaces(roleName)
         this.changeTeamMinions(roleName)
+        this.changeTeamDenImprovements(roleName)
       },
 
       changeAdditionalFields(roleName) {
@@ -201,7 +202,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `info.additionalFields`,
+                             path: 'info.additionalFields',
                              value,
                            })
       },
@@ -223,7 +224,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `talents`,
+                             path: 'talents',
                              value: roleTalents.concat(list),
                            })
       },
@@ -235,7 +236,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `relationship`,
+                             path: 'relationship',
                              value: roleRelationship.concat(list),
                            })
       },
@@ -247,24 +248,24 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `teamImprovements`,
+                             path: 'teamImprovements',
                              value: roleImprovements.concat(list),
                            })
       },
 
       changeSpecialPlaces(role) {
-        const roleSpecialPlaces = this.tables.roleSpecialPlaces[role] || []
+        const roleSpecialPlaces = this.tables.specialPlaces[role] || []
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `specialPlaces.name`,
+                             path: 'specialPlaces.name',
                              value: roleSpecialPlaces.name,
                            })
 
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `specialPlaces.hints`,
+                             path: 'specialPlaces.hints',
                              value: roleSpecialPlaces.hints,
                            })
       },
@@ -276,9 +277,32 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `minions`,
+                             path: 'minions',
                              value: roleMinions.concat(list),
                            })
+      },
+
+      changeTeamDenImprovements(role) {
+        const roleDenImprovements = this.tables.teamDenImprovements[role] || {}
+        const denImprovements = this.params.denImprovements
+
+        for (const key in roleDenImprovements) {
+          const index = denImprovements.findIndex(item => item.key === key)
+          if (index >= 0) {
+            for (const impKey in roleDenImprovements[key]) {
+              const impIndex = denImprovements[index].improvements.findIndex(item => item.key === impKey)
+              const current = denImprovements[index].improvements[impIndex].current
+              const roleValue = roleDenImprovements[key][impKey]
+
+              this.$store.commit(UPDATE_SHEET_PARAMS,
+                                 {
+                                   id: this.sheet.id,
+                                   path: `denImprovements[${index}].improvements[${impIndex}].current`,
+                                   value: current > roleValue ? current : roleValue,
+                                 })
+            }
+          }
+        }
       },
 
       input(target, value) {
