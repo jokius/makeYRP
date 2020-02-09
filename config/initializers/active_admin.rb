@@ -2,7 +2,7 @@
 
 ActiveAdmin.setup do |config|
   config.site_title = 'Make Yrp'
-  config.authorization_adapter = ActiveAdminAdapter
+  config.authorization_adapter = 'ActiveAdminAdapter'
   config.on_unauthorized_access = :access_denied
   config.authentication_method = :authenticate_user!
   config.current_user_method = :current_user
