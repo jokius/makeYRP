@@ -1,4 +1,1 @@
-
-# Системы
-
-Шаблон и локализация для [Mutant: Year Zero](https://github.com/jokius/makeYRP-MutantYearZero_data "makeYRP")
+Шаблон и локализация для [здесь](https://github.com/jokius/makeYRP-systems "системы")
