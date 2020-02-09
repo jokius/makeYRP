@@ -6,6 +6,8 @@
     :x="xPoint"
     :y="yPoint"
     :z="zModal"
+    :min-width="150"
+    :min-height="40"
     :resizable="resizable"
     :active="resizable"
     class-name-active="resize-boards"
@@ -13,7 +15,7 @@
     @resizing="onResize"
   >
     <v-card class="resize-style" :style="style">
-      <v-toolbar dark color="indigo" class="draggable-dialog-header drag-handle">
+      <v-toolbar height="40" dark color="indigo" class="draggable-dialog-header drag-handle">
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer />
         <v-btn icon dark @click="onClose">
@@ -82,7 +84,7 @@
           let width = this.dataWidth || this.width
           let height = this.dataHeight || this.height
 
-          return { width: `${width}px`, height: `${height - 2}px` }
+          return { width: `${width}px`, height: `${height}px` }
         },
       },
     },
@@ -122,6 +124,7 @@
   }
 
   .draggable-dialog-handle-tl {
+    display: block;
     cursor: nw-resize;
     top: -2px;
     left: -1px;
@@ -130,12 +133,14 @@
   }
 
   .draggable-dialog-handle-tm {
+    display: block;
     cursor: n-resize;
     top: -2px;
     width: 100%;
   }
 
   .draggable-dialog-handle-tr {
+    display: block;
     cursor: ne-resize;
     top: -2px;
     right: -1px;
@@ -144,12 +149,14 @@
   }
 
   .draggable-dialog-handle-mr {
+    display: block;
     cursor: e-resize;
     height: 100%;
-    right: -1px;
+    right: -2px;
   }
 
   .draggable-dialog-handle-bl {
+    display: block;
     cursor: sw-resize;
     bottom: -2px;
     left: -1px;
@@ -158,18 +165,21 @@
   }
 
   .draggable-dialog-handle-bm {
+    display: block;
     cursor: s-resize;
-    bottom: -2px;
+    bottom: -4px;
     width: 100%;
   }
 
   .draggable-dialog-handle-ml {
+    display: block;
     cursor: w-resize;
     height: 100%;
-    left: -1px;
+    left: -2px;
   }
 
   .draggable-dialog-handle-br {
+    display: block;
     cursor: se-resize;
     bottom: -2px;
     right: -1px;

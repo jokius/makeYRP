@@ -3,8 +3,8 @@
     v-model="size"
     :on-close="onClose"
     :title="sheet.name"
-    :width="size.width"
-    :height="size.height"
+    :width="size.width + 2"
+    :height="size.height + 40"
     resizable
   >
     <template v-slot:body>
