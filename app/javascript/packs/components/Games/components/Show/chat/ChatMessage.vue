@@ -36,6 +36,12 @@
         :prev-attribute-fails="body.prevAttributeFails || 0"
         :prev-gear-fails="body.prevGearFails || 0"
       />
+      <bid-roll
+        v-else-if="body.dices && system === 'blade_in_the_dark'"
+        :name="body.name || ''"
+        :roll="body.dices"
+      />
+      <default-roll v-else-if="body.dices" :roll="body.dices" />
     </div>
   </div>
 </template>
@@ -43,12 +49,15 @@
 <script>
   import { mapState } from 'vuex'
 
+  import DefaultRoll from './DefaultRoll'
+
   import MyzRoll from '../../../../Templates/components/MYZ/chat/MyzRoll'
+  import BidRoll from '../../../../Templates/components/BladeInTheDarck/chat/BidRoll'
   import * as dateTime from '../../../../../lib/dateTime'
 
   export default {
     name: 'ChatMessage',
-    components: { MyzRoll },
+    components: { BidRoll, DefaultRoll, MyzRoll },
 
     props: {
       message: { type: Object, required: true },
@@ -56,8 +65,8 @@
 
     computed: {
       ...mapState({
-        system: (state) => state.game.info.system,
-        sheets: (state) => state.game.sheets,
+        system: state => state.game.info.system,
+        sheets: state => state.game.sheets,
       }),
 
       user: {
@@ -70,7 +79,7 @@
         get() {
           let character = {}
           if (this.body.as) {
-            character = this.sheets.find((sheet) => sheet.id === this.body.as) || {}
+            character = this.sheets.find(sheet => sheet.id === this.body.as) || {}
           }
 
           return character

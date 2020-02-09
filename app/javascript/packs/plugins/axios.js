@@ -6,6 +6,6 @@ import headers from '../helpers/headers'
 (function() {
   axios.defaults.headers.common = headers
 
-  axios.defaults.paramsSerializer = (params) =>
+  axios.defaults.paramsSerializer = params =>
     qs.stringify(params, { arrayFormat: 'brackets' })
 }())

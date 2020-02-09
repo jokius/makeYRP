@@ -24,7 +24,12 @@ import {
   ADD_MESSAGE,
   MESSAGES_LOADED,
   UPDATE_SHEET,
-  UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS,
+  UPDATE_SHEET_PARAMS,
+  UPDATE_SHEETS,
+  UPDATE_SHEET_NAME,
+  ADD_MENU_ITEM,
+  UPDATE_MENU_ITEM,
+  DELETE_MENU_ITEM,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -45,7 +50,7 @@ export default {
   },
 
   [REMOVE_OPEN_MODAL](state, key) {
-    state.openModals = state.openModals.filter((modal) => modal.key !== key)
+    state.openModals = state.openModals.filter(modal => modal.key !== key)
   },
 
   [UPDATE_CURRENT_PAGE](state, index) {
@@ -68,7 +73,7 @@ export default {
   },
 
   [SHEETS_LOADED](state, sheets) {
-    state.sheets = sheets.map((sheet) => new SheetModel().setInfo(sheet))
+    state.sheets = sheets.map(sheet => new SheetModel().setInfo(sheet))
   },
 
   [ADD_SHEET](state, sheet) {
@@ -76,7 +81,7 @@ export default {
   },
 
   [DELETE_SHEET](state, id) {
-    state.sheets = state.sheets.filter((sheet) => sheet.id !== id)
+    state.sheets = state.sheets.filter(sheet => sheet.id !== id)
   },
 
   [FOLDERS_UNLOADED](state) {
@@ -123,7 +128,7 @@ export default {
   },
 
   [MESSAGES_LOADED](state, messages) {
-    state.messages = messages.map((message) => (
+    state.messages = messages.map(message => (
       new MessageModel().setInfo(message)
     ))
   },
@@ -133,22 +138,43 @@ export default {
   },
 
   [UPDATE_SHEET](state, raw) {
-    const sheet = state.sheets.find((item) => item.id === raw.id)
+    const sheet = state.sheets.find(item => item.id === raw.id)
     sheet.setInfo(raw)
   },
 
+  [UPDATE_SHEETS](state, sheet) {
+    const index = state.sheets.findIndex(item => item.id === sheet.id)
+    state.sheets[index] = state.sheets[index].setInfo(sheet)
+  },
+
   [UPDATE_SHEET_NAME](state, { id, name }) {
-    const index = state.sheets.findIndex((item) => item.id === id)
+    const index = state.sheets.findIndex(item => item.id === id)
     state.sheets[index].name = name
   },
 
   [UPDATE_SHEET_PARAMS](state, { id, path, value, remove = false }) {
-    const index = state.sheets.findIndex((item) => item.id === id)
+    const index = state.sheets.findIndex(item => item.id === id)
     let mutVal = value
     if (remove) {
       mutVal = get(state.sheets[index].params, path, []).slice()
       mutVal.splice(value, 1)
     }
     set(state.sheets[index].params, path, mutVal)
+  },
+
+  [ADD_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    menu.addItem(raw)
+  },
+
+  [UPDATE_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    const item = menu.items.find(item => item.id === raw.id)
+    item.setInfo(raw)
+  },
+
+  [DELETE_MENU_ITEM](state, raw) {
+    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    menu.items = menu.items.filter(item => item.id !== raw.id)
   },
 }

@@ -1,7 +1,7 @@
 import { mapValues } from 'lodash'
 
 const basePath = '/'
-const createLinks = (links) => mapValues(links, ((link) => `${basePath}${link}`))
+const createLinks = links => mapValues(links, (link => `${basePath}${link}`))
 
 const links = {
   base: createLinks({
@@ -24,16 +24,18 @@ const links = {
     folders: 'folders/:id',
     folderImages: 'folders/:folder_id/images',
     images: 'folders/:folder_id/images/:id',
+    menuItems: 'games/:game_id/menus_items',
+    menuItem: 'games/:game_id/menus_items/:id',
   }),
 
   dynamic: (link, params) => {
     let resultLink = link
-    Object.keys(params).forEach((parameter) => resultLink = resultLink.replace(`:${parameter}`,
+    Object.keys(params).forEach(parameter => resultLink = resultLink.replace(`:${parameter}`,
       params[parameter]))
     return resultLink
   },
 
-  json: (link) => `${link}.json`,
+  json: link => `${link}.json`,
 }
 
 export default links

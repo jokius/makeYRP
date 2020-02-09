@@ -72,7 +72,7 @@
 
     computed: {
       ...mapState({
-        template: (state) => state.game.info.template,
+        template: state => state.game.info.template,
       }),
 
       dices: {
@@ -105,7 +105,7 @@
 
     methods: {
       initPool() {
-        this.dices.forEach((dice) => Vue.set(this.pool, dice.key, 0))
+        this.dices.forEach(dice => Vue.set(this.pool, dice.key, 0))
       },
 
       incrementDice(key) {

@@ -42,17 +42,22 @@
     props: {
       position: { type: Object, required: true },
       currentObj: { type: Object, required: true },
+      replacedItems: { type: Array, default: () => [] },
     },
 
     data() {
       return {
         renameModal: false,
+        defaultItems: [
+          { title: 'Переименовать', callback: () => this.showRename() },
+          { title: 'Удалить', callback: () => this.$store.dispatch('removeObj', this.currentObj) },
+        ],
       }
     },
 
     computed: {
       ...mapState({
-        currentRightClickMenu: (state) => state.game.currentRightClickMenu,
+        currentRightClickMenu: state => state.game.currentRightClickMenu,
       }),
 
       show: {
@@ -66,10 +71,7 @@
 
       items: {
         get() {
-          return [
-            { title: 'Переименовать', callback: () => this.showRename() },
-            { title: 'Удалить', callback: () => this.$store.dispatch('removeObj', this.currentObj) },
-          ]
+          return this.replacedItems.length > 0 ? this.replacedItems : this.defaultItems
         },
       },
     },

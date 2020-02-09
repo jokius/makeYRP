@@ -42,6 +42,7 @@ end
 
 group :development do
   gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
+  gem 'brakeman'
   gem 'foreman'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'meta_request'
@@ -60,14 +61,6 @@ group :test do
   gem 'fasterer', '~> 0.7.1'
   gem 'json_matchers'
   gem 'mock_redis'
-  gem 'pronto', '~> 0.10.0'
-  gem 'pronto-brakeman', '~> 0.10.0', require: false
-  gem 'pronto-fasterer', '~> 0.10.0', require: false
-  gem 'pronto-haml', '~> 0.10.0', require: false
-  gem 'pronto-rails_best_practices', '~> 0.10.0', require: false
-  gem 'pronto-rails_schema', '~> 0.10.0', require: false
-  gem 'pronto-reek', '~> 0.10.0', require: false
-  gem 'pronto-rubocop', '~> 0.10.0', require: false
   gem 'rspec-mocks'
   gem 'rspec-rails'
 end

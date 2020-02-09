@@ -70,7 +70,7 @@
 
     computed: {
       ...mapState({
-        game: (state) => state.newGame,
+        game: state => state.newGame,
       }),
 
       isValid() {
@@ -87,7 +87,7 @@
       },
 
       systems() {
-        return this.list.map((item) => ({ text: item.name, value: item.id }))
+        return this.list.map(item => ({ text: item.name, value: item.id }))
       },
 
       system_id: {

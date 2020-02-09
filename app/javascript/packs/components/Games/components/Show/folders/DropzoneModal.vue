@@ -1,26 +1,22 @@
 <template>
-  <v-dialog :value="openDialog">
+  <v-dialog :value="openDialog" width="350" persistent>
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
         Загрузить изображение
       </v-card-title>
       <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col cols="12">
-            <vue-dropzone
-              id="dropzone"
-              ref="imageDropzone"
-              :options="dropzoneOptions"
-              use-custom-slot
-              @vdropzone-success="fileAdded"
-            >
-              <span class="content">
-                <v-icon large>mdi-plus</v-icon>
-                <span>Добавить изображение</span>
-              </span>
-            </vue-dropzone>
-          </v-col>
-        </v-row>
+        <vue-dropzone
+          id="dropzone"
+          ref="imageDropzone"
+          :options="dropzoneOptions"
+          use-custom-slot
+          @vdropzone-success="fileAdded"
+        >
+          <span class="content">
+            <v-icon large>mdi-plus</v-icon>
+            <span>Добавить изображение</span>
+          </span>
+        </vue-dropzone>
       </v-container>
 
       <v-divider />
@@ -89,6 +85,7 @@
 
   .vue-dropzone {
     border: none;
+    width: 100%;
   }
 
   .content {

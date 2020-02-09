@@ -1,7 +1,16 @@
 <template>
-  <draggable-dialog :on-close="onClose" title="Имя персонажа" :width="size.width" :height="size.height">
+  <draggable-dialog
+    v-model="size"
+    :on-close="onClose"
+    :title="sheet.name"
+    :width="size.width + 2"
+    :height="size.height + 40"
+    resizable
+  >
     <template v-slot:body>
-      <mutant-sheet v-if="sheet === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
+      <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
+      <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
+      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size" />
       <v-alert
         v-else
         :key="key"
@@ -10,9 +19,8 @@
         class="alert"
         type="error"
       >
-        {{ sheet }} не существует
+        {{ sheetName }} не существует
       </v-alert>
-      <div />
     </template>
   </draggable-dialog>
 </template>
@@ -23,16 +31,25 @@
   import DraggableDialog from './DraggableDialog'
 
   import MutantSheet from '../../../Templates/components/MYZ/sheets/MutantSheet'
+  import BidCharacterSheet from '../../../Templates/components/BladeInTheDarck/sheets/CharacterSheet'
+  import BidTeamSheet from '../../../Templates/components/BladeInTheDarck/sheets/TeamSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, DraggableDialog },
+    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog },
 
     props: {
       uniqKey: { type: Number, required: true },
       id: { type: Number, required: true },
       sheetType: { type: String, required: true },
+    },
+
+    data() {
+      return {
+        privateWidth: null,
+        privateHeight: null,
+      }
     },
 
     channels: {
@@ -51,10 +68,17 @@
 
     computed: {
       ...mapState({
-        game: (state) => state.game.info,
+        game: state => state.game.info,
+        sheets: state => state.game.sheets,
       }),
 
       sheet: {
+        get() {
+          return this.sheets.find(sheet => sheet.id === this.id)
+        },
+      },
+
+      sheetName: {
         get() {
           return `${this.game.system}-${this.sheetType}`
         },
@@ -62,18 +86,27 @@
 
       key: {
         get() {
-          return `${this.sheet}-${this.id}`
+          return `${this.sheetName}-${this.id}`
         },
       },
 
       size: {
         get() {
-          switch (this.sheet) {
+          switch (this.sheetName) {
             case 'mutant_year_zero-mutant':
-              return { width: 950, height: 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'blade_in_the_dark-character':
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'blade_in_the_dark-team':
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
-              return { width: 950, height: 700 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
           }
+        },
+
+        set({ width, height }) {
+          this.privateWidth = width
+          this.privateHeight = height
         },
       },
     },

@@ -16,7 +16,7 @@
 
     computed: {
       ...mapState({
-        currentPage: (state) => state.game.currentPage,
+        currentPage: state => state.game.currentPage,
       }),
 
       background: {

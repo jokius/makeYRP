@@ -9,6 +9,15 @@
       <open-modals />
     </v-content>
     <loader v-else />
+
+    <v-overlay :value="overlay">
+      <v-card>
+        <v-card-text class="disconnect-message">
+          <h1>Соединение с сервером потерено</h1>
+          <p>Обновите страницу либо подождите востонавления соеденения</p>
+        </v-card-text>
+      </v-card>
+    </v-overlay>
   </v-app>
 </template>
 
@@ -20,7 +29,7 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
-  import { ADD_MESSAGE, ADD_SHEET, DELETE_SHEET } from '../../stores/mutation-types'
+  import { ADD_MENU_ITEM, ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
 
   export default {
     name: 'ShowGame',
@@ -32,8 +41,21 @@
       Loader,
     },
 
+    data() {
+      return {
+        overlay: false
+      }
+    },
+
     channels: {
       ChatChannel: {
+        connected() {
+          this.overlay = false
+        },
+        disconnected() {
+          this.overlay = true
+        },
+
         received(message) {
           this.$store.commit(ADD_MESSAGE, message)
         },
@@ -44,15 +66,25 @@
           if (obj.delete) {
             this.$store.commit(DELETE_SHEET, obj.delete)
           } else {
-            this.$store.commit(ADD_SHEET, obj)
+            if (obj.new){
+              this.$store.commit(ADD_SHEET, obj.sheet)
+            } else {
+              this.$store.commit(UPDATE_SHEETS, obj.sheet)
+            }
           }
+        },
+      },
+
+      MenusItemsChannel: {
+        received(message) {
+          this.$store.commit(ADD_MENU_ITEM, message)
         },
       },
     },
 
     computed: {
       ...mapState({
-        game: (state) => state.game,
+        game: state => state.game,
       }),
 
       loaded() {
@@ -76,11 +108,26 @@
         channel: 'SheetsChannel',
         game_id: gameId,
       })
+
+      this.$cable.subscribe({
+        channel: 'MenusItemsChannel',
+        game_id: gameId,
+      })
     },
   }
 </script>
 
 <style scoped lang="scss">
+  @import 'app/javascript/packs/components/ui/css/colors';
+
+  .disconnect-message {
+    text-align: center;
+
+    h1 {
+      font-size: 2em;
+    }
+  }
+
   .menu-grid {
     display: grid;
     grid-template-columns: auto auto max-content;
@@ -96,13 +143,20 @@
 
   .head-menu {
     grid-area: head-menu;
+    position: relative;
+    z-index: 2;
+    background-color: $white;
   }
 
   .body-menu {
     grid-area: body-menu;
+    position: relative;
+    z-index: 2;
   }
 
   .body-content {
     grid-area: body-content;
+    position: relative;
+    z-index: 1;
   }
 </style>

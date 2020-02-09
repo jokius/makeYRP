@@ -42,7 +42,7 @@
 
     computed: {
       ...mapState({
-        messages: (state) => state.game.messages,
+        messages: state => state.game.messages,
       }),
     },
 

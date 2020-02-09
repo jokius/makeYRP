@@ -54,18 +54,19 @@
         <v-btn
           color="indigo"
           text
-          @click="openDropzone = true"
-        >
-          Загрузить файлы
-        </v-btn>
-
-        <v-spacer />
-        <v-btn
-          color="indigo"
-          text
           @click="$emit('close')"
         >
           Закрыть
+        </v-btn>
+
+        <v-spacer />
+
+        <v-btn
+          color="indigo"
+          text
+          @click="openDropzone = true"
+        >
+          Загрузить файлы
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -113,11 +114,11 @@
 
     computed: {
       ...mapState({
-        folder: (state) => state.game.folder,
-        foldersLoaded: (state) => state.game.foldersLoaded,
-        game: (state) => state.game.info,
-        currentPage: (state) => state.game.currentPage,
-        sheets: (state) => state.game.sheets,
+        folder: state => state.game.folder,
+        foldersLoaded: state => state.game.foldersLoaded,
+        game: state => state.game.info,
+        currentPage: state => state.game.currentPage,
+        sheets: state => state.game.sheets,
       }),
 
       title: {
@@ -165,7 +166,7 @@
 
       currentSheet: {
         get() {
-          return this.sheets.find((sheet) => sheet.id === this.targetObj.id)
+          return this.sheets.find(sheet => sheet.id === this.targetObj.id)
         },
       },
 

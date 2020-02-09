@@ -26,8 +26,8 @@
     components: { GamesList },
     computed: {
       ...mapState({
-        open: (state) => state.games.open,
-        close: (state) => state.games.close,
+        open: state => state.games.open,
+        close: state => state.games.close,
       }),
     },
   }

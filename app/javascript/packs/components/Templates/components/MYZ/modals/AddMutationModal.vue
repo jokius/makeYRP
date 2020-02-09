@@ -76,7 +76,7 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       mutations: {

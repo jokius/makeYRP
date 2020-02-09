@@ -88,12 +88,12 @@
 
     computed: {
       ...mapState({
-        sheets: (state) => state.game.sheets,
+        sheets: state => state.game.sheets,
       }),
 
       sheet: {
         get() {
-          return this.sheets.find((sheet) => sheet.id === this.id)
+          return this.sheets.find(sheet => sheet.id === this.id)
         },
       },
 

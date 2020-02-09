@@ -16,7 +16,7 @@
     components: { GameForm, Loader },
     computed: {
       ...mapState({
-        systems: (state) => state.systems,
+        systems: state => state.systems,
       }),
 
       loaded: {

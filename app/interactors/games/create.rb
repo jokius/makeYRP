@@ -2,6 +2,7 @@
 
 class Games::Create
   include Dry::Transaction
+
   GAMES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:name).filled(:string)
     required(:system_id).filled(:integer)
@@ -10,6 +11,7 @@ class Games::Create
 
   step :validate
   step :create
+  tee :add_menu
 
   def validate(input)
     result = GAMES_CREATE_SCHEMA.call(input)
@@ -27,5 +29,9 @@ class Games::Create
     else
       Failure(message: game.errors.to_h, status: 422)
     end
+  end
+
+  def add_menu(game)
+    Games::AddMenus.new.call(game.id)
   end
 end

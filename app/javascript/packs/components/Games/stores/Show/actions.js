@@ -3,11 +3,13 @@ import { defaultsDeep } from 'lodash'
 import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
+  createMenuItem,
   createMessage,
   createPage,
   createSheet,
   deleteFolder,
   deleteImage,
+  deleteMenuItem,
   deletePage,
   deleteSheet,
   loadFolder,
@@ -16,6 +18,7 @@ import {
   loadSheets,
   updateFolder,
   updateImage,
+  updateMenuItem,
   updatePage,
   updateSheet,
 } from '../../api'
@@ -36,7 +39,6 @@ import {
   UPDATE_FOLDER,
   UPDATE_IMAGE,
   UPDATE_PAGE,
-  UPDATE_SHEET,
 } from '../mutation-types'
 
 const sendPageParams = async (state, payload) => {
@@ -47,9 +49,9 @@ const sendPageParams = async (state, payload) => {
   return await updatePage(ids, { name: page.name, page_params: params })
 }
 
-const sendSheetParams = async ({ sheet, changes }) => {
+const sendSheetParams = async ({ gameId, sheet, changes }) => {
   const result = defaultsDeep(changes, sheet)
-  return await updateSheet({ game_id: 0, ...result })
+  return await updateSheet({ game_id: gameId, ...result })
 }
 
 export default {
@@ -159,17 +161,17 @@ export default {
     }
   },
 
-  async changeSheet({ commit }, payload) {
+  async changeSheet({ commit, state }, payload) {
     try {
-      commit(UPDATE_SHEET, await sendSheetParams(payload))
+      await sendSheetParams({ ...payload, gameId: state.info.id })
     } catch (error) {
       handling(commit, error)
     }
   },
 
-  async saveSheet({ commit }, sheet) {
+  async saveSheet({ commit, state }, sheet) {
     try {
-      await updateSheet({ game_id: 0, ...sheet })
+      await updateSheet({ game_id: state.info.id, ...sheet })
     } catch (error) {
       handling(commit, error)
     }
@@ -195,6 +197,31 @@ export default {
     try {
       const game = state.info
       await createMessage(game.id,{ body })
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async createMenuItem({ commit, state }, params) {
+    try {
+      const game = state.info
+      await createMenuItem(game.id, params)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async updateMenuItem({ commit }, { id, params }) {
+    try {
+      await updateMenuItem(id, params)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async deleteMenuItem({ commit }, id) {
+    try {
+      await deleteMenuItem(id)
     } catch (error) {
       handling(commit, error)
     }

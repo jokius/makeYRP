@@ -34,9 +34,10 @@ RSpec.describe Games::MessagesController, type: :request do
   private
 
   def create_message
-    post "/games/#{game.id}/messages",
+    game_id = game.id
+    post "/games/#{game_id}/messages",
          params: {
-           game_id: game.id,
+           game_id: game_id,
            body: {
              text: 'test message'
            }

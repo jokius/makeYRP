@@ -7,8 +7,8 @@ import vuetify from './plugins/vuetify'
 
 require('./plugins/axios')
 require('./plugins/actioncable')
-require('./plugins/chat_scroll')
-require('./plugins/zoomer')
+require('./plugins/panzoom')
+require('./plugins/wysiwyg')
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('application'))
@@ -17,6 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     vuetify,
     router,
     store,
-    render: (h) => h(App),
+    render: h => h(App),
   })
 })

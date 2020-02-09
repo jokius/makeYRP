@@ -88,7 +88,7 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       gear: {
@@ -100,10 +100,10 @@
       weight: {
         get() {
           let currentWeight = 0
-          this.gear.forEach((item) =>
+          this.gear.forEach(item =>
             currentWeight += (parseFloat(item.size) || 0) * (parseInt(item.number, 10) || 0))
 
-          const strength = this.sheet.params.stats.find((item) => item.target === 'strength')
+          const strength = this.sheet.params.stats.find(item => item.target === 'strength')
           return `${currentWeight} / ${parseInt(strength.current, 10) * 2}`
         },
       },

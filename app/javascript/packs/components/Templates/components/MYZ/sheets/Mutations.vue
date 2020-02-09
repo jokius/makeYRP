@@ -73,7 +73,7 @@
 
     computed: {
       ...mapState({
-        tables: (state) => state.game.info.template.tables,
+        tables: state => state.game.info.template.tables,
       }),
 
       mutations: {
@@ -187,7 +187,7 @@
         let description = mutation.description
         description += '<div>Способы использования:</div><ul>'
         let useCases = ''
-        mutation.use_cases.forEach((useCase) => {
+        mutation.use_cases.forEach(useCase => {
           let mode = ''
           if (useCase.reactive) {
             mode = '(О)'
