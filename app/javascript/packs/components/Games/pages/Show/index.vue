@@ -1,6 +1,7 @@
 <template>
   <v-app id="inspire">
     <v-content v-if="loaded">
+      <left-menu />
       <div class="menu-grid">
         <head-menu class="head-menu" />
         <body-menu class="body-menu" />
@@ -30,10 +31,12 @@
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
   import { ADD_MENU_ITEM, ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
+  import LeftMenu from '../../components/Show/LeftMenu'
 
   export default {
     name: 'ShowGame',
     components: {
+      LeftMenu,
       BodyContent,
       BodyMenu,
       HeadMenu,
@@ -151,6 +154,11 @@
   .body-menu {
     grid-area: body-menu;
     position: relative;
+    z-index: 2;
+  }
+
+  .left-menu {
+    position: absolute;
     z-index: 2;
   }
 

@@ -1,3 +1,5 @@
+@import 'app/javascript/packs/components/ui/css/mixins';
+
 @font-face {
   font-family: 'Xolonium';
   src: url('fonts/Xolonium.ttf') format('truetype');
@@ -9,6 +11,42 @@
   font-weight: bold;
 }
 
+@font-face {
+  font-family: "fontD4";
+  src: url('fonts/DPoly Four-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD6";
+  src: url('fonts/DPoly Six-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD8";
+  src: url('fonts/DPoly Eight-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD10";
+  src: url('fonts/DPoly Ten-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD12";
+  src: url('fonts/DPoly Twelve-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD20";
+  src: url('fonts/DPoly Twenty-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
 * {
   font-family: 'Xolonium', serif;
   font-size: 14px;
@@ -16,11 +54,6 @@
     outline: none;
   }
 }
-
-html {
-  overflow-y: auto !important;
-}
-
 *::-webkit-scrollbar {
   width: 10px;
 }
@@ -32,4 +65,39 @@ html {
 *::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+
+html {
+  overflow-y: auto !important;
+}
+
+.dice4 {
+  font-family: "fontD4";
+  @include dice;
+}
+
+.dice6 {
+  font-family: "fontD6";
+  @include dice;
+}
+
+.dice8 {
+  font-family: "fontD8";
+  @include dice;
+}
+
+.dice10 {
+  font-family: "fontD10";
+  @include dice;
+}
+
+
+.dice12 {
+  font-family: "fontD12";
+  @include dice;
+}
+
+.dice20 {
+  font-family: "fontD20";
+  @include dice;
 }
