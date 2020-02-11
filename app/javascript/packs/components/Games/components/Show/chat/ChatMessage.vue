@@ -29,7 +29,7 @@
     <div class="grid-body">
       <span v-if="body.text">{{ body.text }}</span>
       <myz-roll
-        v-if="body.dices && system === 'mutant_year_zero'"
+        v-if="!body.noSystem && body.dices && system === 'mutant_year_zero'"
         :as="character.id || -1"
         :roll="body.dices"
         :prev-success="body.prevSuccess || 0"
@@ -37,7 +37,7 @@
         :prev-gear-fails="body.prevGearFails || 0"
       />
       <bid-roll
-        v-else-if="body.dices && system === 'blade_in_the_dark'"
+        v-else-if="!body.noSystem && body.dices && system === 'blade_in_the_dark'"
         :name="body.name || ''"
         :roll="body.dices"
       />
