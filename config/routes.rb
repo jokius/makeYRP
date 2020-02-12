@@ -25,4 +25,8 @@ Rails.application.routes.draw do
       resources :images
     end
   end
+
+  namespace :admin do
+    resources :games, only: %i[index destroy]
+  end
 end

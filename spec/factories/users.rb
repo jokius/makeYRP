@@ -24,5 +24,9 @@ FactoryBot.define do
     avatar do
       { io: File.open(Rails.root.join('spec', 'fixtures', 'files', 'test.png')), filename: 'test.png' }
     end
+
+    factory :admin, class: 'User' do
+      admin { true }
+    end
   end
 end
