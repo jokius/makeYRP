@@ -1,0 +1,2 @@
+export const GAMES_ADMIN_LOADED = 'GAMES_ADMIN_LOADED'
+export const DELETE_GAME = 'DELETE_GAME'

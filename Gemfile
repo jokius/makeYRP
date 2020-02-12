@@ -3,6 +3,8 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+gem 'sassc-rails'
+
 gem 'rails', '~> 6.0.0'
 
 gem 'puma', '~> 3.12'
@@ -34,9 +36,6 @@ gem 'mini_magick'
 gem 'tzinfo-data'
 
 gem 'redis'
-
-# Admin part
-gem 'activeadmin'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
