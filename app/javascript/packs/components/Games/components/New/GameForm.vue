@@ -42,6 +42,7 @@
               <v-btn
                 :disabled="!isValid"
                 color="indigo"
+                dark
                 @click="save"
               >
                 Добавить
