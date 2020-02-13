@@ -1,7 +1,13 @@
 <template>
-  <draggable-dialog :on-close="onClose" title="Новая страница" :width="300" :height="300">
+  <draggable-dialog
+    :on-close="onClose"
+    title="Новая страница"
+    :width="300"
+    :height="200"
+    :size="{}"
+  >
     <template v-slot:body>
-      <v-container class="fill-height" fluid>
+      <v-container class="fill-height page-modal-body" fluid>
         <v-row align="center" justify="center">
           <v-col cols="12">
             <v-form>
@@ -87,5 +93,9 @@
 
   .whiteText {
     color: $white;
+  }
+
+  .page-modal-body {
+    height: 100px;
   }
 </style>

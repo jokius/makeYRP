@@ -75,14 +75,14 @@
 
       hasActionsSlot: {
         get() {
-          return !!this.$slots.actions && this.disableActions
+          return !!this.$slots.actions && !this.disableActions
         },
       },
 
       style: {
         get() {
-          let width = this.dataWidth || this.width
-          let height = this.dataHeight || this.height
+          const width = this.dataWidth || this.width
+          const height = this.dataHeight || this.height
 
           return { width: `${width}px`, height: `${height}px` }
         },
