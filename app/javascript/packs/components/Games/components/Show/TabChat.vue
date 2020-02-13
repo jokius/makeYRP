@@ -1,5 +1,5 @@
 <template>
-  <div class="chat">
+  <div :class="`base-chat ${isEmptyChat() ? 'empty-chat' : 'chat'}`">
     <div ref="messages" class="messages">
       <chat-message v-for="item in messages" :key="item.id" :message="item" />
     </div>
@@ -65,6 +65,11 @@
     },
 
     methods: {
+      isEmptyChat() {
+        console.log('this.messages', this.messages)
+        return this.messages.length === 0
+      },
+
       scrollDown() {
         const messages = this.$refs.messages
         messages.scrollTop = messages.scrollHeight
@@ -82,13 +87,19 @@
 
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
-
-  .chat {
+  .base-chat {
     position: relative;
     bottom: 0;
-    top: 69px;
-    height: calc(100% - 69px * 2);
-    background-color: $grayC5;
+    background-color: #c5c5c5;
+  }
+
+  .empty-chat {
+    height: calc(100% - 35px * 2);
+  }
+
+  .chat {
+    top: 70px;
+    height: calc(100% - 70px * 2);
   }
 
   .messages {
