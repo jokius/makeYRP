@@ -27,7 +27,7 @@
                 v-model="isValid"
               >
                 <v-text-field
-                  v-model="nickname"
+                  v-model="inputNickname"
                   required
                   :rules="requiredRules"
                   label="Ник"
@@ -35,7 +35,7 @@
                 />
 
                 <v-text-field
-                  v-model="email"
+                  v-model="inputEmail"
                   required
                   :rules="emailRules"
                   :error-messages="asyncEmailErrors"
@@ -44,7 +44,7 @@
                 />
 
                 <v-text-field
-                  v-model="password"
+                  v-model="inputPassword"
                   required
                   :rules="requiredRules"
                   :error-messages="asyncPasswordErrors"
@@ -58,7 +58,7 @@
               <router-link :to="logIn">Войти</router-link>
               <v-spacer />
               <v-btn
-                :disabled="!isValid"
+                :disabled="sending || !isValid"
                 color="primary"
                 @click="validate"
               >
@@ -73,88 +73,82 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-
-  import {
-    UPDATE_EMAIL,
-    UPDATE_IS_VALID,
-    UPDATE_NICKNAME,
-    UPDATE_PASSWORD,
-  } from '../../stores/mutation-types'
   import links from '../../../../helpers/links'
-
-  const requiredField = v => !!v || 'обязательное поле'
+  import { emailRules, requiredRules } from '../../lib/validationRules'
+  import { signUpReq } from '../../api'
 
   export default {
     data: () => ({
+      emailRules,
+      requiredRules,
       logIn: links.base.signIn,
-      emailRules: [
-        requiredField,
-        v => /.+@.+\..+/.test(v) || 'E-mail не корректен',
-      ],
-      requiredRules: [
-        requiredField,
-      ],
+      isValid: false,
+      email: '',
+      nickname: '',
+      password: '',
+      errors: {},
+      sending: false,
     }),
 
     computed: {
-      ...mapState({
-        store: state => state.signUp,
-      }),
-
-      isValid: {
+      inputEmail: {
         get() {
-          return this.store.isValid
+          return this.email
         },
+
         set(value) {
-          this.$store.commit(UPDATE_IS_VALID, value)
+          this.clearErrors()
+          this.email = value
         },
       },
 
-      nickname: {
+      inputNickname: {
         get() {
-          return this.store.nickname
+          return this.nickname
         },
+
         set(value) {
-          this.$store.commit(UPDATE_NICKNAME, value)
+          this.clearErrors()
+          this.nickname = value
         },
       },
 
-      email: {
+      inputPassword: {
         get() {
-          return this.store.email
+          return this.password
         },
-        set(value) {
-          this.$store.commit(UPDATE_EMAIL, value)
-        },
-      },
 
-      password: {
-        get() {
-          return this.store.password
-        },
         set(value) {
-          this.$store.commit(UPDATE_PASSWORD, value)
+          this.clearErrors()
+          this.password = value
         },
       },
 
       asyncEmailErrors() {
-        const errors = this.store.errors.email || []
+        const errors = this.errors.email || []
         return errors || errors.join(', ')
       },
 
       asyncPasswordErrors() {
-        const errors = this.store.errors.password || []
+        const errors = this.errors.password || []
         return errors || errors.join(', ')
       },
     },
 
     methods: {
+      clearErrors() {
+        this.isValid = true
+        this.errors = {}
+      },
+
       validate() {
         if (this.$refs.form.validate()) {
-          this.$store.dispatch('signUp', { ...this.store }).then(() => {
+          this.sending = true
+          signUpReq({ email: this.email, nickname: this.nickname, password: this.password }).then(() => {
             if (this.isValid) this.$router.push(links.base.home)
-          })
+          }).catch(error => {
+            this.errors = error.response.data.errors
+          }).finally(() => this.sending = false)
         }
       },
     },

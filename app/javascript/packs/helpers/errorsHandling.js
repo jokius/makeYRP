@@ -4,9 +4,6 @@ const handling = (commit, rawError) => {
   const error = rawError.response
   if (error) {
     switch (error.status) {
-      case 401:
-        commit(UPDATE_ERRORS, { password: [error.data.error] })
-        return
       case 400:
       case 422:
         commit(UPDATE_ERRORS, error.data.errors)

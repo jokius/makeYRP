@@ -27,7 +27,7 @@
                 v-model="isValid"
               >
                 <v-text-field
-                  v-model="email"
+                  v-model="inputEmail"
                   required
                   :rules="emailRules"
                   label="Email"
@@ -35,7 +35,7 @@
                 />
 
                 <v-text-field
-                  v-model="password"
+                  v-model="inputPassword"
                   required
                   :rules="requiredRules"
                   :error-messages="asyncPasswordErrors"
@@ -49,7 +49,7 @@
               <router-link :to="signUp">Зарегистрироваться</router-link>
               <v-spacer />
               <v-btn
-                :disabled="!isValid"
+                :disabled="sending || !isValid"
                 color="primary"
                 @click="validate"
               >
@@ -64,73 +64,65 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-
-  import {
-    UPDATE_EMAIL,
-    UPDATE_IS_VALID,
-    UPDATE_PASSWORD,
-  } from '../../stores/mutation-types'
   import links from '../../../../helpers/links'
-
-  const requiredField = v => !!v || 'обязательное поле'
+  import { emailRules, requiredRules } from '../../lib/validationRules'
+  import { signInReq } from '../../api'
 
   export default {
     data: () => ({
+      emailRules,
+      requiredRules,
       signUp: links.base.signUp,
-      emailRules: [
-        requiredField,
-        v => /.+@.+\..+/.test(v) || 'E-mail не корректен',
-      ],
-      requiredRules: [
-        requiredField,
-      ],
+      isValid: false,
+      email: '',
+      password: '',
+      errors: {},
+      sending: false,
     }),
 
     computed: {
-      ...mapState({
-        store: state => state.signIn,
-      }),
-
-      isValid: {
+      inputEmail: {
         get() {
-          return this.store.isValid
+          return this.email
         },
+
         set(value) {
-          this.$store.commit(UPDATE_IS_VALID, value)
+          this.clearErrors()
+          this.email = value
         },
       },
 
-      email: {
+      inputPassword: {
         get() {
-          return this.store.email
+          return this.password
         },
-        set(value) {
-          this.$store.commit(UPDATE_EMAIL, value)
-        },
-      },
 
-      password: {
-        get() {
-          return this.store.password
-        },
         set(value) {
-          this.$store.commit(UPDATE_PASSWORD, value)
+          this.clearErrors()
+          this.password = value
         },
       },
 
       asyncPasswordErrors() {
-        const errors = this.store.errors.password || []
+        const errors = this.errors.password || []
         return errors || errors.join(', ')
       },
     },
 
     methods: {
+      clearErrors() {
+        this.isValid = true
+        this.errors = {}
+      },
+
       validate() {
         if (this.$refs.form.validate()) {
-          this.$store.dispatch('signIn', { ...this.store }).then(() => {
+          this.sending = true
+          signInReq( { email: this.email, password: this.password }).then(() => {
             if (this.isValid) this.$router.push(links.base.home)
-          })
+          }).catch(error => {
+            this.errors = { password: [error.response.data.error] }
+          }).finally(() => this.sending = false)
         }
       },
     },
