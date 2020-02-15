@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
 class Pages::Create
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   PAGES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:game_id).filled(:integer)
     required(:name).filled(:string)
   end
 
-  step :validate
-  step :create
+  def call(input)
+    params = yield validate(input)
+    create(params)
+  end
+
+  private
 
   def validate(input)
     result = PAGES_CREATE_SCHEMA.call(input)

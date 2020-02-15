@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 class Folders::Create
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   FOLDERS_CREATE_SCHEMA = Dry::Schema.Params do
     required(:user_id).filled(:integer)
     required(:name).filled(:string)
     required(:parent_id).maybe(:integer)
   end
 
-  step :validate
-  step :create
+  def call(input)
+    create(yield validate(input))
+  end
+
+  private
 
   def validate(input)
     result = FOLDERS_CREATE_SCHEMA.call(input)

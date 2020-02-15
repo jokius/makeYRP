@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-class ApplicationController < ActionController::Base
-  before_action :authenticate_user!
+require 'dry/monads/all'
 
+class ApplicationController < ActionController::Base
+  include Dry::Monads
+
+  before_action :authenticate_user!
   before_action do
     class_name = 'ActiveStorage::Service::DiskService'
     next unless ActiveStorage::Blob.service.class.name == class_name
@@ -14,17 +17,17 @@ class ApplicationController < ActionController::Base
 
   def responds(interactor, input, status: :ok, &block)
     input = input.permit!.to_h if input.is_a? ActionController::Parameters
-    interactor.new.call(input) do |result|
-      result.success do |value|
-        return yield(value) if block
+    result = interactor.new.call(input)
+    return yield(result.success) if block && result.success?
 
-        respond_json json: value, status: status
-      end
+    respond = case result
+              when Success
+                { json: result.success, status: status }
+              else
+                { json: error[:message], status: (error[:status] || 400) }
+              end
 
-      result.failure do |error|
-        respond_json(json: error[:message], status: (error[:status] || 400))
-      end
-    end
+    respond_json respond
   end
 
   def respond_json(json)

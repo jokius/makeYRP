@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Systems::ParseTemplate
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   SYSTEM_SCHEMA = Dry::Schema.Params do
     required(:name).filled(:string)
     required(:file).filled(:any)
@@ -9,8 +10,11 @@ class Systems::ParseTemplate
     required(:private_data_file).maybe(:any)
   end
 
-  step :validate
-  map :parse
+  def call(input)
+    parse(yield validate(input))
+  end
+
+  private
 
   def validate(input)
     result = SYSTEM_SCHEMA.call(input)
@@ -33,10 +37,8 @@ class Systems::ParseTemplate
       template = new_temp
     end
 
-    { name: input[:name], template: JSON.parse(template, symbolize_names: true) }
+    Success(name: input[:name], template: JSON.parse(template, symbolize_names: true))
   end
-
-  private
 
   def open_template(template_file)
     file = template_file.read

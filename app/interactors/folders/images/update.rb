@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class Folders::Images::Update
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   IMAGES_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
     required(:name).filled(:string)
   end
 
-  step :validate
-  step :update
+  def call(input)
+    params = yield validate(input)
+    hash = yield fetch_image(params)
+    update(hash)
+  end
+
+  private
 
   def validate(input)
     result = IMAGES_UPDATE_SCHEMA.call(input)
@@ -19,10 +25,16 @@ class Folders::Images::Update
     end
   end
 
-  def update(input)
+  def fetch_image(input)
     image = FolderFile.find_by(id: input.delete(:id))
-    return Failure(message: 'image not found', status: :not_fount) unless image
+    if image
+      Success(image: image, input: input)
+    else
+      Failure(message: 'image not found', status: :not_fount)
+    end
+  end
 
+  def update(image:, input:)
     if image.update(input)
       Success(image)
     else

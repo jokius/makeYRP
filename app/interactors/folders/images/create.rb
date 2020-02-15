@@ -1,16 +1,20 @@
 # frozen_string_literal: true
 
 class Folders::Images::Create
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
 
   IMAGES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:folder_id).filled(:integer)
     required(:file).maybe(:any)
   end
 
-  step :validate
-  step :get_folder
-  step :create
+  def call(input)
+    params = yield validate(input)
+    hash = yield fetch_folder(params)
+    create(hash)
+  end
+
+  private
 
   def validate(input)
     result = IMAGES_CREATE_SCHEMA.call(input)
@@ -21,7 +25,7 @@ class Folders::Images::Create
     end
   end
 
-  def get_folder(input)
+  def fetch_folder(input)
     folder = Folder.find_by(id: input[:folder_id])
     if folder
       Success(folder: folder, file: input[:file])
@@ -33,6 +37,7 @@ class Folders::Images::Create
   def create(folder:, file:)
     name = file.original_filename
     record = folder.files.build(name: name, image: { io: file.open, filename: name })
+
     if record.save
       Success(folder)
     else

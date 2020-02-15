@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Games::Create
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
 
   GAMES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:name).filled(:string)
@@ -9,9 +9,27 @@ class Games::Create
     required(:master_id).filled(:integer)
   end
 
-  step :validate
-  step :create
-  tee :add_menu
+  def call(input)
+    result = nil
+    begin
+      ActiveRecord::Base.transaction do
+        result = transaction(input)
+        raise ActiveRecord::Rollback if result.failure?
+      end
+
+      result
+    rescue ActiveRecord::Rollback
+      result
+    end
+  end
+
+  private
+
+  def transaction(input)
+    params = yield validate(input)
+    game = yield create(params)
+    add_menu(game)
+  end
 
   def validate(input)
     result = GAMES_CREATE_SCHEMA.call(input)
@@ -27,7 +45,7 @@ class Games::Create
     if game.save
       Success(game)
     else
-      Failure(message: game.errors.to_h, status: 422)
+      Failure(game.errors.to_h)
     end
   end
 

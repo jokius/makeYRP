@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Messages::Create
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   MASSAGES_CREATE_SCHEMA = Dry::Schema.Params do
     required(:game_id).filled(:integer)
     required(:user_id).filled(:integer)
@@ -9,9 +10,12 @@ class Messages::Create
     required(:body).filled(:hash)
   end
 
-  step :validate
-  map :parse_body
-  step :create
+  def call(input)
+    params = yield validate(input)
+    create(parse_body(params))
+  end
+
+  private
 
   def validate(input)
     result = MASSAGES_CREATE_SCHEMA.call(input)

@@ -26,8 +26,8 @@ gem 'devise'
 gem 'russian'
 
 # Dry
+gem 'dry-monads'
 gem 'dry-schema'
-gem 'dry-transaction'
 
 gem 'ffaker'
 gem 'image_processing'
