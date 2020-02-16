@@ -10,47 +10,58 @@ RSpec.describe Games::PagesController, type: :request do
   before { sign_in user }
 
   describe 'POST /games/:game_id/pages json' do
-    before do
-      post "/games/#{game.id}/pages",
-           **headers,
-           params: {
-             game_id: game.id,
-             name: 'test page'
-           }
+    it 'matches with page' do
+      expect { create_page }.to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
+        expect(data[:page]).to match_json_schema('pages/show')
+        expect(data[:new]).to be true
+      end
     end
-
-    it { expect(response.status).to eq 201 }
-    it { expect(Page.find_by(game: game, name: 'test page')).not_to be_nil }
   end
 
   describe 'PUT /games/:game_id/pages/:id json' do
-    let(:page) { create(:page) }
-    let(:new_name) { 'new page name' }
-    let(:page_params) { { test_key: 'test' } }
+    let(:page) { create(:page, game: game) }
 
-    before do
-      put "/games/0/pages/#{page.id}",
-          **headers,
-          params: {
-            name: new_name,
-            page_params: page_params
-          }
-    end
-
-    it 'correct json' do
-      expect(response.status).to eq 201
-      expect(response).to match_json_schema('games/pages/show')
+    it 'matches with page' do
+      expect { update_page(page.id) }.to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
+        expect(data[:page]).to match_json_schema('pages/show')
+        expect(data[:new]).to be false
+      end
     end
   end
 
   describe 'DELETE /games/:game_id/pages/:id json' do
-    let(:page) { create(:page) }
+    let(:page) { create(:page, game: game) }
 
-    before do
-      delete "/games/0/pages/#{page.id}", **headers
+    it 'is send delete' do
+      expect { delete_page(page.id) }
+        .to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
+        expect(data[:delete]).to eq page.id
+      end
     end
+  end
 
-    it { expect(response.status).to eq 204 }
-    it { expect(Page.find_by(id: page.id)).to be_nil }
+  private
+
+  def create_page
+    game_id = game.id
+    post "/games/#{game_id}/pages",
+         **headers,
+         params: {
+           game_id: game_id,
+           name: 'test page'
+         }
+  end
+
+  def update_page(id)
+    put "/games/#{game.id}/pages/#{id}",
+        **headers,
+        params: {
+          name: 'new page name',
+          page_params: { test_key: 'test' }
+        }
+  end
+
+  def delete_page(id)
+    delete "/games/#{game.id}/pages/#{id}", **headers
   end
 end

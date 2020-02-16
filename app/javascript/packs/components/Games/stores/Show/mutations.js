@@ -59,7 +59,6 @@ export default {
 
   [ADD_PAGE](state, page) {
     state.info = state.info.addPage(page)
-    state.currentPage = state.info.pages.length - 1
   },
 
   [DELETE_PAGE](state, id) {
