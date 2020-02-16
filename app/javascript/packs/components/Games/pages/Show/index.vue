@@ -33,9 +33,9 @@
   import {
     ADD_MENU_ITEM,
     ADD_MESSAGE, ADD_PAGE,
-    ADD_SHEET,
+    ADD_SHEET, DELETE_MENU_ITEM,
     DELETE_PAGE,
-    DELETE_SHEET, UPDATE_PAGE,
+    DELETE_SHEET, UPDATE_MENU_ITEM, UPDATE_PAGE,
     UPDATE_SHEETS,
   } from '../../stores/mutation-types'
   import LeftMenu from '../../components/Show/LeftMenu'
@@ -71,37 +71,11 @@
         },
       },
 
-      PagesChannel: {
+      GameChannel: {
         received(obj) {
-          if (obj.delete) {
-            this.$store.commit(DELETE_PAGE, obj.delete)
-          } else {
-            if (obj.new){
-              this.$store.commit(ADD_PAGE, obj.page)
-            } else {
-              this.$store.commit(UPDATE_PAGE, obj.page)
-            }
-          }
-        },
-      },
-
-      SheetsChannel: {
-        received(obj) {
-          if (obj.delete) {
-            this.$store.commit(DELETE_SHEET, obj.delete)
-          } else {
-            if (obj.new){
-              this.$store.commit(ADD_SHEET, obj.sheet)
-            } else {
-              this.$store.commit(UPDATE_SHEETS, obj.sheet)
-            }
-          }
-        },
-      },
-
-      MenusItemsChannel: {
-        received(message) {
-          this.$store.commit(ADD_MENU_ITEM, message)
+          if (obj.new) this.addObj(obj)
+          if (obj.update) this.updateObj(obj)
+          if (obj.delete) this.deleteObj(obj)
         },
       },
     },
@@ -129,19 +103,27 @@
       })
 
       this.$cable.subscribe({
-        channel: 'SheetsChannel',
+        channel: 'GameChannel',
         game_id: gameId,
       })
+    },
 
-      this.$cable.subscribe({
-        channel: 'PagesChannel',
-        game_id: gameId,
-      })
+    methods: {
+      addObj(obj) {
+        if (obj.sheet) this.$store.commit(ADD_SHEET, obj.sheet)
+        if (obj.page) this.$store.commit(ADD_PAGE, obj.page)
+        if (obj.menu_item) this.$store.commit(ADD_MENU_ITEM, obj.menu_item)
+      },
 
-      this.$cable.subscribe({
-        channel: 'MenusItemsChannel',
-        game_id: gameId,
-      })
+      updateObj(obj) {
+        if (obj.sheet) this.$store.commit(UPDATE_SHEETS, obj.sheet)
+        if (obj.page) this.$store.commit(UPDATE_PAGE, obj.page)
+      },
+
+      deleteObj(obj) {
+        if (obj.sheet) this.$store.commit(DELETE_SHEET, obj.sheet)
+        if (obj.page) this.$store.commit(DELETE_PAGE, obj.page)
+      },
     },
   }
 </script>

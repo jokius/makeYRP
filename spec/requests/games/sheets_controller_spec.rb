@@ -23,7 +23,7 @@ RSpec.describe Games::SheetsController, type: :request do
 
   describe 'POST /games/:game_id/sheets json' do
     it 'matches with sheet' do
-      expect { create_sheet }.to have_broadcasted_to(game).from_channel(SheetsChannel).with do |data|
+      expect { create_sheet }.to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
         expect(data[:sheet]).to match_json_schema('sheets/show')
         expect(data[:new]).to be true
       end
@@ -38,9 +38,9 @@ RSpec.describe Games::SheetsController, type: :request do
         expect(data).to match_json_schema('sheets/show')
       end
 
-      expect { update_sheet(sheet.id) }.to have_broadcasted_to(game).from_channel(SheetsChannel).with do |data|
+      expect { update_sheet(sheet.id) }.to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
         expect(data[:sheet]).to match_json_schema('sheets/show')
-        expect(data[:new]).to be false
+        expect(data[:update]).to be true
       end
     end
   end
@@ -56,8 +56,9 @@ RSpec.describe Games::SheetsController, type: :request do
       end
 
       expect { delete_sheet(game.id, sheet_2.id) }
-        .to have_broadcasted_to(game).from_channel(SheetsChannel).with do |data|
-        expect(data[:delete]).to eq sheet_2.id
+        .to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
+        expect(data[:sheet]).to eq sheet_2.id
+        expect(data[:delete]).to be true
       end
     end
   end

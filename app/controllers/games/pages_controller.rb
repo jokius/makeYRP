@@ -3,19 +3,19 @@
 class Games::PagesController < Games::ApplicationController
   def create
     responds(Pages::Create, params, status: :created) do |page|
-      PagesChannel.broadcast_to(game, page: PageSerializer.new(page), new: true)
+      GameChannel.broadcast_to(game, new: true, page: page)
     end
   end
 
   def update
     responds(Pages::Update, params, status: :created) do |page|
-      PagesChannel.broadcast_to(game, page: PageSerializer.new(page), new: false)
+      GameChannel.broadcast_to(game, update: true, page: page)
     end
   end
 
   def destroy
     page.delete
-    PagesChannel.broadcast_to(game, delete: page.id)
+    GameChannel.broadcast_to(game, delete: true, page: page.id)
   end
 
   private

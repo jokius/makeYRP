@@ -3,7 +3,7 @@
 class Games::MenusItemsController < Games::ApplicationController
   def create
     responds(Menus::Items::Create, params) do |item|
-      MenusItemsChannel.broadcast_to(game, Menus::ItemSerializer.new(item))
+      GameChannel.broadcast_to(game, menu_item: Menus::ItemSerializer.new(item), new: true)
     end
   end
 

@@ -11,7 +11,7 @@ RSpec.describe Games::PagesController, type: :request do
 
   describe 'POST /games/:game_id/pages json' do
     it 'matches with page' do
-      expect { create_page }.to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
+      expect { create_page }.to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
         expect(data[:page]).to match_json_schema('pages/show')
         expect(data[:new]).to be true
       end
@@ -22,9 +22,9 @@ RSpec.describe Games::PagesController, type: :request do
     let(:page) { create(:page, game: game) }
 
     it 'matches with page' do
-      expect { update_page(page.id) }.to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
+      expect { update_page(page.id) }.to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
         expect(data[:page]).to match_json_schema('pages/show')
-        expect(data[:new]).to be false
+        expect(data[:update]).to be true
       end
     end
   end
@@ -34,8 +34,9 @@ RSpec.describe Games::PagesController, type: :request do
 
     it 'is send delete' do
       expect { delete_page(page.id) }
-        .to have_broadcasted_to(game).from_channel(PagesChannel).with do |data|
-        expect(data[:delete]).to eq page.id
+        .to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
+        expect(data[:page]).to eq page.id
+        expect(data[:delete]).to be true
       end
     end
   end

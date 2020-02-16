@@ -12,8 +12,9 @@ RSpec.describe Games::MenusItemsController, type: :request do
 
   describe 'POST /games/:game_id/menus_items json' do
     it 'matches with menu_item' do
-      expect { create_item }.to have_broadcasted_to(game).from_channel(MenusItemsChannel).with do |data|
-        expect(data).to match_json_schema('games/menus/items/show')
+      expect { create_item }.to have_broadcasted_to(game).from_channel(GameChannel).with do |data|
+        expect(data[:menu_item]).to match_json_schema('games/menus/items/show')
+        expect(data[:new]).to be true
       end
     end
   end
