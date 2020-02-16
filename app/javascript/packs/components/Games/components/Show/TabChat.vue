@@ -66,7 +66,6 @@
 
     methods: {
       isEmptyChat() {
-        console.log('this.messages', this.messages)
         return this.messages.length === 0
       },
 

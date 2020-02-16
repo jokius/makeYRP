@@ -34,6 +34,7 @@ class Games::AddMenus
   def add_system_menus(game)
     (game.system.template.dig('template', 'menus') || []).each do |template|
       menu = game.menus.find_or_initialize_by(identifier: template['type'])
+      menu.params = template
       return Failure(message: menu.errors.to_h, status: 422) unless menu.save
     end
 
