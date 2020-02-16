@@ -23,10 +23,8 @@ import {
   updateSheet,
 } from '../../api'
 import {
-  ADD_PAGE,
   DELETE_FOLDER,
   DELETE_IMAGE,
-  DELETE_PAGE,
   DELETE_SHEET,
   FOLDERS_LOADED,
   FOLDERS_UNLOADED,
@@ -38,13 +36,13 @@ import {
   UPDATE_CURRENT_RIGHT_CLICK_MENU,
   UPDATE_FOLDER,
   UPDATE_IMAGE,
-  UPDATE_PAGE,
 } from '../mutation-types'
 
 const sendPageParams = async (state, payload) => {
+  const game = state.info
   const page = state.currentPage
   const params = defaultsDeep(payload, page.params)
-  const ids = { game_id: 0, id: page.id }
+  const ids = { game_id: game.id, id: page.id }
 
   return await updatePage(ids, { name: page.name, page_params: params })
 }
@@ -70,16 +68,16 @@ export default {
   async createPage({ commit, state }, name) {
     try {
       const game = state.info
-      commit(ADD_PAGE, await createPage(game.id,{ name: name }))
+      await createPage(game.id,{ name: name })
     } catch (error) {
       handling(commit, error)
     }
   },
 
-  async deletePage({ commit }, id) {
+  async deletePage({ commit, state }, id) {
     try {
-      await deletePage({ game_id: 0, id })
-      commit(DELETE_PAGE, id)
+      const game = state.info
+      await deletePage({ game_id: game.id, id })
     } catch (error) {
       handling(commit, error)
     }
@@ -155,7 +153,7 @@ export default {
 
   async changePage({ commit, state }, params) {
     try {
-      commit(UPDATE_PAGE, await sendPageParams(state, params))
+      await sendPageParams(state, params)
     } catch (error) {
       handling(commit, error)
     }
@@ -181,9 +179,7 @@ export default {
     try {
       switch (obj.target) {
         case 'pageBackground':
-          commit(UPDATE_PAGE, await sendPageParams(state,
-            { background: { color: obj.color } }
-          ))
+          await sendPageParams(state, { background: { color: obj.color } })
           break
         default:
           break

@@ -30,7 +30,14 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
-  import { ADD_MENU_ITEM, ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
+  import {
+    ADD_MENU_ITEM,
+    ADD_MESSAGE, ADD_PAGE,
+    ADD_SHEET,
+    DELETE_PAGE,
+    DELETE_SHEET, UPDATE_PAGE,
+    UPDATE_SHEETS,
+  } from '../../stores/mutation-types'
   import LeftMenu from '../../components/Show/LeftMenu'
 
   export default {
@@ -61,6 +68,20 @@
 
         received(message) {
           this.$store.commit(ADD_MESSAGE, message)
+        },
+      },
+
+      PagesChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.$store.commit(DELETE_PAGE, obj.delete)
+          } else {
+            if (obj.new){
+              this.$store.commit(ADD_PAGE, obj.page)
+            } else {
+              this.$store.commit(UPDATE_PAGE, obj.page)
+            }
+          }
         },
       },
 
@@ -109,6 +130,11 @@
 
       this.$cable.subscribe({
         channel: 'SheetsChannel',
+        game_id: gameId,
+      })
+
+      this.$cable.subscribe({
+        channel: 'PagesChannel',
         game_id: gameId,
       })
 
