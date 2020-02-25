@@ -1,10 +1,15 @@
 <template>
-  <draggable-dialog :on-close="onClose" title="Выбор цвета" :width="325" :height="300">
+  <draggable-dialog
+    :on-close="onClose"
+    title="Выбор цвета"
+    :width="325"
+    :height="400"
+    :size="{}"
+  >
     <template v-slot:body>
-      <v-container class="fill-height" fluid>
+      <v-container class="fill-height page-modal-body" fluid>
         <v-color-picker
           v-model="currentColor"
-          mode.sync="rgba"
           flat
         />
       </v-container>
@@ -40,12 +45,12 @@
     props: {
       uniqKey: { type: Number, required: true },
       target: { type: Object, required: true },
-      startColor: { type: String, default: null },
+      startColor: { type: Object, default: () => ({}) },
     },
 
     data() {
       return {
-        color: this.startColor,
+        color: this.startColor.hex ? this.startColor.hex : this.startColor,
       }
     },
 
@@ -79,5 +84,9 @@
 
   .whiteText {
     color: $white;
+  }
+
+  .page-modal-body {
+    height: 300px;
   }
 </style>

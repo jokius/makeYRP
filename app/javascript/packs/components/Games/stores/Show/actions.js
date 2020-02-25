@@ -6,7 +6,7 @@ import {
   createMenuItem,
   createMessage,
   createPage,
-  createSheet,
+  createSheet, createToken,
   deleteFolder,
   deleteImage,
   deleteMenuItem,
@@ -177,9 +177,12 @@ export default {
 
   async saveTargetColor({ commit, state }, obj) {
     try {
-      switch (obj.target) {
-        case 'pageBackground':
+      switch (obj.type) {
+        case 'page':
           await sendPageParams(state, { background: { color: obj.color } })
+          break
+        case 'grid':
+          await sendPageParams(state, { grid: { color: obj.color } })
           break
         default:
           break
@@ -218,6 +221,16 @@ export default {
   async deleteMenuItem({ commit }, id) {
     try {
       await deleteMenuItem(id)
+    } catch (error) {
+      handling(commit, error)
+    }
+  },
+
+  async createToken({ commit, state }, params) {
+    try {
+      const page = state.currentPage
+      if (!page) return
+      await createToken(page.id, params)
     } catch (error) {
       handling(commit, error)
     }

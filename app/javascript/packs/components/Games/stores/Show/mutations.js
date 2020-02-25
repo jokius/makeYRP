@@ -117,9 +117,12 @@ export default {
   },
 
   [CHANGE_TARGET_COLOR](state, obj) {
-    switch (obj.target) {
-      case 'pageBackground':
+    switch (obj.type) {
+      case 'page':
         state.info = state.info.changePageBackgroundColor(obj)
+        break
+      case 'grid':
+        state.info = state.info.changePageGridColor(obj)
         break
       default:
         break
