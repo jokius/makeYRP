@@ -9,6 +9,7 @@ require('./plugins/axios')
 require('./plugins/actioncable')
 require('./plugins/panzoom')
 require('./plugins/wysiwyg')
+require('./plugins/dragDrop')
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('application'))

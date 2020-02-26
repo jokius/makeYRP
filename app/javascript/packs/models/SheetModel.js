@@ -14,6 +14,10 @@ export class SheetModel {
     return this
   }
 
+  get imgUrl() {
+    return get(this.params.img, 'versions.url', null)
+  }
+
   get imgChat() {
     return get(this.params.img, 'versions.chat', null)
   }

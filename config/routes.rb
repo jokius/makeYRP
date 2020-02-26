@@ -13,6 +13,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pages, only: :none do
+    scope module: :pages do
+      resources :tokens, only: %i[index]
+    end
+  end
+
   resources :users, only: :none do
     get :current, on: :collection
   end

@@ -1,32 +1,31 @@
 <template>
   <v-list>
-    <v-list-item
-      v-for="sheet in sheets"
-      :key="sheet.id"
-    >
-      <v-list-item-avatar size="24" color="indigo">
-        <v-img
-          v-if="sheet.imgChat"
-          :src="sheet.imgChat"
-          :alt="sheet.name"
-          @click="showSheet(sheet)"
-        />
-        <v-icon
-          v-else
-          dark
-          :title="sheet.name"
-          @click="showSheet(sheet)"
-        >
-          mdi-account-circle
-        </v-icon>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title
-          class="pointer"
-          @click="showSheet(sheet)"
-          v-text="sheet.name"
-        />
-      </v-list-item-content>
+    <v-list-item v-for="sheet in sheets" :key="sheet.id" class="list-item">
+      <drag :transfer-data="{ sheet }" class="drag-part">
+        <v-list-item-avatar size="24" color="indigo">
+          <v-img
+            v-if="sheet.imgChat"
+            :src="sheet.imgChat"
+            :alt="sheet.name"
+            @click="showSheet(sheet)"
+          />
+          <v-icon
+            v-else
+            dark
+            :title="sheet.name"
+            @click="showSheet(sheet)"
+          >
+            mdi-account-circle
+          </v-icon>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title
+            class="pointer"
+            @click="showSheet(sheet)"
+            v-text="sheet.name"
+          />
+        </v-list-item-content>
+      </drag>
       <v-list-item-icon>
         <v-btn
           color="red darken-4"
@@ -72,5 +71,14 @@
 <style scoped lang="scss">
   .pointer {
     cursor: pointer;
+  }
+
+  .list-item {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+  }
+
+  .drag-part {
+    display: inline-flex;
   }
 </style>

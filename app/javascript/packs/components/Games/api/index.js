@@ -99,3 +99,13 @@ export const updateMenuItem = (id, params) =>
 export const deleteMenuItem = id =>
   axios
     .delete(links.dynamic(links.base.menuItem, { game_id: 0, id }))
+
+export const loadTokens = page_id =>
+  axios
+    .get(links.json(links.dynamic(links.base.tokens, { page_id })))
+    .then(response => response.data)
+
+export const createToken = (page_id, params) =>
+  axios
+    .post(links.dynamic(links.base.tokens, { page_id }), params)
+    .then(response => response.data)
