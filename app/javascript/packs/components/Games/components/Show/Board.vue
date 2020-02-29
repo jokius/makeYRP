@@ -23,17 +23,17 @@
 </template>
 
 <script>
-  import { Application, Container, Loader, TilingSprite, Graphics } from 'pixi.js'
+  import { Application } from 'pixi.js'
   import { mapState } from 'vuex'
 
   import RightClickMenu from './RightClickMenu'
 
   import { mousePosition } from '../../../../lib/mousePosition'
   import { loadTokens } from '../../api'
-  import { rgbToXhex } from '../../../../lib/rgbToXhex'
   import { UPDATE_CURRENT_RIGHT_CLICK_MENU } from '../../stores/mutation-types'
   import { Token } from '../../../../lib/pixi/Token'
   import BodyLoader from '../../../ui/components/Loader'
+  import { BoardContainer } from '../../../../lib/pixi/BoardContainer'
 
   export default {
     name: 'Board',
@@ -50,6 +50,8 @@
         menuItems: [],
         item: {},
         loaded: false,
+        selectRect: {},
+        currentLevel: 'map',
       }
     },
 
@@ -94,13 +96,7 @@
 
       gridWidth: {
         get() {
-          return parseInt(this.params.grid.width, 10)
-        },
-      },
-
-      gridHeight: {
-        get() {
-          return parseInt(this.params.grid.height, 10)
+          return parseInt(this.grid.width, 10)
         },
       },
 
@@ -116,51 +112,46 @@
         },
       },
 
-      stage: {
-        get() {
-          return this.app.stage
-        },
-      },
-
       grid: {
         get() {
           return this.params.grid
+        },
+      },
+
+      backgroundUrl: {
+        get() {
+          return this.currentPage.backgroundUrl
         },
       },
     },
 
     watch: {
       params() {
-        this.changeBackground()
-        this.drawGrid()
+        this.mapContainer.changeBackground(this.backgroundUrl, this.width, this.height)
+        this.gridContainer.drawGrid(this.grid, this.width, this.height)
       },
     },
 
     mounted() {
       const pageId = this.currentPage.id
       this.$cable.subscribe({ channel: 'PageChannel', page_id: pageId })
-      this.loadBoard(pageId)
+      this.loadBoard()
+      this.loadTokens(pageId)
     },
 
     methods: {
-      loadBoard(pageId) {
-        this.createApp()
-        this.initContainers()
-        this.changeBackground()
-        this.showContainers()
-        this.drawGrid()
-        this.tokens = new Token(this.sheets, this.grid, this.tokenRightMenu, this.playersContainer,
-                                this.showContainers, this.moveToken)
-
-        loadTokens(pageId).then(tokens => {
-          tokens.forEach(token => this.tokens.addToken(token))
-          this.loaded = true
-        })
-      },
-
       handleDrop({ sheet }, e) {
         const position = mousePosition(e)
         this.sendToken({ sheet_id: sheet.id, position_x: position.x, position_y: position.y - this.gridWidth })
+      },
+
+      checkMove(e) {
+        return !(e.button === 0 && e.altKey)
+      },
+
+      handler(e) {
+        this.position = mousePosition(e)
+        e.preventDefault()
       },
 
       sendToken(params) {
@@ -169,6 +160,12 @@
           action: 'add_token',
           data: { ...params },
         })
+      },
+
+      loadBoard() {
+        this.createApp()
+        this.initContainers()
+        this.showContainers()
       },
 
       moveToken(params) {
@@ -193,16 +190,6 @@
         this.$store.commit(UPDATE_CURRENT_RIGHT_CLICK_MENU, `token-${id}`)
       },
 
-
-      checkMove(e) {
-        return !(e.button === 0 && e.altKey)
-      },
-
-      handler(e) {
-        this.position = mousePosition(e)
-        e.preventDefault()
-      },
-
       createApp() {
         this.app = new Application({
           width: this.windowWidth,
@@ -216,117 +203,31 @@
       },
 
       initContainers() {
-        this.mapContainer = new Container()
-        this.mapContainer.width = this.windowWidth
-        this.mapContainer.height = this.windowHeight
+        this.initContainer({ name: 'mapContainer', interactive: true })
+        this.initContainer({ name: 'gridContainer' })
+        this.initContainer({ name: 'gmContainer' })
+        this.initContainer({ name: 'playersContainer' })
 
-        this.gridContainer = new Container()
-        this.gridContainer.width = this.windowWidth
-        this.gridContainer.height = this.windowHeight
+        this.mapContainer.changeBackground(this.backgroundUrl, this.width, this.height)
+        this.gridContainer.drawGrid(this.grid, this.width, this.height)
+      },
 
-        this.gmContainer = new Container()
-        this.gmContainer.width = this.windowWidth
-        this.gmContainer.height = this.windowHeight
-
-        this.playersContainer = new Container()
-        this.playersContainer.width = this.windowWidth
-        this.playersContainer.height = this.windowHeight
+      initContainer({ name, interactive }) {
+        this[name] = new BoardContainer({ interactive })
       },
 
       showContainers() {
         this.app.stage.addChild(this.mapContainer, this.gridContainer, this.gmContainer, this.playersContainer)
       },
 
-      changeBackground() {
-        if (!this.currentPage.backgroundUrl) {
-          return this.mapContainer.removeChildren()
-        }
+      loadTokens(pageId) {
+        this.tokens = new Token(this.sheets, this.grid, this.tokenRightMenu, this.playersContainer,
+                                this.showContainers, this.moveToken)
 
-        const loader = new Loader()
-        loader.add('background', this.currentPage.backgroundUrl)
-
-        loader.load((loader, resources) => {
-          const texture = resources.background.texture
-          const sprite = this.backgroundSprite(texture)
-          if (this.width) {
-            sprite.scale.x = this.width / texture.orig.width
-          } else {
-            if (texture.orig.width > this.windowWidth) {
-              this.mapContainer.width = texture.orig.width
-            }
-          }
-
-          if (this.height) {
-            sprite.scale.y = this.height / texture.orig.height
-          } else {
-            if (texture.orig.height > this.windowHeight) {
-              this.mapContainer.height = texture.orig.height
-            }
-          }
-
-          if (!this.mapContainer.getChildByName('background')) this.mapContainer.addChild(sprite)
+        loadTokens(pageId).then(tokens => {
+          tokens.forEach(token => this.tokens.addToken(token))
+          this.loaded = true
         })
-      },
-
-      backgroundSprite(texture) {
-        let sprite = this.mapContainer.getChildByName('background')
-        if (sprite) {
-          sprite.texture = texture
-          sprite.width = texture.orig.width
-          sprite.height = texture.orig.height
-        } else {
-          sprite = new TilingSprite(texture, texture.orig.width, texture.orig.height)
-          sprite.name = 'background'
-        }
-
-        return sprite
-      },
-
-      drawGrid() {
-        this.gridContainer.removeChildren()
-        if (!this.grid.type) return
-
-        if (this.grid.type === 'cell') {
-          const stand = new Graphics()
-          const width = this.grid.width
-          const height = this.grid.height
-          let offsetW = 1
-          let offsetH = 1
-          const wEl = Math.round(this.width / width)
-          const hEl = Math.round(this.height / height)
-
-          if (wEl >= hEl) {
-            for (let contW = 1; wEl >= contW; contW++) {
-              for (let contH = 1; hEl >= contH; contH++) {
-                this.cell(stand, width, height, offsetW, offsetH)
-                offsetH += height
-              }
-
-              offsetH = 1
-              offsetW += width
-            }
-          } else {
-            for (let contH = 1; hEl >= contH; contH++) {
-              for (let contW = 1; wEl >= contW; contW++) {
-                this.cell(stand, width, height, offsetW, offsetH)
-                offsetW += width
-              }
-            }
-
-            offsetW = 1
-            offsetH += height
-          }
-
-          this.gridContainer.addChild(stand)
-        }
-      },
-
-      cell(stand, width, height, offsetW, offsetH) {
-        const color = this.grid.color
-        stand.beginFill(0, 0)
-        stand.lineStyle(1, rgbToXhex(color), color.a)
-        stand.drawRect(offsetW, offsetH, width - 1, height - 1)
-        stand.endFill()
       },
     },
   }

@@ -123,6 +123,7 @@
           return {
             type: 'page',
             id: this.currentPage.id,
+            target: 'page',
           }
         },
       },
