@@ -23,6 +23,8 @@ import {
   updateSheet,
 } from '../../api'
 import {
+  CHANGE_BODY_COLOR,
+  CHANGE_BORDER_COLOR,
   DELETE_FOLDER,
   DELETE_IMAGE,
   DELETE_SHEET,
@@ -183,6 +185,12 @@ export default {
           break
         case 'grid':
           await sendPageParams(state, { grid: { color: obj.color } })
+          break
+        case 'borderColor':
+          commit(CHANGE_BORDER_COLOR, obj.color)
+          break
+        case 'bodyColor':
+          commit(CHANGE_BODY_COLOR, obj.color)
           break
         default:
           break

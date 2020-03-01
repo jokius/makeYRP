@@ -30,6 +30,11 @@ import {
   ADD_MENU_ITEM,
   UPDATE_MENU_ITEM,
   DELETE_MENU_ITEM,
+  CHANGE_CURRENT_LAYER,
+  CHANGE_CURRENT_CURSOR,
+  CHANGE_BORDER_SIZE,
+  CHANGE_BORDER_COLOR,
+  CHANGE_BODY_COLOR,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -178,5 +183,25 @@ export default {
   [DELETE_MENU_ITEM](state, raw) {
     const menu = state.info.menus.find(item => item.id === raw.menu_id)
     menu.items = menu.items.filter(item => item.id !== raw.id)
+  },
+
+  [CHANGE_CURRENT_CURSOR](state, value) {
+    state.currentCursor = value
+  },
+
+  [CHANGE_CURRENT_LAYER](state, value) {
+    state.currentLayer = value
+  },
+
+  [CHANGE_BORDER_SIZE](state, value) {
+    state.borderSize = value
+  },
+
+  [CHANGE_BORDER_COLOR](state, value) {
+    state.borderColor = value
+  },
+
+  [CHANGE_BODY_COLOR](state, value) {
+    state.bodyColor = value
   },
 }

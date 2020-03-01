@@ -51,7 +51,6 @@
         item: {},
         loaded: false,
         selectRect: {},
-        currentLevel: 'map',
       }
     },
 
@@ -74,6 +73,7 @@
       ...mapState({
         currentPage: state => state.game.currentPage,
         sheets: state => state.game.sheets,
+        currentLayer: state => state.game.currentLayer,
       }),
 
       params: {
