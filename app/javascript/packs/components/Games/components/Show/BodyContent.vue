@@ -7,7 +7,7 @@
 <script>
   import { mapState } from 'vuex'
 
-  import Board from './body/Board'
+  import Board from './Board'
 
   import { PageModel } from '../../../../models/PageModel'
 

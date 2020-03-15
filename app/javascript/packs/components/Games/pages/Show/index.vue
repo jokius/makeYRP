@@ -32,10 +32,12 @@
   import BodyContent from '../../components/Show/BodyContent'
   import {
     ADD_MENU_ITEM,
-    ADD_MESSAGE, ADD_PAGE,
-    ADD_SHEET, DELETE_MENU_ITEM,
+    ADD_MESSAGE,
+    ADD_PAGE,
+    ADD_SHEET,
     DELETE_PAGE,
-    DELETE_SHEET, UPDATE_MENU_ITEM, UPDATE_PAGE,
+    DELETE_SHEET,
+    UPDATE_PAGE,
     UPDATE_SHEETS,
   } from '../../stores/mutation-types'
   import LeftMenu from '../../components/Show/LeftMenu'

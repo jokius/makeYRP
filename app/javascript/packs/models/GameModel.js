@@ -48,11 +48,18 @@ export class GameModel {
     return this
   }
 
-
   changePageBackgroundColor(obj) {
-    const { params, color } = obj
-    const page = this.pages.find(page => page.id === params.id)
+    const { id, color } = obj
+    const page = this.pages.find(page => page.id === id)
     page.changeBackgroundColor(color)
+
+    return this
+  }
+
+  changePageGridColor(obj) {
+    const { id, color } = obj
+    const page = this.pages.find(page => page.id === id)
+    page.changeGridColor(color)
 
     return this
   }

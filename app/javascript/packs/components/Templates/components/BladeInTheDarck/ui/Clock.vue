@@ -16,6 +16,7 @@
 
 <script>
   import { mapState } from 'vuex'
+
   import RightClickMenu from '../../../../Games/components/Show/RightClickMenu'
   import { mousePosition } from '../../../../../lib/mousePosition'
   import { UPDATE_CURRENT_RIGHT_CLICK_MENU } from '../../../../Games/stores/mutation-types'

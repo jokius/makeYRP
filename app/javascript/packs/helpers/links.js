@@ -26,6 +26,9 @@ const links = {
     images: 'folders/:folder_id/images/:id',
     menuItems: 'games/:game_id/menus_items',
     menuItem: 'games/:game_id/menus_items/:id',
+    tokens: 'pages/:page_id/tokens',
+    graphics: 'pages/:page_id/graphics',
+
     adminGames: 'admin/games',
     adminGame: 'admin/games/:id',
   }),

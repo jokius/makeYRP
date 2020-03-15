@@ -14,4 +14,6 @@
 
 class Page < ApplicationRecord
   belongs_to :game
+  has_many :tokens
+  has_many :graphics
 end

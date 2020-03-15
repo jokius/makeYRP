@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
-module ApplicationCable
-  class Channel < ActionCable::Channel::Base
+class ApplicationCable::Channel < ActionCable::Channel::Base
+  class Failure < StandardError; end
+
+  def responds(interactor, input, &block)
+    result = interactor.new.call(input)
+    return broadcast(errors: result.failure) if result.failure?
+
+    yield(result.success) if block
   end
 end

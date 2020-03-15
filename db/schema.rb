@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_12_055040) do
+ActiveRecord::Schema.define(version: 2020_03_04_001821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,16 @@ ActiveRecord::Schema.define(version: 2020_02_12_055040) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["master_id"], name: "index_games_on_master_id"
     t.index ["system_id"], name: "index_games_on_system_id"
+  end
+
+  create_table "graphics", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.string "layer"
+    t.jsonb "params"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["layer"], name: "index_graphics_on_layer"
+    t.index ["page_id"], name: "index_graphics_on_page_id"
   end
 
   create_table "menus", force: :cascade do |t|
@@ -131,6 +141,17 @@ ActiveRecord::Schema.define(version: 2020_02_12_055040) do
     t.jsonb "template", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tokens", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.bigint "sheet_id", null: false
+    t.float "position_x", null: false
+    t.float "position_y", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_id"], name: "index_tokens_on_page_id"
+    t.index ["sheet_id"], name: "index_tokens_on_sheet_id"
   end
 
   create_table "users", force: :cascade do |t|
