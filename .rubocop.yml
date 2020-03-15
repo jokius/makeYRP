@@ -23,7 +23,7 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Max: 120
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/MethodLength:
@@ -63,3 +63,12 @@ Style/FrozenStringLiteralComment:
   Exclude:
   - locale/custom_locales.rb
   - db/migrate/*
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
