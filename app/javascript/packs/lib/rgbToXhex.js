@@ -1,6 +1,7 @@
-export const rgbToXhex = ({ r, g, b }) => {
-  let color = '0x'
-  color += parseInt(r, 16)
-  color += parseInt(g, 16)
-  return color + parseInt(b, 16)
+export const rgbToXhex = ({ r, g, b }) => '0x' + decToHex(r) + decToHex(g) + decToHex(b)
+
+const decToHex = value => {
+  let hex = Number(value).toString(16);
+  if (hex.length < 2) hex = "0" + hex
+  return hex
 }

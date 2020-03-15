@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :pages, only: :none do
     scope module: :pages do
       resources :tokens, only: %i[index]
+      resources :graphics, only: %i[index]
     end
   end
 

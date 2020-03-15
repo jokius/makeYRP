@@ -8,7 +8,7 @@
     <div class="grid-items">
       <button :class="[{ selected: layer === 'gm' }, 'item']" @click="layer = 'gm'">GM слой</button>
       <button :class="[{ selected: layer === 'map' }, 'item']" @click="layer = 'map'">Слой карты</button>
-      <button :class="[{ selected: layer === 'player' }, 'item']" @click="layer = 'player'">Слой игроков</button>
+      <button :class="[{ selected: layer === 'players' }, 'item']" @click="layer = 'players'">Слой игроков</button>
     </div>
   </v-speed-dial>
 </template>

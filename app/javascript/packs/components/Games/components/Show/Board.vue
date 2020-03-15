@@ -29,11 +29,14 @@
   import RightClickMenu from './RightClickMenu'
 
   import { mousePosition } from '../../../../lib/mousePosition'
-  import { loadTokens } from '../../api'
+  import { loadGraphics, loadTokens } from '../../api'
   import { UPDATE_CURRENT_RIGHT_CLICK_MENU } from '../../stores/mutation-types'
   import { Token } from '../../../../lib/pixi/Token'
   import BodyLoader from '../../../ui/components/Loader'
   import { BoardContainer } from '../../../../lib/pixi/BoardContainer'
+  import { EventObserver } from '../../../../lib/pixi/EventObserver'
+  import { Graphic } from '../../../../lib/pixi/Graphic'
+  import { GraphicModel } from '../../../../models/GraphicModel'
 
   export default {
     name: 'Board',
@@ -46,11 +49,13 @@
         mapContainer: {},
         gridContainer: {},
         tokens: {},
+        graphics: {},
         position: { x: 0, y: 0 },
         menuItems: [],
         item: {},
         loaded: false,
         selectRect: {},
+        observer: new EventObserver(),
       }
     },
 
@@ -58,12 +63,11 @@
       PageChannel: {
         received(obj) {
           if (obj.delete) {
-            const sprite = this.playersContainer.getChildByName(`token_${obj.token.id}`)
-            this.playersContainer.removeChild(sprite)
+            this.deleteObj(obj)
           } else if (obj.update) {
-            this.tokens.changeToken(obj.token)
+            this.changeObj(obj)
           } else {
-            this.tokens.addToken(obj.token)
+            this.addObj(obj)
           }
         },
       },
@@ -74,6 +78,10 @@
         currentPage: state => state.game.currentPage,
         sheets: state => state.game.sheets,
         currentLayer: state => state.game.currentLayer,
+        currentCursor: state => state.game.currentCursor,
+        borderSize: state => state.game.borderSize,
+        borderColor: state => state.game.borderColor,
+        bodyColor: state => state.game.bodyColor,
       }),
 
       params: {
@@ -123,12 +131,38 @@
           return this.currentPage.backgroundUrl
         },
       },
+
+      layer: {
+        get() {
+          return `${this.currentLayer}Container`
+        },
+      },
     },
 
     watch: {
       params() {
         this.mapContainer.changeBackground(this.backgroundUrl, this.width, this.height)
         this.gridContainer.drawGrid(this.grid, this.width, this.height)
+      },
+
+      currentCursor() {
+        this.containersBroadcast()
+      },
+
+      currentLayer() {
+        this.containersBroadcast()
+      },
+
+      borderSize() {
+        this.containersBroadcast()
+      },
+
+      borderColor() {
+        this.containersBroadcast()
+      },
+
+      bodyColor() {
+        this.containersBroadcast()
       },
     },
 
@@ -137,12 +171,24 @@
       this.$cable.subscribe({ channel: 'PageChannel', page_id: pageId })
       this.loadBoard()
       this.loadTokens(pageId)
+      this.loadGraphics(pageId)
     },
 
     methods: {
+      containersBroadcast() {
+        this.observer.broadcast({
+          layer: this.layer,
+          container: this[this.layer],
+          cursor: this.currentCursor,
+          borderSize: this.borderSize,
+          borderColor: this.borderColor,
+          bodyColor: this.bodyColor,
+        })
+      },
+
       handleDrop({ sheet }, e) {
         const position = mousePosition(e)
-        this.sendToken({ sheet_id: sheet.id, position_x: position.x, position_y: position.y - this.gridWidth })
+        this.add({ sheet_id: sheet.id, position_x: position.x, position_y: position.y - this.gridWidth, type: 'token' })
       },
 
       checkMove(e) {
@@ -154,10 +200,48 @@
         e.preventDefault()
       },
 
-      sendToken(params) {
+      addObj(obj) {
+        if (obj.token) this.tokens.add(obj.token)
+        if (obj.graphic) this.graphics.add(obj.graphic, this[obj.graphic.layer])
+      },
+
+      changeObj(obj) {
+        if (obj.token) this.tokens.change(obj.token)
+        if (obj.graphic) this.graphics.change(obj.graphic, this[obj.graphic.layer])
+      },
+
+      deleteObj(obj) {
+        if (obj.token) {
+          const sprite = this.playersContainer.getChildByName(`token_${obj.token.id}`)
+          this.playersContainer.removeChild(sprite)
+        }
+        if (obj.graphic) {
+          const container = this[obj.graphic.layer]
+          const sprite = container.getChildByName(`graphic_${obj.graphic.id}`)
+          container.removeChild(sprite)
+        }
+      },
+
+      add(params) {
         this.$cable.perform({
           channel: 'PageChannel',
-          action: 'add_token',
+          action: 'add',
+          data: { ...params },
+        })
+      },
+
+      move(params) {
+        this.$cable.perform({
+          channel: 'PageChannel',
+          action: 'change',
+          data: { ...params },
+        })
+      },
+
+      remove(params) {
+        this.$cable.perform({
+          channel: 'PageChannel',
+          action: 'remove',
           data: { ...params },
         })
       },
@@ -168,26 +252,16 @@
         this.showContainers()
       },
 
-      moveToken(params) {
-        this.$cable.perform({
-          channel: 'PageChannel',
-          action: 'move_token',
-          data: { ...params },
-        })
-      },
-
-      removeToken(id) {
-        this.$cable.perform({
-          channel: 'PageChannel',
-          action: 'remove_token',
-          data: { id },
-        })
-      },
-
       tokenRightMenu(id) {
-        this.menuItems = [{ title: 'Удалить токен', callback: () => this.removeToken(id) }]
+        this.menuItems = [{ title: 'Удалить токен', callback: () => this.remove({ id, type: 'token' }) }]
         this.item = { type: 'token', id }
         this.$store.commit(UPDATE_CURRENT_RIGHT_CLICK_MENU, `token-${id}`)
+      },
+
+      graphicRightMenu(id) {
+        this.menuItems = [{ title: 'Удалить рисунок', callback: () => this.remove({ id, type: 'graphic' }) }]
+        this.item = { type: 'graphic', id }
+        this.$store.commit(UPDATE_CURRENT_RIGHT_CLICK_MENU, `graphic-${id}`)
       },
 
       createApp() {
@@ -203,29 +277,45 @@
       },
 
       initContainers() {
-        this.initContainer({ name: 'mapContainer', interactive: true })
-        this.initContainer({ name: 'gridContainer' })
-        this.initContainer({ name: 'gmContainer' })
-        this.initContainer({ name: 'playersContainer' })
+        this.initContainer('mapContainer')
+        this.initContainer('gridContainer')
+        this.initContainer('gmContainer')
+        this.initContainer('playersContainer')
 
         this.mapContainer.changeBackground(this.backgroundUrl, this.width, this.height)
         this.gridContainer.drawGrid(this.grid, this.width, this.height)
       },
 
-      initContainer({ name, interactive }) {
-        this[name] = new BoardContainer({ interactive })
+      initContainer(name) {
+        this[name] = new BoardContainer({
+          name,
+          observer: this.observer,
+          addEvents: name === this.layer,
+          sendGraphic: this.add,
+        })
       },
 
       showContainers() {
-        this.app.stage.addChild(this.mapContainer, this.gridContainer, this.gmContainer, this.playersContainer)
+        this.app.stage.addChild(this.mapContainer, this.gmContainer, this.playersContainer, this.gridContainer)
       },
 
       loadTokens(pageId) {
-        this.tokens = new Token(this.sheets, this.grid, this.tokenRightMenu, this.playersContainer,
-                                this.showContainers, this.moveToken)
+        this.tokens = new Token(this.sheets, this.grid, this.tokenRightMenu, this.playersContainer, this.move)
 
         loadTokens(pageId).then(tokens => {
-          tokens.forEach(token => this.tokens.addToken(token))
+          tokens.forEach(token => this.tokens.add(token))
+          this.loaded = true
+        })
+      },
+
+      loadGraphics(pageId) {
+        this.graphics = new Graphic(this.graphicRightMenu, this.move)
+
+        loadGraphics(pageId).then(graphics => {
+          graphics.forEach(raw => {
+            const graphic = new GraphicModel().setInfo(raw)
+            this.graphics.add(graphic, this[graphic.layer])
+          })
           this.loaded = true
         })
       },

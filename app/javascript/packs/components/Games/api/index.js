@@ -109,3 +109,8 @@ export const createToken = (page_id, params) =>
   axios
     .post(links.dynamic(links.base.tokens, { page_id }), params)
     .then(response => response.data)
+
+export const loadGraphics = page_id =>
+  axios
+    .get(links.json(links.dynamic(links.base.graphics, { page_id })))
+    .then(response => response.data)

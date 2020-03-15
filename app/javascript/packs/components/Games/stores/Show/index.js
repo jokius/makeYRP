@@ -15,9 +15,9 @@ export default {
       currentRightClickMenu: '',
       messages: [],
       currentCursor: 'default',
-      currentLayer: 'map', //change to player
+      currentLayer: 'map', //change to players
       borderSize: 3,
-      borderColor: { r: 0, g: 0, b: 0 },
+      borderColor: { r: 0, g: 0, b: 0, a: 1 },
       bodyColor: { r: 0, g: 0, b: 0, a: 0 },
     }
   },

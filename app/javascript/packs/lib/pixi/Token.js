@@ -3,24 +3,20 @@ import { Loader, TilingSprite } from 'pixi.js'
 export class Token {
   sheets = []
   grid = {}
-  tokenRightMenu = {}
+  rightMenu = {}
   container = {}
-  showContainers = () => {}
   currentSelect = {}
-  moveToken = () => {}
+  move = () => {}
 
-
-  constructor(sheets, grid, tokenRightMenu, container, showContainers,
-              moveToken) {
+  constructor(sheets, grid, rightMenu, container, move) {
     this.sheets = sheets
     this.grid = grid
-    this.tokenRightMenu = tokenRightMenu
+    this.rightMenu = rightMenu
     this.container = container
-    this.showContainers = showContainers
-    this.moveToken = moveToken
+    this.move = move
   }
 
-  addToken(token) {
+  add(token) {
     const loader = new Loader()
     const id = `token_${token.id}`
     const sheet = this.sheets.find(item => item.id === token.sheet_id)
@@ -51,19 +47,18 @@ export class Token {
       sprite.buttonMode = true
       sprite
         .on('pointerdown', e =>
-          this.currentSelect = { sprite: sprite, id: token.id, dragging: true, data: e.data }
+          this.currentSelect = { sprite, id: token.id, dragging: true, data: e.data }
         )
         .on('pointermove', () => this.onDragMove())
         .on('pointerupoutside', () => this.onDragEnd())
         .on('pointerup', () => this.onDragEnd())
-        .on('rightclick', () => this.tokenRightMenu(token.id))
+        .on('rightclick', () => this.rightMenu(token.id))
 
       this.container.addChild(sprite)
-      this.showContainers()
     })
   }
 
-  changeToken(token) {
+  change(token) {
     const id = `token_${token.id}`
     const sprite = this.container.getChildByName(id)
     sprite.position.x = token.position_x
@@ -95,7 +90,7 @@ export class Token {
       sprite.y -= sprite.y % height
     }
 
-    this.moveToken({ position_x: sprite.x, position_y: sprite.y, id })
+    this.move({ position_x: sprite.x, position_y: sprite.y, id, type: 'token' })
     this.currentSelect = {}
   }
 }

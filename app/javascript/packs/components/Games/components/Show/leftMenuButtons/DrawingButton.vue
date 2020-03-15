@@ -77,10 +77,10 @@
       styleBorder: {
         get() {
           const color = this.borderColor
-          const rgb = `rgb(${color.r}, ${color.g}, ${color.b})`
+          const rgb = `rgb(${color.r}, ${color.g}, ${color.b}, ${color.a})`
           return {
+            backgroundImage: color.a > 0 ? 'none' : 'url("/img/transparent.png")',
             backgroundColor: rgb,
-            backgroundImage: 'none',
           }
         },
       },

@@ -22,7 +22,7 @@ class Tokens::Update
     if result.success?
       Success(result.to_h)
     else
-      Failure(message: result.errors.to_h, status: 422)
+      Failure(result.errors.to_h)
     end
   end
 
@@ -31,7 +31,7 @@ class Tokens::Update
     if token
       Success(token: token, input: input)
     else
-      Failure(message: 'token not found', status: :not_fount)
+      Failure('token not found')
     end
   end
 
@@ -40,7 +40,7 @@ class Tokens::Update
     if token.save
       Success(token)
     else
-      Failure(message: token.errors.to_h, status: 422)
+      Failure(token.errors.to_h)
     end
   end
 end
