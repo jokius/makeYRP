@@ -63,7 +63,11 @@
                              remove: true,
                            })
 
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
 
       addCriticalInjury() {
@@ -77,7 +81,11 @@
                              value: criticalInjury,
                            })
 
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
 
       addNonTypicalDamage() {
@@ -89,7 +97,11 @@
                              value: criticalInjury,
                            })
 
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
     },
   }

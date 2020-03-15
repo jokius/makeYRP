@@ -62,7 +62,11 @@
       },
 
       deleteSheet(id) {
-        this.$store.dispatch('deleteSheet', id)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'remove',
+          data: { id, type: 'sheet' },
+        })
       },
     },
   }

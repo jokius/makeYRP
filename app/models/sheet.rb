@@ -19,4 +19,5 @@
 class Sheet < ApplicationRecord
   belongs_to :game
   belongs_to :owner, class_name: 'User'
+  has_many :tokens, dependent: :destroy
 end

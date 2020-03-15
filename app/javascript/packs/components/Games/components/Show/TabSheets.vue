@@ -7,7 +7,7 @@
       color="indigo"
       segmented
       item-color="indigo"
-      @change="value => $store.dispatch('createSheet', value)"
+      @change="value => add(value)"
     />
     <sheets-list />
   </div>
@@ -31,8 +31,18 @@
         return this.sheetTypes.map(type => ({
           text: type.text,
           value: type.value,
-          callback: () => this.$store.dispatch('createSheet', type.value),
+          callback: () => this.add(type.value),
         }))
+      },
+    },
+
+    methods: {
+      add(sheet_type) {
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: { sheet_type, type: 'sheet' },
+        })
       },
     },
   }

@@ -6,12 +6,10 @@ import {
   createMenuItem,
   createMessage,
   createPage,
-  createSheet, createToken,
   deleteFolder,
   deleteImage,
   deleteMenuItem,
   deletePage,
-  deleteSheet,
   loadFolder,
   loadGame,
   loadMessages,
@@ -20,14 +18,12 @@ import {
   updateImage,
   updateMenuItem,
   updatePage,
-  updateSheet,
 } from '../../api'
 import {
   CHANGE_BODY_COLOR,
   CHANGE_BORDER_COLOR,
   DELETE_FOLDER,
   DELETE_IMAGE,
-  DELETE_SHEET,
   FOLDERS_LOADED,
   FOLDERS_UNLOADED,
   GAME_LOADED,
@@ -47,11 +43,6 @@ const sendPageParams = async (state, payload) => {
   const ids = { game_id: game.id, id: page.id }
 
   return await updatePage(ids, { name: page.name, page_params: params })
-}
-
-const sendSheetParams = async ({ gameId, sheet, changes }) => {
-  const result = defaultsDeep(changes, sheet)
-  return await updateSheet({ game_id: gameId, ...result })
 }
 
 export default {
@@ -80,25 +71,6 @@ export default {
     try {
       const game = state.info
       await deletePage({ game_id: game.id, id })
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async createSheet({ commit, state }, sheet_type) {
-    try {
-      const game = state.info
-      await createSheet(game.id,{ sheet_type })
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async deleteSheet({ commit, state }, id) {
-    try {
-      const game = state.info
-      await deleteSheet(game.id, id)
-      commit(DELETE_SHEET, id)
     } catch (error) {
       handling(commit, error)
     }
@@ -161,22 +133,6 @@ export default {
     }
   },
 
-  async changeSheet({ commit, state }, payload) {
-    try {
-      await sendSheetParams({ ...payload, gameId: state.info.id })
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async saveSheet({ commit, state }, sheet) {
-    try {
-      await updateSheet({ game_id: state.info.id, ...sheet })
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
   async saveTargetColor({ commit, state }, obj) {
     try {
       switch (obj.type) {
@@ -229,16 +185,6 @@ export default {
   async deleteMenuItem({ commit }, id) {
     try {
       await deleteMenuItem(id)
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async createToken({ commit, state }, params) {
-    try {
-      const page = state.currentPage
-      if (!page) return
-      await createToken(page.id, params)
     } catch (error) {
       handling(commit, error)
     }

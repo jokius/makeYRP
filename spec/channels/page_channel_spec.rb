@@ -8,7 +8,7 @@ RSpec.describe PageChannel, type: :channel do
   let(:page) { create(:page) }
 
   before do
-    stub_connection user_id: user.id
+    stub_connection current_user: user
     subscribe(page_id: page.id)
   end
 

@@ -22,7 +22,7 @@ class Sheets::Update
     if result.success?
       Success(result.to_h)
     else
-      Failure(message: result.errors.to_h, status: 422)
+      Failure(message: result.errors.to_h)
     end
   end
 
@@ -31,7 +31,7 @@ class Sheets::Update
     if sheet
       Success(sheet: sheet, input: input)
     else
-      Failure(message: 'sheet not found', status: :not_fount)
+      Failure(message: 'sheet not found')
     end
   end
 
@@ -39,7 +39,7 @@ class Sheets::Update
     if sheet.update(input)
       Success(sheet)
     else
-      Failure(message: sheet.errors.to_h, status: 422)
+      Failure(message: sheet.errors.to_h)
     end
   end
 end

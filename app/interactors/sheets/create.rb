@@ -21,7 +21,7 @@ class Sheets::Create
     if result.success?
       Success(result.to_h)
     else
-      Failure(message: result.errors.to_h, status: 422)
+      Failure(message: result.errors.to_h)
     end
   end
 
@@ -30,7 +30,7 @@ class Sheets::Create
     if sheet.save
       Success(sheet)
     else
-      Failure(message: sheet.errors.to_h, status: 422)
+      Failure(message: sheet.errors.to_h)
     end
   end
 

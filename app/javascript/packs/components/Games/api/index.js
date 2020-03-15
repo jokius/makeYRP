@@ -31,15 +31,6 @@ export const loadSheets = game_id =>
     .get(links.json(links.dynamic(links.base.sheets, { game_id })))
     .then(response => response.data)
 
-export const createSheet = (game_id, params) =>
-  axios
-    .post(links.dynamic(links.base.sheets, { game_id }), params)
-    .then(response => response.data)
-
-export const deleteSheet = (game_id, id) =>
-  axios
-    .delete(links.dynamic(links.base.sheet, { game_id, id }))
-
 export const loadFolder = params =>
   axios
     .get(links.json(links.base.folder, { params }))
@@ -83,11 +74,6 @@ export const createMessage = (game_id, params) =>
     .post(links.dynamic(links.base.messages, { game_id }), params)
     .then(response => response.data)
 
-export const updateSheet = params =>
-  axios
-    .put(links.dynamic(links.base.sheet, params), params)
-    .then(response => response.data)
-
 export const createMenuItem = (game_id, params) =>
   axios
     .post(links.dynamic(links.base.menuItems, { game_id }), params)
@@ -103,11 +89,6 @@ export const deleteMenuItem = id =>
 export const loadTokens = page_id =>
   axios
     .get(links.json(links.dynamic(links.base.tokens, { page_id })))
-    .then(response => response.data)
-
-export const createToken = (page_id, params) =>
-  axios
-    .post(links.dynamic(links.base.tokens, { page_id }), params)
     .then(response => response.data)
 
 export const loadGraphics = page_id =>

@@ -87,13 +87,14 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { get } from 'lodash'
+  import { defaultsDeep, get } from 'lodash'
 
   import FolderItem from './FolderItem'
   import FoldersPreloader from './FoldersPreloader'
   import NewFolderModal from './NewFolderModal'
   import ImageItem from './ImageItem'
   import DropzoneModal from './DropzoneModal'
+  import { updateSheet } from '../../../api'
 
   export default {
     name: 'FoldersModal',
@@ -175,12 +176,15 @@
           return get(this.currentSheet.params, 'img.id', 0)
         },
         set(value) {
-          const img = this.currentSheet.params.img || {}
+          const sheet = this.currentSheet
+          const img = sheet.params.img || {}
           const image = img.id !== value.id ?  value : null
-          this.$store.dispatch('changeSheet',
-                               { sheet: this.currentSheet,
-                                 changes: { params: { img: image } },
-                               })
+          const params = defaultsDeep({ params: { img: image } }, sheet)
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'change',
+            data: { ...params, type: 'sheet' },
+          })
         },
       },
     },
