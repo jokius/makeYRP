@@ -46,7 +46,7 @@ class Systems::ParseTemplate
   end
 
   def parse_private_data(private_data_file)
-    return {} if private_data_file.nil? || private_data_file == 'null'
+    return {} if private_data_file.blank? || private_data_file == 'null'
 
     file = private_data_file.read
     file.force_encoding 'UTF-8'
