@@ -17,15 +17,6 @@ export const loadGame = id =>
     .get(links.json(links.dynamic(links.base.game, { id })))
     .then(response => response.data)
 
-export const createPage = (game_id, params) =>
-  axios
-    .post(links.dynamic(links.base.pages, { game_id }), params)
-    .then(response => response.data)
-
-export const deletePage = params =>
-  axios
-    .delete(links.dynamic(links.base.page, params))
-
 export const loadSheets = game_id =>
   axios
     .get(links.json(links.dynamic(links.base.sheets, { game_id })))
@@ -57,11 +48,6 @@ export const deleteImage = id =>
 export const updateImage = params =>
   axios
     .put(links.dynamic(links.base.images, { id: params.id, folder_id: 0 }), { ...params })
-    .then(response => response.data)
-
-export const updatePage = (ids, params) =>
-  axios
-    .put(links.dynamic(links.base.page, ids), params)
     .then(response => response.data)
 
 export const loadMessages = game_id =>

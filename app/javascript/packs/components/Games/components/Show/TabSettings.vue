@@ -87,6 +87,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { defaultsDeep } from 'lodash'
 
   import FoldersModal from './folders/FoldersModal'
 
@@ -173,7 +174,7 @@
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { grid: { type: value } })
+          this.changePage({ grid: { type: value } })
         },
       },
 
@@ -183,7 +184,7 @@
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { grid: { width: value } })
+          this.changePage({ grid: { width: value } })
         },
       },
 
@@ -193,7 +194,7 @@
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { grid: { height: value } })
+          this.changePage({ grid: { height: value } })
         },
       },
 
@@ -203,7 +204,7 @@
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { width: value })
+          this.changePage({ width: value })
         },
       },
 
@@ -213,12 +214,23 @@
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { height: value })
+          this.changePage({ height: value })
         },
       },
     },
 
     methods: {
+      changePage(params) {
+        const page = this.currentPage
+        const page_params = defaultsDeep(params, page.params)
+
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { page_params, id: page.id, name: page.name, type: 'page' },
+        })
+      },
+
       openPageColorSelect() {
         const key = Date.now()
         this.$store.commit(ADD_OPEN_MODAL, {

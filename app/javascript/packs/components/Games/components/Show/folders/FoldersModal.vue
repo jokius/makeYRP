@@ -94,7 +94,6 @@
   import NewFolderModal from './NewFolderModal'
   import ImageItem from './ImageItem'
   import DropzoneModal from './DropzoneModal'
-  import { updateSheet } from '../../../api'
 
   export default {
     name: 'FoldersModal',
@@ -161,7 +160,13 @@
         },
         set(value) {
           const image = this.currentSelected.page !== value.id ?  value : null
-          this.$store.dispatch('changePage', { background: { image } })
+          const page = this.currentPage
+          const page_params = defaultsDeep({ background: { image } }, page.params)
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'change',
+            data: { page_params, id: page.id, name: page.name, type: 'page' },
+          })
         },
       },
 

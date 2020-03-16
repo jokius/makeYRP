@@ -22,7 +22,7 @@ class Pages::Update
     if result.success?
       Success(result.to_h)
     else
-      Failure(message: result.errors.to_h, status: 422)
+      Failure(message: result.errors.to_h)
     end
   end
 
@@ -31,7 +31,7 @@ class Pages::Update
     if page
       Success(page: page, input: input)
     else
-      Failure(message: 'page not found', status: :not_fount)
+      Failure(message: 'page not found')
     end
   end
 
@@ -42,7 +42,7 @@ class Pages::Update
     if page.save
       Success(page)
     else
-      Failure(message: page.errors.to_h, status: 422)
+      Failure(message: page.errors.to_h)
     end
   end
 end

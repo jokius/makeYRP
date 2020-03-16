@@ -81,7 +81,11 @@
 
       save() {
         this.$store.commit(REMOVE_OPEN_MODAL, this.uniqKey)
-        this.$store.dispatch('createPage', this.name)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: { name: this.name, type: 'page' },
+        })
         this.name = ''
       },
     },

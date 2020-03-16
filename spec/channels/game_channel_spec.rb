@@ -29,6 +29,17 @@ RSpec.describe GameChannel, type: :channel do
       expect(sheet).not_to be_nil
     end
 
+    it 'page' do
+      params = { game_id: game.id, name: 'test', 'type' => 'page' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
+        expect(data[:page]).to match_json_schema('games/pages/show')
+        expect(data[:new]).to be true
+      end)
+
+      page = Page.find_by(game: game, name: 'test')
+      expect(page).not_to be_nil
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.add({})
@@ -63,6 +74,27 @@ RSpec.describe GameChannel, type: :channel do
       end
     end
 
+    describe 'page' do
+      let(:page) { create(:page) }
+      let(:new_name) { 'new page name' }
+      let(:page_params) { { 'new_params' => 'updated' } }
+      let(:params) { { id: page.id, name: new_name, page_params: page_params, 'type' => 'page' } }
+
+      it 'broadcasted to game' do
+        expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:page]).to match_json_schema('games/pages/show')
+          expect(data[:update]).to be true
+        end)
+      end
+
+      it 'new params save' do
+        subscription.change(params)
+        page.reload
+        expect(page.name).to eq new_name
+        expect(page.params).to eq page_params
+      end
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.change({})
@@ -93,6 +125,24 @@ RSpec.describe GameChannel, type: :channel do
         params = { 'id' => sheet.id, 'type' => 'sheet' }
         subscription.remove(params)
         expect(Sheet.find_by(id: sheet.id)).to be_nil
+      end
+    end
+
+    describe 'page' do
+      it 'broadcasted to game' do
+        page = create(:page)
+        params = { 'id' => page.id, 'type' => 'page' }
+        expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:page]).to eq page.id
+          expect(data[:delete]).to be true
+        end)
+      end
+
+      it 'remove record' do
+        page = create(:page)
+        params = { 'id' => page.id, 'type' => 'page' }
+        subscription.remove(params)
+        expect(Page.find_by(id: page.id)).to be_nil
       end
     end
 

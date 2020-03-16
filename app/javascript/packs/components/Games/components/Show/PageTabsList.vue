@@ -50,7 +50,11 @@
     },
     methods: {
       deletePage(id) {
-        this.$store.dispatch('deletePage', id)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'remove',
+          data: { id, type: 'page' },
+        })
       },
     },
   }
