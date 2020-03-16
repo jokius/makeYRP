@@ -13,6 +13,8 @@ class GameChannel < ApplicationCable::Channel
       add_page(data)
     when 'message'
       add_message(data)
+    when 'menu_item'
+      add_menu_item(data)
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -58,6 +60,12 @@ class GameChannel < ApplicationCable::Channel
   def add_message(data)
     responds(Messages::Create, params.merge(data).merge(user_id: current_user.id)) do |message|
       broadcast(new: true, message: MessageSerializer.new(message))
+    end
+  end
+
+  def add_menu_item(data)
+    responds(Menus::Items::Create, params.merge(data)) do |item|
+      broadcast(new: true, menu_item: Menus::ItemSerializer.new(item))
     end
   end
 

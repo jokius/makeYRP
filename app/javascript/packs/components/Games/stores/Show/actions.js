@@ -1,17 +1,14 @@
 import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
-  createMenuItem,
   deleteFolder,
   deleteImage,
-  deleteMenuItem,
   loadFolder,
   loadGame,
   loadMessages,
   loadSheets,
   updateFolder,
   updateImage,
-  updateMenuItem,
 } from '../../api'
 import {
   DELETE_FOLDER,
@@ -87,31 +84,6 @@ export default {
         break
       default:
         break
-    }
-  },
-
-  async createMenuItem({ commit, state }, params) {
-    try {
-      const game = state.info
-      await createMenuItem(game.id, params)
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async updateMenuItem({ commit }, { id, params }) {
-    try {
-      await updateMenuItem(id, params)
-    } catch (error) {
-      handling(commit, error)
-    }
-  },
-
-  async deleteMenuItem({ commit }, id) {
-    try {
-      await deleteMenuItem(id)
-    } catch (error) {
-      handling(commit, error)
     }
   },
 }

@@ -51,6 +51,18 @@ RSpec.describe GameChannel, type: :channel do
       expect(message).not_to be_nil
     end
 
+    it 'menu_item' do
+      menu = create(:menu)
+      params = { game_id: game.id, menu_id: menu.id, params: { test: 'new' }, 'type' => 'menu_item' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
+        expect(data[:menu_item]).to match_json_schema('games/menus/items/show')
+        expect(data[:new]).to be true
+      end)
+
+      menu_item = Menus::Item.find_by(menu: menu)
+      expect(menu_item).not_to be_nil
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.add({})

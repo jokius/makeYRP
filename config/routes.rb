@@ -8,14 +8,13 @@ Rails.application.routes.draw do
     scope module: :games do
       resources :sheets, only: :index
       resources :messages, only: :index
-      resources :menus_items
     end
   end
 
   resources :pages, only: :none do
     scope module: :pages do
-      resources :tokens, only: %i[index]
-      resources :graphics, only: %i[index]
+      resources :tokens, only: :index
+      resources :graphics, only: :index
     end
   end
 

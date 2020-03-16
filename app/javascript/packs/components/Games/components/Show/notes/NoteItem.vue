@@ -76,7 +76,7 @@
     mounted() {
       this.$cable.subscribe({
         channel: 'MenusItemChannel',
-        id: this.note.id,
+        item_id: this.note.id,
       })
     },
 
@@ -96,7 +96,7 @@
       },
 
       deleteNote() {
-        this.$store.dispatch('deleteMenuItem', this.note.id)
+        this.$cable.perform({ channel: 'MenusItemChannel', action: 'remove' })
       },
     },
   }
