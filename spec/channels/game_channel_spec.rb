@@ -40,6 +40,17 @@ RSpec.describe GameChannel, type: :channel do
       expect(page).not_to be_nil
     end
 
+    it 'message' do
+      params = { game_id: game.id, body: { text: 'test' }, 'type' => 'message' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
+        expect(data[:message]).to match_json_schema('games/messages/show')
+        expect(data[:new]).to be true
+      end)
+
+      message = Message.find_by(game: game, user: user)
+      expect(message).not_to be_nil
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.add({})

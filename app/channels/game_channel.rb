@@ -8,11 +8,11 @@ class GameChannel < ApplicationCable::Channel
   def add(data)
     case data['type']
     when 'sheet'
-      responds(Sheets::Create, params.merge(data).merge(owner_id: current_user.id)) do |sheet|
-        broadcast(new: true, sheet: sheet)
-      end
+      add_sheet(data)
     when 'page'
-      responds(Pages::Create, params.merge(data)) { |page| broadcast(new: true, page: page) }
+      add_page(data)
+    when 'message'
+      add_message(data)
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -44,6 +44,22 @@ class GameChannel < ApplicationCable::Channel
   end
 
   private
+
+  def add_sheet(data)
+    responds(Sheets::Create, params.merge(data).merge(owner_id: current_user.id)) do |sheet|
+      broadcast(new: true, sheet: sheet)
+    end
+  end
+
+  def add_page(data)
+    responds(Pages::Create, params.merge(data)) { |page| broadcast(new: true, page: page) }
+  end
+
+  def add_message(data)
+    responds(Messages::Create, params.merge(data).merge(user_id: current_user.id)) do |message|
+      broadcast(new: true, message: MessageSerializer.new(message))
+    end
+  end
 
   def broadcast(data)
     GameChannel.broadcast_to(game, data)

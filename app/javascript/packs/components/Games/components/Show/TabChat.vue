@@ -77,7 +77,11 @@
       sendMessage() {
         if (this.text === '') return
 
-        this.$store.dispatch('sendMessage', { text: this.text })
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: { body: { text: this.text }, type: 'message' },
+        })
         this.text = ''
       },
     },

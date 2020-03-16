@@ -2,7 +2,6 @@ import { handling } from '../../../../helpers/errorsHandling'
 import {
   createFolder,
   createMenuItem,
-  createMessage,
   deleteFolder,
   deleteImage,
   deleteMenuItem,
@@ -88,15 +87,6 @@ export default {
         break
       default:
         break
-    }
-  },
-
-  async sendMessage({ commit, state }, body) {
-    try {
-      const game = state.info
-      await createMessage(game.id,{ body })
-    } catch (error) {
-      handling(commit, error)
     }
   },
 

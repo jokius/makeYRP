@@ -60,7 +60,7 @@
     },
 
     channels: {
-      ChatChannel: {
+      GameChannel: {
         connected() {
           this.overlay = false
         },
@@ -68,12 +68,6 @@
           this.overlay = true
         },
 
-        received(message) {
-          this.$store.commit(ADD_MESSAGE, message)
-        },
-      },
-
-      GameChannel: {
         received(obj) {
           if (obj.new) this.addObj(obj)
           if (obj.update) this.updateObj(obj)
@@ -100,11 +94,6 @@
       const gameId = this.$route.params.id
 
       this.$cable.subscribe({
-        channel: 'ChatChannel',
-        game_id: gameId,
-      })
-
-      this.$cable.subscribe({
         channel: 'GameChannel',
         game_id: gameId,
       })
@@ -115,6 +104,7 @@
         if (obj.sheet) this.$store.commit(ADD_SHEET, obj.sheet)
         if (obj.page) this.$store.commit(ADD_PAGE, obj.page)
         if (obj.menu_item) this.$store.commit(ADD_MENU_ITEM, obj.menu_item)
+        if (obj.message) this.$store.commit(ADD_MESSAGE, obj.message)
       },
 
       updateObj(obj) {

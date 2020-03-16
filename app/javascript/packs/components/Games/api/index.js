@@ -55,11 +55,6 @@ export const loadMessages = game_id =>
     .get(links.json(links.dynamic(links.base.messages, { game_id })))
     .then(response => response.data)
 
-export const createMessage = (game_id, params) =>
-  axios
-    .post(links.dynamic(links.base.messages, { game_id }), params)
-    .then(response => response.data)
-
 export const createMenuItem = (game_id, params) =>
   axios
     .post(links.dynamic(links.base.menuItems, { game_id }), params)

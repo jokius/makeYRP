@@ -22,25 +22,4 @@ RSpec.describe Games::MessagesController, type: :request do
       expect(response).to match_json_schema('games/messages/index')
     end
   end
-
-  describe 'POST /games/:game_id/messages json' do
-    it 'matches with message' do
-      expect { create_message }.to have_broadcasted_to(game).from_channel(ChatChannel).with do |data|
-        expect(data).to match_json_schema('games/messages/show')
-      end
-    end
-  end
-
-  private
-
-  def create_message
-    game_id = game.id
-    post "/games/#{game_id}/messages",
-         params: {
-           game_id: game_id,
-           body: {
-             text: 'test message'
-           }
-         }
-  end
 end

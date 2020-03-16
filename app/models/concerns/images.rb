@@ -25,6 +25,11 @@ module Images
       image = send(name)
       return nil unless image.attached?
 
+      class_name = 'ActiveStorage::Service::DiskService'
+      if ActiveStorage::Blob.service.class.name == class_name
+        Rails.application.routes.default_url_options[:only_path] = true
+      end
+
       Rails.application.routes.url_helpers.url_for(image)
     end
   end
