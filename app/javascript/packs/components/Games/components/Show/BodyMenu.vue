@@ -97,7 +97,7 @@
             { label: 'Карты', icon: 'mdi-map', type: 'maps' },
           ]
           const afterSystem = [
-            { label: 'Настройки страници', icon: 'mdi-settings', type: 'settings' },
+            { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings' },
           ]
 
           const system = this.menus.map(menu => ({
