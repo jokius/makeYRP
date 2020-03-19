@@ -273,7 +273,6 @@
           transparent: true,
           resolution: 1,
           interactive: true,
-          forceCanvas: true,
         })
       },
 
