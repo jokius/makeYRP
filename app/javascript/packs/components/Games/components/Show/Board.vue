@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import { Application } from 'pixi.js'
+  import { Application } from 'pixi.js-legacy'
   import { mapState } from 'vuex'
 
   import RightClickMenu from './RightClickMenu'

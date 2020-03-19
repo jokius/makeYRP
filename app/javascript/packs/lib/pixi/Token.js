@@ -1,4 +1,4 @@
-import { Loader, TilingSprite } from 'pixi.js'
+import { Loader, TilingSprite } from 'pixi.js-legacy'
 
 export class Token {
   sheets = []
