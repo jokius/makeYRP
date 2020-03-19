@@ -40,6 +40,10 @@ class User < ApplicationRecord
     avatar.attached? ? image_avatars : gravatar_avatars
   end
 
+  def master?(game)
+    master_in_games.exists?(game.id)
+  end
+
   private
 
   def image_avatars

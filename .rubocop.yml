@@ -37,6 +37,11 @@ Metrics/ModuleLength:
 RSpec/EmptyExampleGroup:
   Exclude:
   - spec/integration/internal/**/*
+  - spec/policies/**/*
+
+RSpec/ScatteredSetup:
+  Exclude:
+    - spec/policies/**/*
 
 RSpec/ExampleLength:
   Max: 11

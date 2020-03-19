@@ -6,10 +6,12 @@ class SystemsController < ApplicationController
   end
 
   def new
+    authorize! System.new
     respond_json nil
   end
 
   def create
+    authorize! System.new
     responds(Systems::Change, params) do
       head :no_content
     end
