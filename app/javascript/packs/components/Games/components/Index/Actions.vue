@@ -1,7 +1,6 @@
 <template>
   <div class="text-center">
     <v-btn
-      class="ma-2"
       tile
       color="indigo"
       dark
@@ -11,7 +10,6 @@
     </v-btn>
     <v-btn
       v-if="admin"
-      class="ma-2"
       tile
       color="indigo"
       dark

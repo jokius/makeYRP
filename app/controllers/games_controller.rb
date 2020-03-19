@@ -20,6 +20,12 @@ class GamesController < ApplicationController
     respond_json json: game, include: %w[master users pages menus.items]
   end
 
+  def join
+    responds(Games::Join, game_id: game.id, user_id: current_user.id) do |game|
+      respond_json json: { id: game.id }, status: :created
+    end
+  end
+
   private
 
   def games_params

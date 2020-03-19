@@ -17,6 +17,11 @@ export const loadGame = id =>
     .get(links.json(links.dynamic(links.base.game, { id })))
     .then(response => response.data)
 
+export const joinGame = id =>
+  axios
+    .post(links.dynamic(links.base.joinGame, { id }))
+    .then(response => response.data)
+
 export const loadSheets = game_id =>
   axios
     .get(links.json(links.dynamic(links.base.sheets, { game_id })))

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   root 'games#index'
 
   resources :games, except: %i[update delete] do
+    post :join, on: :member
+
     scope module: :games do
       resources :sheets, only: :index
       resources :messages, only: :index

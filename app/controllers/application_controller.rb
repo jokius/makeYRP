@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
               when Success
                 { json: result.success, status: status }
               else
-                { json: error[:message], status: (error[:status] || 400) }
+                { json: result.failure[:message], status: (result.failure[:status] || 400) }
               end
 
     respond_json respond

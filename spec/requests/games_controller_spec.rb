@@ -68,6 +68,19 @@ RSpec.describe GamesController, type: :request do
     end
   end
 
+  describe 'POST /games/:id/join json' do
+    let(:game) { create :game }
+
+    before do
+      post "/games/#{game.id}/join", **headers
+    end
+
+    it 'correct json' do
+      expect(response.status).to eq 201
+      expect(json_data[:id]).not_to be_nil
+    end
+  end
+
   describe 'GET /games/:id json' do
     let(:game) { create(:game) }
 

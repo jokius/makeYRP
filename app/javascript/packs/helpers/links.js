@@ -15,6 +15,7 @@ const links = {
     games: 'games',
     newGame: 'games/new',
     game: 'games/:id',
+    joinGame: 'games/:id/join',
     sheets: 'games/:game_id/sheets',
     sheet: 'games/:game_id/sheets/:id',
     messages: 'games/:game_id/messages',
