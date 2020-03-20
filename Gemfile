@@ -13,6 +13,8 @@ gem 'webpacker', '~> 4.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
+gem 'listen', '>= 3.0.5', '< 3.2'
+
 # JSON API
 gem 'active_model_serializers', '~> 0.10.0'
 
@@ -49,7 +51,6 @@ group :development do
   gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
   gem 'brakeman'
   gem 'foreman'
-  gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'meta_request'
   gem 'reek', require: false
   gem 'rubocop', require: false
