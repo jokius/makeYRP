@@ -110,13 +110,13 @@
 
       windowWidth: {
         get() {
-          return window.screen.width * window.devicePixelRatio
+          return this.width * window.devicePixelRatio
         },
       },
 
       windowHeight: {
         get() {
-          return window.screen.height * window.devicePixelRatio
+          return this.height * window.devicePixelRatio
         },
       },
 
