@@ -1,10 +1,10 @@
 <template>
   <v-tabs centered>
     <v-tab>
-      Открытые игры
+      Актуальные
     </v-tab>
     <v-tab>
-      Закрытые игры
+      Завершенные
     </v-tab>
 
     <v-tab-item>

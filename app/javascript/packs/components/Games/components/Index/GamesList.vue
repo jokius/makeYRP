@@ -5,7 +5,7 @@
         <v-list-item-content>
           <div class="title-grid">
             <v-list-item-title v-html="game.name" />
-            <v-btn color="success" max-width="150" @click="openGame(game.id)">Запустить</v-btn>
+            <v-btn color="success" max-width="150" @click="openGame(game.id)">Загрузить</v-btn>
           </div>
           <v-list-item-subtitle>
             <span>Мастер: </span>
