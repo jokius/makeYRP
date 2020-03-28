@@ -2,7 +2,7 @@
 
 class Games::SheetsController < Games::ApplicationController
   def index
-    # TODO: add pundit scope
-    respond_json json: Sheet.where(game: game)
+    sheets = authorized_scope(Sheet.where(game: game).order(created_at: :desc), scope_options: { game: game })
+    respond_json json: sheets, user: current_user
   end
 end

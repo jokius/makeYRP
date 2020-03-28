@@ -69,3 +69,8 @@ export const loadGraphics = page_id =>
   axios
     .get(links.json(links.dynamic(links.base.graphics, { page_id })))
     .then(response => response.data)
+
+export const AclUsers = params =>
+  axios
+    .get(links.base.acl, { params })
+    .then(response => response.data)

@@ -25,6 +25,7 @@ const links = {
     images: 'folders/:folder_id/images/:id',
     tokens: 'pages/:page_id/tokens',
     graphics: 'pages/:page_id/graphics',
+    acl: 'acl',
 
     adminGames: 'admin/games',
     adminGame: 'admin/games/:id',

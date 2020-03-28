@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'action_policy/rspec/dsl'
 
 RSpec.describe SystemPolicy, type: :policy do
-  let(:user) { build_stubbed :user }
-  let(:record) { build_stubbed :system }
+  let(:user) { create :user }
+  let(:record) { create :system }
   let(:context) { { user: user } }
 
   describe_rule :new? do

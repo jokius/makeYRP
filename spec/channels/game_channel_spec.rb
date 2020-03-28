@@ -71,10 +71,10 @@ RSpec.describe GameChannel, type: :channel do
 
   describe '#change' do
     describe 'sheet' do
-      let(:sheet) { create(:sheet) }
+      let(:sheet) { create(:sheet, owner: user) }
       let(:new_name) { 'super name' }
       let(:sheet_params) { { 'new_params' => 'updated' } }
-      let(:params) { { id: sheet.id, name: new_name, params: sheet_params, 'type' => 'sheet' } }
+      let(:params) { { 'id' => sheet.id, name: new_name, params: sheet_params, 'type' => 'sheet' } }
 
       it 'broadcasted to game' do
         expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
@@ -127,7 +127,7 @@ RSpec.describe GameChannel, type: :channel do
   describe '#remove' do
     describe 'sheet' do
       it 'broadcasted to game' do
-        sheet = create(:sheet)
+        sheet = create(:sheet, owner: user)
         params = { 'id' => sheet.id, 'type' => 'sheet' }
         expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
           expect(data[:sheet]).to eq sheet.id
@@ -136,7 +136,7 @@ RSpec.describe GameChannel, type: :channel do
       end
 
       it 'broadcasted to sheet' do
-        sheet = create(:sheet)
+        sheet = create(:sheet, owner: user)
         params = { 'id' => sheet.id, 'type' => 'sheet' }
         expect { subscription.remove(params) }.to(have_broadcasted_to(sheet).from_channel(SheetChannel).with do |data|
           expect(data[:delete]).to eq sheet.id
@@ -144,7 +144,7 @@ RSpec.describe GameChannel, type: :channel do
       end
 
       it 'remove record' do
-        sheet = create(:sheet)
+        sheet = create(:sheet, owner: user)
         params = { 'id' => sheet.id, 'type' => 'sheet' }
         subscription.remove(params)
         expect(Sheet.find_by(id: sheet.id)).to be_nil

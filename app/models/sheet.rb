@@ -17,6 +17,8 @@
 #
 
 class Sheet < ApplicationRecord
+  include Acl
+
   belongs_to :game
   belongs_to :owner, class_name: 'User'
   has_many :tokens, dependent: :destroy

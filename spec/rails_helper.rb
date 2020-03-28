@@ -9,6 +9,8 @@ abort('The Rails environment is running in production mode!') if Rails.env.produ
 require 'rspec/rails'
 require 'json_matchers/rspec'
 require 'action_cable/testing/rspec'
+require 'action_policy/rspec/dsl'
+
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 begin

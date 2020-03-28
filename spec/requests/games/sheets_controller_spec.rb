@@ -10,14 +10,48 @@ RSpec.describe Games::SheetsController, type: :request do
   before { sign_in user }
 
   describe 'GET /games/:game_id/sheets json' do
-    before do
-      create(:sheet, game: game, owner: user)
-      get "/games/#{game.id}/sheets", **headers
+    context 'when owner' do
+      before do
+        create(:sheet, game: game, owner: user)
+        create(:sheet)
+        get "/games/#{game.id}/sheets", **headers
+      end
+
+      it 'correct json' do
+        expect(response.status).to eq 200
+        expect(response).to match_json_schema('sheets/index')
+        expect(json_data.size).to eq 1
+      end
     end
 
-    it 'correct json' do
-      expect(response.status).to eq 200
-      expect(response).to match_json_schema('sheets/index')
+    context 'when change access' do
+      before do
+        sheet = create(:sheet, game: game)
+        create(:access_level, user: user, object: sheet, write: true)
+        create(:sheet)
+        get "/games/#{game.id}/sheets", **headers
+      end
+
+      it 'correct json' do
+        expect(response.status).to eq 200
+        expect(response).to match_json_schema('sheets/index')
+        expect(json_data.size).to eq 1
+      end
+    end
+
+    context 'when view access' do
+      before do
+        sheet = create(:sheet, game: game)
+        create(:access_level, user: user, object: sheet, read: true)
+        create(:sheet)
+        get "/games/#{game.id}/sheets", **headers
+      end
+
+      it 'correct json' do
+        expect(response.status).to eq 200
+        expect(response).to match_json_schema('sheets/index')
+        expect(json_data.size).to eq 1
+      end
     end
   end
 end

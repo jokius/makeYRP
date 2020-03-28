@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_04_001821) do
+ActiveRecord::Schema.define(version: 2020_03_22_153417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "access_levels", force: :cascade do |t|
+    t.string "object_type", null: false
+    t.bigint "object_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "write", default: false, null: false
+    t.boolean "read", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["object_type", "object_id"], name: "index_access_levels_on_object_type_and_object_id"
+    t.index ["user_id"], name: "index_access_levels_on_user_id"
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false

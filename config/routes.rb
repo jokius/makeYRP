@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :acl, only: :show
+
   namespace :admin do
     resources :games, only: %i[index destroy]
   end
