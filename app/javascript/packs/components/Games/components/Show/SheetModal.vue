@@ -11,6 +11,12 @@
       <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
       <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
       <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size" />
+      <hmw-character-sheet
+        v-else-if="sheetName === 'horror_movie_world-character'"
+        :id="id"
+        :key="key"
+        :size="size"
+      />
       <v-alert
         v-else
         :key="key"
@@ -33,11 +39,12 @@
   import MutantSheet from '../../../Templates/components/MYZ/sheets/MutantSheet'
   import BidCharacterSheet from '../../../Templates/components/BladeInTheDarck/sheets/CharacterSheet'
   import BidTeamSheet from '../../../Templates/components/BladeInTheDarck/sheets/TeamSheet'
+  import HmwCharacterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/CharacterSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog },
+    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog, HmwCharacterSheet },
 
     props: {
       uniqKey: { type: Number, required: true },
@@ -98,6 +105,8 @@
             case 'blade_in_the_dark-character':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-team':
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'horror_movie_world-character':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
