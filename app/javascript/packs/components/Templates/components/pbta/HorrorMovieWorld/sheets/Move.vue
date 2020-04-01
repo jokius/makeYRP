@@ -55,7 +55,7 @@
 
     data() {
       return {
-        privateType: null,
+        privateType: {},
         privateWho: null,
         modalOpen: false,
       }
@@ -64,7 +64,7 @@
     computed: {
       type: {
         get() {
-          return this.privateType || this.move.type
+          return this.privateType
         },
 
         set(value) {
@@ -101,9 +101,10 @@
     },
 
     created() {
-      console.log('this.move', this.move)
       if (typeof this.move.type === 'object') {
         this.privateType = this.move.type[0]
+      } else {
+        this.privateType.value = this.move.type
       }
 
       if (typeof this.move.who === 'object') {
@@ -131,7 +132,7 @@
       },
 
       roll(modifier) {
-        const characteristic = this.characteristics.find(item => item.type === this.type)
+        const characteristic = this.characteristics.find(item => item.type === this.type.value || this.type)
         let results = {}
         if (this.who) {
           results = this.move[this.who]
