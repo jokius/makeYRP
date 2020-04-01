@@ -27,7 +27,7 @@
                 v-for="number in hp.max"
                 :key="`hp-${number}`"
                 class="box-line"
-                @click="changeHp"
+                @click="changeHp(number)"
               >
                 <div :class="[{enable: hp.current >= number }, 'box']" />
               </div>
@@ -39,7 +39,7 @@
                 v-for="number in fear.max"
                 :key="`fear-${number}`"
                 class="box-line"
-                @click="changeFear"
+                @click="changeFear(number)"
               >
                 <div :class="[{enable: fear.current >= number }, 'box']" />
               </div>
@@ -51,7 +51,7 @@
                 v-for="number in 10"
                 :key="`sympathy-${number}`"
                 class="box-line"
-                @click="changeSympathy"
+                @click="changeSympathy(number)"
               >
                 <div :class="[{enable: sympathy.current >= number }, 'box']" />
               </div>
@@ -328,8 +328,9 @@
                            })
       },
 
-      changeHp() {
-        const value = this.hp.current < this.hp.max ? this.hp.current + 1 : 0
+      changeHp(number) {
+        let value = this.hp.current < this.hp.max ? number : 0
+        value = number === this.hp.current && number === 1 ? 0 : number
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
@@ -340,8 +341,9 @@
         this.saveSheet()
       },
 
-      changeFear() {
-        const value = this.fear.current < this.fear.max ? this.fear.current + 1 : 0
+      changeFear(number) {
+        let value = this.fear.current < this.fear.max ? number : 0
+        value = number === this.fear.current && number === 1 ? 0 : number
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
@@ -352,8 +354,9 @@
         this.saveSheet()
       },
 
-      changeSympathy() {
-        const value = this.fear.sympathy < this.sympathy.max ? this.sympathy.current + 1 : 0
+      changeSympathy(number) {
+        let value = this.sympathy.current < 10 ? number : 0
+        value = number === this.sympathy.current && number === 1 ? 0 : number
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
