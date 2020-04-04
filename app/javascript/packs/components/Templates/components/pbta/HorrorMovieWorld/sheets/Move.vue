@@ -36,6 +36,32 @@
     </div>
 
     <span class="move-description" v-html="move.description" />
+    <v-textarea
+      v-if="move.textarea"
+      v-model="textarea"
+      auto-grow
+      no-resize
+      rows="2"
+      color="indigo"
+      background-color="white"
+      class="notes"
+      hide-details
+      @change="saveSheet"
+    />
+    <div v-if="move.selects" class="selects">
+      <v-select
+        v-for="(select, index) in selects"
+        :key="`other-select-${index}`"
+        :items="select.items"
+        class="other-select"
+        color="black"
+        :multiple="select.limit > 1"
+        flat
+        :value="select.value"
+        :label="select.label"
+        @change="value => otherSelect(index, value)"
+      />
+    </div>
     <roll-modifier-modal v-model="obj" />
   </div>
 </template>
@@ -82,6 +108,22 @@
         },
       },
 
+      textarea: {
+        get() {
+          return this.move.textarea.value
+        },
+
+        set(value) {
+          this.input('textarea.value', value)
+        },
+      },
+
+      selects: {
+        get() {
+          return this.move.selects
+        },
+      },
+
       obj: {
         get() {
           return { open: this.modalOpen, modifier: 0 }
@@ -113,14 +155,23 @@
     },
 
     methods: {
+      otherSelect(index, value) {
+        this.input(`selects[${index}].value`, value)
+        this.saveSheet()
+      },
+
       changeMove(value) {
+        this.input('enable', value)
+        this.saveSheet()
+      },
+
+      input(target, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: this.path,
-                             value,
+                             path: `${this.path}.${target}`,
+                             value: value,
                            })
-        this.saveSheet()
       },
 
       saveSheet() {
@@ -132,7 +183,7 @@
       },
 
       roll(modifier) {
-        const characteristic = this.characteristics.find(item => item.type === this.type.value || this.type)
+        const characteristic = this.characteristics.find(item => item.type === this.type.value)
         let results = {}
         if (this.who) {
           results = this.move[this.who]
@@ -141,7 +192,6 @@
           results.part = this.move.part
           results.fail = this.move.fail
         }
-
 
         this.$cable.perform({
           channel: 'GameChannel',
@@ -223,5 +273,11 @@
     height: 35px;
     padding: 0;
     margin: 0 0 0 10px;
+  }
+
+  .selects {
+    display: grid;
+    grid-auto-flow: column;
+    grid-column-gap: 5px;
   }
 </style>

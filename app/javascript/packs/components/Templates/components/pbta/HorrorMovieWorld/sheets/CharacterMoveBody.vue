@@ -23,7 +23,7 @@
         :key="`base-moves-${index}`"
         :sheet="sheet"
         :move="move"
-        :path="`moves[${index}].enable`"
+        :path="`moves[${index}]`"
       />
     </div>
   </div>
