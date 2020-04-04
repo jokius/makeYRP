@@ -13,7 +13,7 @@ gem 'webpacker', '~> 5.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
-gem 'listen', '>= 3.0.5', '< 3.2'
+gem 'listen', '>= 3.0.5'
 
 # JSON API
 gem 'active_model_serializers', '~> 0.10.0'
@@ -65,7 +65,7 @@ end
 group :test do
   gem 'action-cable-testing'
   gem 'database_cleaner'
-  gem 'fasterer', '~> 0.7.1'
+  gem 'fasterer'
   gem 'json_matchers'
   gem 'mock_redis'
   gem 'rspec-mocks'
