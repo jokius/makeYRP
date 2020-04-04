@@ -6,7 +6,6 @@
       @click="openSelect = true"
     >
       <v-img
-        v-if="sheet.imgThumb"
         class="image"
         :src="sheet.imgThumb"
         :lazy-src="sheet.imgLazy"
@@ -23,14 +22,6 @@
           </v-row>
         </template>
       </v-img>
-      <v-icon
-        v-else
-        dark
-        size="280"
-        :title="sheet.name"
-      >
-        mdi-account
-      </v-icon>
     </v-btn>
 
     <folders-modal
