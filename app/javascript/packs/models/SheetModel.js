@@ -15,18 +15,18 @@ export class SheetModel {
   }
 
   get imgUrl() {
-    return get(this.params.img, 'versions.url', null)
+    return get(this.params.img, 'versions.url', '/img/default/blank_char.png')
   }
 
   get imgChat() {
-    return get(this.params.img, 'versions.chat', null)
+    return get(this.params.img, 'versions.chat', '/img/default/blank_char_50.png')
   }
 
   get imgThumb() {
-    return get(this.params.img, 'versions.thumb', null)
+    return get(this.params.img, 'versions.thumb', '/img/default/blank_char_200.png')
   }
 
   get imgLazy() {
-    return get(this.params.img, 'versions.lazy', null)
+    return get(this.params.img, 'versions.lazy', '/img/default/blank_char_10.png')
   }
 }
