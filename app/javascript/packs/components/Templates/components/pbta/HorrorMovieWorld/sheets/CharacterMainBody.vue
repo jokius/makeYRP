@@ -96,6 +96,28 @@
         </div>
       </div>
 
+      <div
+        v-for="(special, index) in specials"
+        :key="`special-${index}`"
+        class="specials"
+      >
+        <p class="special-title">{{ special.name }}</p>
+        <p class="special-description">{{ special.description }}</p>
+        <v-select
+          v-for="(select, selectIndex) in special.selects"
+          :key="`special-select-${index}-${selectIndex}`"
+          :items="select.items"
+          class="special-select"
+          color="black"
+          :multiple="select.limit > 1"
+          :attach="select.limit > 1"
+          :chips="select.limit > 1"
+          :value="select.value"
+          :label="select.label"
+          @change="value => specialSelect(index, selectIndex, value)"
+        />
+      </div>
+
       <v-textarea
         v-model="notes"
         auto-grow
@@ -228,6 +250,12 @@
         },
       },
 
+      specials: {
+        get() {
+          return this.params.specials
+        },
+      },
+
       tableRoles: {
         get() {
           const list = []
@@ -282,6 +310,7 @@
         this.changeStats(roleName)
         this.changeRelationship(roleName)
         this.changeMoves(roleName)
+        this.changeSpecials(roleName)
       },
 
       changeRelationship(role) {
@@ -328,6 +357,16 @@
                            })
       },
 
+      changeSpecials(role) {
+        const roleSpecials = this.tables.specials[role] || []
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: 'specials',
+                             value: roleSpecials,
+                           })
+      },
+
       changeHp(number) {
         let value = this.hp.current < this.hp.max ? number : 0
         value = number === this.hp.current && number === 1 ? 0 : number
@@ -361,6 +400,17 @@
                            {
                              id: this.sheet.id,
                              path: `sympathy.current`,
+                             value,
+                           })
+
+        this.saveSheet()
+      },
+
+      specialSelect(index, selectIndex, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `specials[${index}].selects[${selectIndex}].value`,
                              value,
                            })
 
@@ -545,6 +595,23 @@
 
   .characteristics-select {
     height: 20px;
+  }
+
+  .specials {
+    margin-top: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 99%;
+  }
+
+  .special-title {
+    font-weight: bold;
+    font-size: 25px;
+    margin: 0;
+  }
+
+  .special-select {
+    margin: 0;
   }
 
   .notes {
