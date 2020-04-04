@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
 
 app() {
+  rm -rf public/assets/
+  rm -rf public/public/
   bundle
   bundle exec rails credentials:edit
   bundle exec rails assets:precompile
