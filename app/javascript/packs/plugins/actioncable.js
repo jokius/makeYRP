@@ -5,7 +5,7 @@ import Vue from 'vue'
   Vue.use(ActionCableVue, {
     debug: true,
     debugLevel: 'error',
-    connectionUrl: `ws://${window.location.host}/cable`,
+    connectionUrl: `${process.env.NODE_ENV === 'production' ? 'wss' : 'ws'}://${window.location.host}/cable`,
     connectImmediately: true,
   })
 }())
