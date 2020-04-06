@@ -50,6 +50,10 @@ end
 group :development do
   gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
   gem 'brakeman'
+  gem 'capistrano', '~> 3.12', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rbenv', require: false
+  gem 'capistrano3-puma', require: false
   gem 'foreman'
   gem 'meta_request'
   gem 'reek', require: false
