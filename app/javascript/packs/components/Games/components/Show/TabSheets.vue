@@ -7,6 +7,7 @@
       color="indigo"
       segmented
       item-color="indigo"
+      hide-details
       @change="value => add(value)"
     />
     <sheets-list />
