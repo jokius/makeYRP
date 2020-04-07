@@ -144,9 +144,9 @@
 
     created() {
       if (typeof this.move.type === 'object') {
-        this.privateType = this.move.type[0]
+        this.privateType = this.move.type[0].value
       } else {
-        this.privateType.value = this.move.type
+        this.privateType = this.move.type
       }
 
       if (typeof this.move.who === 'object') {
@@ -183,7 +183,7 @@
       },
 
       roll(modifier) {
-        const characteristic = this.characteristics.find(item => item.type === this.type.value)
+        const characteristic = this.characteristics.find(item => item.type === this.type)
         let results = {}
         if (this.who) {
           results = this.move[this.who]

@@ -27,7 +27,7 @@
     </div>
 
     <div class="grid-body">
-      <span v-if="body.text">{{ body.text }}</span>
+      <span v-if="body.text" class="chat-text">{{ body.text }}</span>
       <myz-roll
         v-if="!body.noSystem && body.dices && system === 'mutant_year_zero'"
         :as="character.id || -1"
@@ -151,5 +151,9 @@
     grid-row-gap: 5px;
     padding-left: 3px;
     padding-right: 10px;
+  }
+
+  .chat-text {
+    overflow-wrap: anywhere;
   }
 </style>
