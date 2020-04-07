@@ -19,10 +19,10 @@ append :linked_dirs,
        'vendor/bundle',
        'public/packs',
        'public/assets',
-       'public/storage',
        '.bundle',
        'log',
-       'node_modules'
+       'node_modules',
+       'storage'
 
 append :linked_files,
        'config/database.yml',
