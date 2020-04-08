@@ -130,6 +130,15 @@
         label="Заметки"
         @change="saveSheet"
       />
+
+      <div class="role-description">
+        <span class="role-title">Описание:</span>
+        <span class="text-description">{{ role.description }}</span>
+      </div>
+      <div class="role-examples">
+        <span class="role-title">Примеры:</span>
+        <span class="text-examples">{{ role.examples }}</span>
+      </div>
     </div>
 
     <roll-modifier-modal v-if="modalOpen" v-model="obj" />
@@ -616,5 +625,12 @@
 
   .notes {
     margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+  .role-title {
+    margin-right: 2px;
+    font-weight: bold;
+    font-style: italic;
   }
 </style>
