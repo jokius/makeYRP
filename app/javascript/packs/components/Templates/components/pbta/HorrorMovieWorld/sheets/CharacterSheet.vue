@@ -13,7 +13,7 @@
         <span class="xolonium-font">Ходы</span>
       </v-tab>
       <v-tab class="tab" active-class="tab-active">
-        <span class="xolonium-font">Отнашения</span>
+        <span class="xolonium-font">Отношения</span>
       </v-tab>
     </v-tabs>
 
