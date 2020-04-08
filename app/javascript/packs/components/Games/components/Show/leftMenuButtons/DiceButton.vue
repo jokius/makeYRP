@@ -99,9 +99,16 @@
 
     methods: {
       roll(dices) {
-        this.$store.dispatch('sendMessage', {
-          dices,
-          noSystem: true,
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: {
+            type: 'message',
+            body: {
+              dices,
+              noSystem: true,
+            },
+          },
         })
       },
     },
