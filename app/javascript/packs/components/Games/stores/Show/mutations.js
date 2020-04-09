@@ -35,11 +35,13 @@ import {
   CHANGE_BORDER_SIZE,
   CHANGE_BORDER_COLOR,
   CHANGE_BODY_COLOR,
+  USER_LOADED,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
 import { FolderModel } from '../../../../models/FolderModel'
 import { MessageModel } from '../../../../models/MessageModel'
+import { UserModel } from '../../../../models/UserModel'
 
 export default {
   [SET_LOADED](state) {
@@ -48,6 +50,10 @@ export default {
 
   [GAME_LOADED](state, game) {
     state.info = new GameModel().setInfo(game)
+  },
+
+  [USER_LOADED](state, user) {
+    state.currentUser = new UserModel().setInfo(user)
   },
 
   [ADD_OPEN_MODAL](state, params) {
@@ -80,8 +86,12 @@ export default {
     state.sheets = sheets.map(sheet => new SheetModel().setInfo(sheet))
   },
 
-  [ADD_SHEET](state, sheet) {
-    state.sheets = [...state.sheets, new SheetModel().setInfo(sheet)]
+  [ADD_SHEET](state, raw) {
+    const sheet = new SheetModel().setInfo(raw)
+    sheet.acl.currentUserId = state.currentUser.id
+    if (!sheet.acl.canRead) return
+
+    state.sheets = [...state.sheets, sheet]
   },
 
   [DELETE_SHEET](state, id) {

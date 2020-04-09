@@ -115,7 +115,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def sheet_serializer(sheet)
-    SheetSerializer.new(sheet, user: current_user)
+    SheetSerializer.new(sheet)
   end
 
   def sheet_by_data(data)

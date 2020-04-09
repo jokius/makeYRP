@@ -55,7 +55,7 @@
 
     data() {
       return {
-        overlay: false
+        overlay: false,
       }
     },
 

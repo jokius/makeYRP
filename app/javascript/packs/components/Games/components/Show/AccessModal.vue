@@ -26,8 +26,8 @@
                       </div>
                       <div v-else class="user-grid">
                         <span>{{ acl.user.nickname }}</span>
-                        <span>{{ acl.camRead }}</span>
-                        <span>{{ acl.camWrite }}</span>
+                        <span>{{ acl.canRead }}</span>
+                        <span>{{ acl.canWrite }}</span>
                       </div>
                     </v-list-item-content>
                   </v-list-item>

@@ -2,27 +2,27 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["user", "is_owner", "cam_read", "cam_write"],
+    "required": ["write_all", "read_all", "owner_id", "read_ids", "write_ids"],
     "properties": {
-      "is_owner": { "type": "boolean" },
-      "cam_read": { "type": "boolean" },
-      "cam_write": { "type": "boolean" },
-      "user": {
-        "type": "object",
-        "required": ["id", "nickname", "avatar"],
-        "properties": {
-          "id": { "type": "number" },
-          "nickname": { "type": "string" },
-          "avatar": {
-            "type": "object",
-            "required": ["url", "lazy", "thumb"],
-            "properties": {
-              "url": { "type": ["null", "string"] },
-              "lazy": { "type": ["null", "string"] },
-              "thumb": { "type": ["null", "string"] },
-              "chat": { "type": ["null", "string"] }
-            }
-          }
+      "write_all": {
+        "type": "boolean"
+      },
+      "read_all": {
+        "type": "boolean"
+      },
+      "owner_id": {
+        "type": "number"
+      },
+      "read_ids": {
+        "type": "array",
+        "items": {
+          "type": "number"
+        }
+      },
+      "write_ids": {
+        "type": "array",
+        "items": {
+          "type": "number"
         }
       }
     }

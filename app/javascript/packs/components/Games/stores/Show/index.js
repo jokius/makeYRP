@@ -9,6 +9,7 @@ export default {
       sheets: [],
       openModals: [],
       currentPage: {},
+      currentUser: {},
       pageName: null,
       foldersLoaded: false,
       folder: {},
