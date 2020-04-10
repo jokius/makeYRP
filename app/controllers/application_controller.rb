@@ -5,6 +5,7 @@ require 'dry/monads/all'
 class ApplicationController < ActionController::Base
   include Dry::Monads
 
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
 
   protected
