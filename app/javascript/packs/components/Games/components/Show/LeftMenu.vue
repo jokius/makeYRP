@@ -1,7 +1,7 @@
 <template>
   <div class="left-menu-actions">
     <cursor-button />
-    <drawing-button />
+    <!--    <drawing-button />-->
     <layer-button />
     <dice-button />
   </div>
@@ -11,10 +11,9 @@
   import DiceButton from './leftMenuButtons/DiceButton'
   import LayerButton from './leftMenuButtons/LayerButton'
   import CursorButton from './leftMenuButtons/CursorButton'
-  import DrawingButton from './leftMenuButtons/DrawingButton'
   export default {
     name: 'LeftMenu',
-    components: { DrawingButton, CursorButton, LayerButton, DiceButton },
+    components: { CursorButton, LayerButton, DiceButton },
   }
 </script>
 

@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class SheetPolicy < ApplicationPolicy
-  relation_scope do |scope, options|
-    next scope if master?(options[:game])
-
-    sheets = authorized_scope(scope, as: :owner)
-    sheets |= authorized_scope(scope, as: :write)
-    sheets | authorized_scope(scope, as: :read)
+  relation_scope do |scope, _options|
+    next scope
+    # next scope if master?(options[:game])
+    #
+    # sheets = authorized_scope(scope, as: :owner)
+    # sheets |= authorized_scope(scope, as: :write)
+    # sheets | authorized_scope(scope, as: :read)
   end
 
   relation_scope(:owner) { |scope| scope.where(owner: user) }

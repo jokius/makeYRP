@@ -94,7 +94,7 @@
           const beforeSystem = [
             { label: 'Чат', icon: 'mdi-chat', type: 'chat' },
             { label: 'Персонажи', icon: 'mdi-account', type: 'sheets' },
-            { label: 'Карты', icon: 'mdi-map', type: 'maps' },
+            // { label: 'Карты', icon: 'mdi-map', type: 'maps' },
           ]
           const afterSystem = [
             { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings' },
