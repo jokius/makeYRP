@@ -30,7 +30,16 @@
   import Loader from '../../../ui/components/Loader'
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
-  import { ADD_MENU_ITEM, ADD_MESSAGE, ADD_SHEET, DELETE_SHEET, UPDATE_SHEETS } from '../../stores/mutation-types'
+  import {
+    ADD_MENU_ITEM,
+    ADD_MESSAGE,
+    ADD_PAGE,
+    ADD_SHEET,
+    DELETE_PAGE,
+    DELETE_SHEET,
+    UPDATE_PAGE,
+    UPDATE_SHEETS,
+  } from '../../stores/mutation-types'
   import LeftMenu from '../../components/Show/LeftMenu'
 
   export default {
@@ -51,7 +60,7 @@
     },
 
     channels: {
-      ChatChannel: {
+      GameChannel: {
         connected() {
           this.overlay = false
         },
@@ -59,28 +68,10 @@
           this.overlay = true
         },
 
-        received(message) {
-          this.$store.commit(ADD_MESSAGE, message)
-        },
-      },
-
-      SheetsChannel: {
         received(obj) {
-          if (obj.delete) {
-            this.$store.commit(DELETE_SHEET, obj.delete)
-          } else {
-            if (obj.new){
-              this.$store.commit(ADD_SHEET, obj.sheet)
-            } else {
-              this.$store.commit(UPDATE_SHEETS, obj.sheet)
-            }
-          }
-        },
-      },
-
-      MenusItemsChannel: {
-        received(message) {
-          this.$store.commit(ADD_MENU_ITEM, message)
+          if (obj.new) this.addObj(obj)
+          if (obj.update) this.updateObj(obj)
+          if (obj.delete) this.deleteObj(obj)
         },
       },
     },
@@ -103,19 +94,28 @@
       const gameId = this.$route.params.id
 
       this.$cable.subscribe({
-        channel: 'ChatChannel',
+        channel: 'GameChannel',
         game_id: gameId,
       })
+    },
 
-      this.$cable.subscribe({
-        channel: 'SheetsChannel',
-        game_id: gameId,
-      })
+    methods: {
+      addObj(obj) {
+        if (obj.sheet) this.$store.commit(ADD_SHEET, obj.sheet)
+        if (obj.page) this.$store.commit(ADD_PAGE, obj.page)
+        if (obj.menu_item) this.$store.commit(ADD_MENU_ITEM, obj.menu_item)
+        if (obj.message) this.$store.commit(ADD_MESSAGE, obj.message)
+      },
 
-      this.$cable.subscribe({
-        channel: 'MenusItemsChannel',
-        game_id: gameId,
-      })
+      updateObj(obj) {
+        if (obj.sheet) this.$store.commit(UPDATE_SHEETS, obj.sheet)
+        if (obj.page) this.$store.commit(UPDATE_PAGE, obj.page)
+      },
+
+      deleteObj(obj) {
+        if (obj.sheet) this.$store.commit(DELETE_SHEET, obj.sheet)
+        if (obj.page) this.$store.commit(DELETE_PAGE, obj.page)
+      },
     },
   }
 </script>

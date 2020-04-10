@@ -58,7 +58,11 @@
 
     methods: {
       addItem({ title, counter }) {
-        this.$store.dispatch('createMenuItem', { menu_id: this.menu.id,  params: { title, max: counter, current: 0 } })
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: { menu_id: this.menu.id,  params: { title, max: counter, current: 0 }, type: 'menu_item' },
+        })
       },
     },
   }

@@ -2,17 +2,21 @@
 
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
-  devise_for :admin_users, ActiveAdmin::Devise.config.merge(class_name: 'User')
-  ActiveAdmin.routes(self)
-
   root 'games#index'
 
   resources :games, except: %i[update delete] do
+    post :join, on: :member
+
     scope module: :games do
-      resources :sheets
-      resources :pages
-      resources :messages
-      resources :menus_items
+      resources :sheets, only: :index
+      resources :messages, only: :index
+    end
+  end
+
+  resources :pages, only: :none do
+    scope module: :pages do
+      resources :tokens, only: :index
+      resources :graphics, only: :index
     end
   end
 
@@ -27,5 +31,11 @@ Rails.application.routes.draw do
     scope module: :folders do
       resources :images
     end
+  end
+
+  resource :acl, only: :show
+
+  namespace :admin do
+    resources :games, only: %i[index destroy]
   end
 end

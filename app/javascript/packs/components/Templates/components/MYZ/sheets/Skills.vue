@@ -81,7 +81,11 @@
                            })
 
         if (value && value !== '')
-          this.$store.dispatch('saveSheet', this.sheet)
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'change',
+            data: { ...this.sheet, type: 'sheet' },
+          })
       },
 
       remove(index) {
@@ -93,7 +97,11 @@
                              remove: true,
                            })
 
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
 
       showInfo({ name, notes }) {
@@ -114,7 +122,11 @@
                              value: skill,
                            })
 
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
     },
   }

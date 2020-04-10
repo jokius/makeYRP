@@ -27,7 +27,7 @@
     </div>
 
     <div class="grid-body">
-      <span v-if="body.text">{{ body.text }}</span>
+      <span v-if="body.text" class="chat-text">{{ body.text }}</span>
       <myz-roll
         v-if="!body.noSystem && body.dices && system === 'mutant_year_zero'"
         :as="character.id || -1"
@@ -41,6 +41,10 @@
         :name="body.name || ''"
         :roll="body.dices"
       />
+      <hmw-roll
+        v-else-if="!body.noSystem && body.dices && system === 'horror_movie_world'"
+        :body="body"
+      />
       <default-roll v-else-if="body.dices" :roll="body.dices" />
     </div>
   </div>
@@ -53,11 +57,12 @@
 
   import MyzRoll from '../../../../Templates/components/MYZ/chat/MyzRoll'
   import BidRoll from '../../../../Templates/components/BladeInTheDarck/chat/BidRoll'
+  import HmwRoll from '../../../../Templates/components/pbta/HorrorMovieWorld/chat/HmwRoll'
   import * as dateTime from '../../../../../lib/dateTime'
 
   export default {
     name: 'ChatMessage',
-    components: { BidRoll, DefaultRoll, MyzRoll },
+    components: { HmwRoll, BidRoll, DefaultRoll, MyzRoll },
 
     props: {
       message: { type: Object, required: true },
@@ -146,5 +151,9 @@
     grid-row-gap: 5px;
     padding-left: 3px;
     padding-right: 10px;
+  }
+
+  .chat-text {
+    overflow-wrap: anywhere;
   }
 </style>

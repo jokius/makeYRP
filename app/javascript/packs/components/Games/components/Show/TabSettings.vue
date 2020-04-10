@@ -2,7 +2,7 @@
   <div class="grid">
     <v-btn
       class="bg-button"
-      :style="style"
+      :style="stylePage"
       outlined
       @click="openSelect = true"
     >
@@ -31,7 +31,7 @@
 
     <div class="grid-sub">
       <span class="color-text">Цвет фона</span>
-      <div :style="style" class="color-current" @click="openColorSelect" />
+      <div :style="stylePage" class="color-current" @click="openPageColorSelect" />
       <span class="grid-select-text">Ширина доски</span>
       <v-text-field
         v-model.number="boardWidth"
@@ -50,12 +50,12 @@
       />
       <span class="grid-select-text">Тип сетки</span>
       <v-select
-        v-model="grid"
+        v-model="gridType"
         :items="gridItems"
         class="grid-select"
       />
       <v-text-field
-        v-if="grid"
+        v-if="gridType"
         v-model.number="gridWidth"
         required
         color="indigo"
@@ -64,7 +64,7 @@
         type="number"
       />
       <v-text-field
-        v-if="grid"
+        v-if="gridType"
         v-model.number="gridHeight"
         required
         color="indigo"
@@ -72,6 +72,8 @@
         class="grid-size"
         type="number"
       />
+      <span v-if="gridType" class="color-text">Цвет сетки</span>
+      <div v-if="gridType" :style="styleGrid" class="color-current" @click="openGridColorSelect" />
     </div>
 
     <folders-modal
@@ -85,6 +87,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { defaultsDeep } from 'lodash'
 
   import FoldersModal from './folders/FoldersModal'
 
@@ -119,7 +122,18 @@
       targetPage: {
         get() {
           return {
+            type: 'page',
+            id: this.currentPage.id,
             target: 'page',
+          }
+        },
+      },
+
+      targetGrid: {
+        get() {
+          return {
+            type: 'grid',
+            id: this.currentPage.id,
           }
         },
       },
@@ -130,7 +144,7 @@
         },
       },
 
-      style: {
+      stylePage: {
         get() {
           return {
             backgroundColor: this.background.color,
@@ -140,63 +154,100 @@
 
       grid: {
         get() {
-          return this.params.grid || null
+          return this.params.grid
+        },
+      },
+
+      styleGrid: {
+        get() {
+          const color = this.grid.color
+          const rgba = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
+          return {
+            backgroundColor: rgba,
+          }
+        },
+      },
+
+      gridType: {
+        get() {
+          return this.params.grid.type || null
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { grid: value })
+          this.changePage({ grid: { type: value } })
         },
       },
 
       gridWidth: {
         get() {
-          return this.params.gridWidth || 70
+          return this.params.grid.width
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { gridWidth: value })
+          this.changePage({ grid: { width: value } })
         },
       },
 
       gridHeight: {
         get() {
-          return this.params.gridHeight || 70
+          return this.params.grid.height
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { gridHeight: value })
+          this.changePage({ grid: { height: value } })
         },
       },
 
       boardWidth: {
         get() {
-          return this.params.width || 800
+          return this.params.width
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { width: value })
+          this.changePage({ width: value })
         },
       },
 
       boardHeight: {
         get() {
-          return this.params.height || 600
+          return this.params.height
         },
 
         set(value) {
-          this.$store.dispatch('changePage', { height: value })
+          this.changePage({ height: value })
         },
       },
     },
 
     methods: {
-      openColorSelect() {
+      changePage(params) {
+        const page = this.currentPage
+        const page_params = defaultsDeep(params, page.params)
+
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { page_params, id: page.id, name: page.name, type: 'page' },
+        })
+      },
+
+      openPageColorSelect() {
         const key = Date.now()
         this.$store.commit(ADD_OPEN_MODAL, {
           key,
           name: 'color-picker',
           target: this.targetPage,
-          startColor: this.background.color,
+          startColor: { hex: this.background.color },
+        })
+      },
+
+      openGridColorSelect() {
+        const key = Date.now()
+        this.$store.commit(ADD_OPEN_MODAL, {
+          key,
+          name: 'color-picker',
+          target: this.targetGrid,
+          startColor: this.grid.color,
         })
       },
     },

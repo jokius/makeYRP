@@ -2,11 +2,7 @@
 
 class GamesController < ApplicationController
   def index
-    list = Game.where(games_params).order(created_at: :desc)
-    games = list.where(master: current_user)
-    games |= list.joins(:users).where(users: { id: current_user.id })
-    games |= list
-
+    games = authorized_scope(Game.order(created_at: :desc), as: :all, scope_options: games_params)
     respond_json json: games, each_serializer: ShortGameSerializer
   end
 
@@ -21,16 +17,20 @@ class GamesController < ApplicationController
   end
 
   def show
-    respond_json json: game, include: %w[master users pages menus.items]
+    responds(Games::Join, game_id: params[:id], user_id: current_user.id) do |game|
+      respond_json json: game, include: %w[master users pages menus.items]
+    end
+  end
+
+  def join
+    responds(Games::Join, game_id: params[:id], user_id: current_user.id) do |game|
+      respond_json json: { id: game.id }, status: :created
+    end
   end
 
   private
 
   def games_params
-    params.permit(:open)
-  end
-
-  def game
-    @game ||= Game.find(params[:id])
+    params.permit(:open).to_h.symbolize_keys
   end
 end

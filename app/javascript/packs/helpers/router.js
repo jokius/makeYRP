@@ -34,6 +34,10 @@ const routes = [
     path: links.base.game,
     component: () => import('../components/Games/pages/Show'),
   },
+  {
+    path: links.base.adminGames,
+    component: () => import('../components/admin/Games/pages/Index'),
+  },
 ]
 
 const router = new VueRouter({

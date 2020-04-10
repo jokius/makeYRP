@@ -130,11 +130,17 @@
     methods: {
       change() {
         if (this.isNew) {
-          this.$store.dispatch('createMenuItem',
-                               { menu_id: this.id,  params: { title: this.contentTitle, text: this.content } })
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'add',
+            data: { menu_id: this.id,  params: { title: this.contentTitle, text: this.content }, type: 'menu_item' },
+          })
         } else {
-          this.$store.dispatch('updateMenuItem',
-                               { id: this.id,  params: { title: this.contentTitle, text: this.content } })
+          this.$cable.perform({
+            channel: 'MenusItemChannel',
+            action: 'change',
+            data: { title: this.contentTitle, text: this.content },
+          })
         }
 
         this.onClose()

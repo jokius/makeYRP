@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class Folders::Update
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
+
   FOLDERS_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
     required(:name).filled(:string)
   end
 
-  step :validate
-  step :update
+  def call(input)
+    params = yield validate(input)
+    hash = yield fetch_folder(params)
+    update(hash)
+  end
+
+  private
 
   def validate(input)
     result = FOLDERS_UPDATE_SCHEMA.call(input)
@@ -19,10 +25,16 @@ class Folders::Update
     end
   end
 
-  def update(input)
+  def fetch_folder(input)
     folder = Folder.find_by(id: input.delete(:id))
-    return Failure(message: 'folder not found', status: :not_fount) unless folder
+    if folder
+      Success(folder: folder, input: input)
+    else
+      Failure(message: 'folder not found', status: :not_fount)
+    end
+  end
 
+  def update(folder:, input:)
     if folder.update(input)
       Success(folder)
     else

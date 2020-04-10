@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :games, through: :users_in_games
   has_many :master_in_games, class_name: 'Game', foreign_key: :master_id
   has_many :folders
+  has_many :access_levels, dependent: :destroy
 
   after_create :create_root_folder
 
@@ -38,6 +39,10 @@ class User < ApplicationRecord
 
   def avatars
     avatar.attached? ? image_avatars : gravatar_avatars
+  end
+
+  def master?(game)
+    master_in_games.exists?(game.id)
   end
 
   private

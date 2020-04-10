@@ -1,42 +1,28 @@
 # frozen_string_literal: true
 
+require 'dry/monads/all'
+
 class ApplicationController < ActionController::Base
+  include Dry::Monads
+
+  skip_before_action :verify_authenticity_token
   before_action :authenticate_user!
-
-  before_action do
-    class_name = 'ActiveStorage::Service::DiskService'
-    next unless ActiveStorage::Blob.service.class.name == class_name
-
-    Rails.application.routes.default_url_options[:only_path] = true
-  end
-
-  def access_denied(exception)
-    redirect_to root_path, alert: exception.message
-  end
-
-  def authenticate_admin_user!
-    if current_user&.admin?
-      current_user
-    else
-      redirect_to root_path
-    end
-  end
 
   protected
 
   def responds(interactor, input, status: :ok, &block)
     input = input.permit!.to_h if input.is_a? ActionController::Parameters
-    interactor.new.call(input) do |result|
-      result.success do |value|
-        return yield(value) if block
+    result = interactor.new.call(input)
+    return yield(result.success) if block && result.success?
 
-        respond_json json: value, status: status
-      end
+    respond = case result
+              when Success
+                { json: result.success, status: status }
+              else
+                { json: result.failure[:message], status: (result.failure[:status] || 400) }
+              end
 
-      result.failure do |error|
-        respond_json(json: error[:message], status: (error[:status] || 400))
-      end
-    end
+    respond_json respond
   end
 
   def respond_json(json)

@@ -10,23 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_09_095241) do
+ActiveRecord::Schema.define(version: 2020_03_22_153417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
-    t.bigint "author_id"
+  create_table "access_levels", force: :cascade do |t|
+    t.string "object_type", null: false
+    t.bigint "object_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "write", default: false, null: false
+    t.boolean "read", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
-    t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
-    t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+    t.index ["object_type", "object_id"], name: "index_access_levels_on_object_type_and_object_id"
+    t.index ["user_id"], name: "index_access_levels_on_user_id"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -83,6 +81,16 @@ ActiveRecord::Schema.define(version: 2020_02_09_095241) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["master_id"], name: "index_games_on_master_id"
     t.index ["system_id"], name: "index_games_on_system_id"
+  end
+
+  create_table "graphics", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.string "layer"
+    t.jsonb "params"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["layer"], name: "index_graphics_on_layer"
+    t.index ["page_id"], name: "index_graphics_on_page_id"
   end
 
   create_table "menus", force: :cascade do |t|
@@ -145,6 +153,17 @@ ActiveRecord::Schema.define(version: 2020_02_09_095241) do
     t.jsonb "template", default: {}
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tokens", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.bigint "sheet_id", null: false
+    t.float "position_x", null: false
+    t.float "position_y", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_id"], name: "index_tokens_on_page_id"
+    t.index ["sheet_id"], name: "index_tokens_on_sheet_id"
   end
 
   create_table "users", force: :cascade do |t|

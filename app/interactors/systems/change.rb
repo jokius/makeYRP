@@ -1,11 +1,29 @@
 # frozen_string_literal: true
 
 class Systems::Change
-  include Dry::Transaction
+  include Dry::Monads[:result, :do]
 
-  step :parse
-  step :save_system
-  tee :update_games
+  def call(input)
+    result = nil
+    begin
+      ActiveRecord::Base.transaction do
+        result = transaction(input)
+        raise ActiveRecord::Rollback if result.failure?
+      end
+
+      result
+    rescue ActiveRecord::Rollback
+      result
+    end
+  end
+
+  private
+
+  def transaction(input)
+    hash = yield parse(input)
+    system = yield save_system(hash)
+    update_games(system)
+  end
 
   def parse(input)
     Systems::ParseTemplate.new.call(input)
@@ -19,11 +37,12 @@ class Systems::Change
 
   def update_games(system)
     system.games.find_each do |game|
-      Games::AddMenus.new.call(game.id)
+      result = Games::AddMenus.new.call(game.id)
+      return result if result.failure?
     end
-  end
 
-  private
+    Success(system)
+  end
 
   def system(input, template, version)
     record = system_by_identifier(template[:identifier])

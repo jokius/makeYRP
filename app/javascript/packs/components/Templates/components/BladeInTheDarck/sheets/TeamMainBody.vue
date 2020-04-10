@@ -327,7 +327,11 @@
       },
 
       saveSheet() {
-        this.$store.dispatch('saveSheet', this.sheet)
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change',
+          data: { ...this.sheet, type: 'sheet' },
+        })
       },
     },
   }

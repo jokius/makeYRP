@@ -25,6 +25,12 @@
       v-model="renameModal"
       :obj="currentObj"
     />
+
+    <access-modal
+      v-if="accessModal"
+      v-model="accessModal"
+      :obj="currentObj"
+    />
   </div>
 </template>
 
@@ -32,12 +38,13 @@
   import { mapState } from 'vuex'
 
   import RenameModal from './RenameModal'
+  import AccessModal from './AccessModal'
 
   import { UPDATE_CURRENT_RIGHT_CLICK_MENU } from '../../stores/mutation-types'
 
   export default {
     name: 'RightClickMenu',
-    components: { RenameModal },
+    components: { AccessModal, RenameModal },
 
     props: {
       position: { type: Object, required: true },
@@ -48,8 +55,10 @@
     data() {
       return {
         renameModal: false,
+        accessModal: false,
         defaultItems: [
           { title: 'Переименовать', callback: () => this.showRename() },
+          { title: 'Доступы', callback: () => this.showAccess() },
           { title: 'Удалить', callback: () => this.$store.dispatch('removeObj', this.currentObj) },
         ],
       }
@@ -79,6 +88,10 @@
     methods: {
       showRename() {
         this.renameModal = true
+      },
+
+      showAccess() {
+        this.accessModal = true
       },
     },
   }

@@ -11,7 +11,7 @@
       fab
       x-small
       dark
-      @click="deleteClock(clock.id)"
+      @click="deleteClock"
     >
       <v-icon>mdi-delete</v-icon>
     </v-btn>
@@ -50,9 +50,11 @@
         },
 
         set(value) {
-          const id = this.clock.id
-          const params = { ...this.clock.params, current: value }
-          this.$store.dispatch('updateMenuItem', { id, params })
+          this.$cable.perform({
+            channel: 'MenusItemChannel',
+            action: 'change',
+            data: { ...this.clock.params, current: value },
+          })
         },
       },
     },
@@ -60,13 +62,13 @@
     mounted() {
       this.$cable.subscribe({
         channel: 'MenusItemChannel',
-        id: this.clock.id,
+        item_id: this.clock.id,
       })
     },
 
     methods: {
-      deleteClock(id) {
-        this.$store.dispatch('deleteMenuItem', id)
+      deleteClock() {
+        this.$cable.perform({ channel: 'MenusItemChannel', action: 'remove' })
       },
     },
   }

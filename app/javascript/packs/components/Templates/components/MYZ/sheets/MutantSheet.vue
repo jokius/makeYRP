@@ -14,7 +14,7 @@
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" continuous>
       <v-tab-item>
         <main-body :id="id" />
       </v-tab-item>

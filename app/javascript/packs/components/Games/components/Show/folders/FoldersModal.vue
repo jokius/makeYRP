@@ -87,7 +87,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { get } from 'lodash'
+  import { defaultsDeep, get } from 'lodash'
 
   import FolderItem from './FolderItem'
   import FoldersPreloader from './FoldersPreloader'
@@ -160,7 +160,13 @@
         },
         set(value) {
           const image = this.currentSelected.page !== value.id ?  value : null
-          this.$store.dispatch('changePage', { background: { image } })
+          const page = this.currentPage
+          const page_params = defaultsDeep({ background: { image } }, page.params)
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'change',
+            data: { page_params, id: page.id, name: page.name, type: 'page' },
+          })
         },
       },
 
@@ -175,12 +181,15 @@
           return get(this.currentSheet.params, 'img.id', 0)
         },
         set(value) {
-          const img = this.currentSheet.params.img || {}
+          const sheet = this.currentSheet
+          const img = sheet.params.img || {}
           const image = img.id !== value.id ?  value : null
-          this.$store.dispatch('changeSheet',
-                               { sheet: this.currentSheet,
-                                 changes: { params: { img: image } },
-                               })
+          const params = defaultsDeep({ params: { img: image } }, sheet)
+          this.$cable.perform({
+            channel: 'GameChannel',
+            action: 'change',
+            data: { ...params, type: 'sheet' },
+          })
         },
       },
     },
