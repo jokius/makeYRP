@@ -24,6 +24,7 @@
         </div>
       </drag>
       <v-btn
+        v-if="sheet.acl.canFull"
         color="red darken-4"
         icon
         small

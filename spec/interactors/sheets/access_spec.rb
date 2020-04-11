@@ -15,8 +15,7 @@ RSpec.describe Sheets::Access, type: :interactor do
         write_all: false,
         levels: [{ user_id: user.id,
                    read: true,
-                   write: false }]
-      }
+                   write: false }] }
     end
 
     it 'save user access' do

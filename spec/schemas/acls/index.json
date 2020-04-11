@@ -1,29 +1,20 @@
 {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": ["write_all", "read_all", "owner_id", "read_ids", "write_ids"],
-    "properties": {
-      "write_all": {
-        "type": "boolean"
-      },
-      "read_all": {
-        "type": "boolean"
-      },
-      "owner_id": {
-        "type": "number"
-      },
-      "read_ids": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        }
-      },
-      "write_ids": {
-        "type": "array",
-        "items": {
-          "type": "number"
-        }
+  "type": "object",
+  "required": ["id", "read_all", "write_all", "levels"],
+  "properties": {
+    "id": {
+      "type": "number"
+    },
+    "write_all": {
+      "type": "boolean"
+    },
+    "read_all": {
+      "type": "boolean"
+    },
+    "levels": {
+      "type": "array",
+      "items": {
+        "type": "object"
       }
     }
   }
