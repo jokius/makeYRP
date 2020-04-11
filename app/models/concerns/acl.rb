@@ -22,10 +22,10 @@ module Acl
   end
 
   def read_ids
-    access_levels.where(read: true).or(access_levels.where(write: true)).ids
+    access_levels.where(read: true).or(access_levels.where(write: true)).pluck(:user_id)
   end
 
   def write_ids
-    access_levels.where(write: true).ids
+    access_levels.where(write: true).pluck(:user_id)
   end
 end

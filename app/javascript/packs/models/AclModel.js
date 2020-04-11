@@ -1,5 +1,6 @@
 export class AclModel {
   id = null
+  masterId = null
   currentUserId = null
   writeAll = false
   readAll = false
@@ -20,15 +21,23 @@ export class AclModel {
     return this
   }
 
+  get isMaster() {
+    return this.masterId === this.currentUserId
+  }
+
   get isOwner() {
     return this.ownerId === this.currentUserId
   }
 
+  get canFull() {
+    return this.isMaster || this.isOwner
+  }
+
   get canWrite() {
-    return this.writeIds.includes(id => this.currentUserId === id)
+    return this.writeAll || this.isMaster || this.writeIds.includes(this.currentUserId)
   }
 
   get canRead() {
-    return this.isOwner || this.canWrite || this.readIds.includes(id => this.currentUserId === id)
+    return this.readAll || this.isMaster || this.isOwner || this.canWrite || this.readIds.includes(this.currentUserId)
   }
 }

@@ -2,7 +2,8 @@
 
 class AclsController < ApplicationController
   def show
-    render json: object.game.users.map { |user| AclSerializer.new(object, user: user) }
+    item = object
+    render json: item, serializer: UsersAclSerializer, users: item.game.users
   end
 
   def object

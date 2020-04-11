@@ -23,7 +23,7 @@ class GameChannel < ApplicationCable::Channel
   def change(data)
     case data['type']
     when 'sheet'
-      authorize! sheet_by_data(data), to: :write?
+      return change_access('write') unless allowed_to?(:write?, sheet_by_data(data))
 
       responds(Sheets::Update, params.merge(data)) do |sheet|
         SheetChannel.broadcast_to(sheet, sheet_serializer(sheet))
@@ -40,7 +40,7 @@ class GameChannel < ApplicationCable::Channel
     case data['type']
     when 'sheet'
       sheet = sheet_by_data(data)
-      authorize! sheet, to: :remove?
+      return change_access('remove') unless allowed_to?(:remove?, sheet)
 
       remove_sheet(sheet)
     when 'page'
@@ -54,15 +54,19 @@ class GameChannel < ApplicationCable::Channel
     case data['type']
     when 'sheet'
       sheet = sheet_by_data(data)
-      authorize! sheet, to: :change_access?
+      return change_access('change_access') unless allowed_to?(:change_access?, sheet)
 
-      access_sheet(sheet)
+      access_sheet(data)
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
   end
 
   private
+
+  def no_permission(action)
+    broadcast(errors: "no permission to #{action}")
+  end
 
   def broadcast(data)
     GameChannel.broadcast_to(game, data)
@@ -83,7 +87,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def access_sheet(data)
-    responds(Sheets::Access, params.merge(data).merge(owner_id: current_user.id)) do |sheet|
+    responds(Sheets::Access, params.merge(data)) do |sheet|
       broadcast(access: true, sheet: sheet_serializer(sheet))
     end
   end

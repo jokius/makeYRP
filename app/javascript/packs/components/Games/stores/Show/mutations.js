@@ -35,13 +35,24 @@ import {
   CHANGE_BORDER_SIZE,
   CHANGE_BORDER_COLOR,
   CHANGE_BODY_COLOR,
-  USER_LOADED,
+  USER_LOADED, ACCESS_SHEET,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
 import { FolderModel } from '../../../../models/FolderModel'
 import { MessageModel } from '../../../../models/MessageModel'
 import { UserModel } from '../../../../models/UserModel'
+
+const addSheet = (state, raw) => {
+  const sheet = new SheetModel().setInfo(raw)
+  sheet.acl.currentUserId = state.currentUser.id
+  sheet.acl.masterId = state.info.master.id
+  if (!sheet.acl.canRead) return
+
+  state.sheets = [...state.sheets, sheet]
+}
+
+const deleteSheet = (state, id) => state.sheets = state.sheets.filter(sheet => sheet.id !== id)
 
 export default {
   [SET_LOADED](state) {
@@ -82,20 +93,38 @@ export default {
     state.pageName = name
   },
 
-  [SHEETS_LOADED](state, sheets) {
-    state.sheets = sheets.map(sheet => new SheetModel().setInfo(sheet))
+  [ADD_SHEET](state, raw) {
+    addSheet(state, raw)
   },
 
-  [ADD_SHEET](state, raw) {
-    const sheet = new SheetModel().setInfo(raw)
-    sheet.acl.currentUserId = state.currentUser.id
-    if (!sheet.acl.canRead) return
+  [SHEETS_LOADED](state, sheets) {
+    state.sheets = []
+    sheets.map(sheet => addSheet(state, sheet))
+  },
 
-    state.sheets = [...state.sheets, sheet]
+  [ACCESS_SHEET](state, raw) {
+    let index = state.sheets.findIndex(item => item.id === raw.id)
+    let sheet = state.sheets[index]
+
+    if (sheet) {
+      sheet.setInfo(raw)
+    } else {
+      sheet = new SheetModel().setInfo(raw)
+    }
+
+    sheet.acl.currentUserId = state.currentUser.id
+    sheet.acl.masterId = state.info.master.id
+
+    if (sheet.acl.canRead) {
+      if (index >= 0) state.sheets[index] = sheet
+      else state.sheets = [...state.sheets, sheet]
+    } else {
+      if (index >= 0) deleteSheet(state, sheet.id)
+    }
   },
 
   [DELETE_SHEET](state, id) {
-    state.sheets = state.sheets.filter(sheet => sheet.id !== id)
+    deleteSheet(state, id)
   },
 
   [FOLDERS_UNLOADED](state) {

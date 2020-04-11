@@ -31,6 +31,7 @@
   import BodyMenu from '../../components/Show/BodyMenu'
   import BodyContent from '../../components/Show/BodyContent'
   import {
+    ACCESS_SHEET,
     ADD_MENU_ITEM,
     ADD_MESSAGE,
     ADD_PAGE,
@@ -72,6 +73,7 @@
           if (obj.new) this.addObj(obj)
           if (obj.update) this.updateObj(obj)
           if (obj.delete) this.deleteObj(obj)
+          if (obj.access) this.accessObj(obj)
         },
       },
     },
@@ -115,6 +117,10 @@
       deleteObj(obj) {
         if (obj.sheet) this.$store.commit(DELETE_SHEET, obj.sheet)
         if (obj.page) this.$store.commit(DELETE_PAGE, obj.page)
+      },
+
+      accessObj(obj) {
+        if (obj.sheet) this.$store.commit(ACCESS_SHEET, obj.sheet)
       },
     },
   }

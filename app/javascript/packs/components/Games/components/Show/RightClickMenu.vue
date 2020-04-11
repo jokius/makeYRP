@@ -49,6 +49,7 @@
     props: {
       position: { type: Object, required: true },
       currentObj: { type: Object, required: true },
+      acl: { type: Object, default: () => {} },
       replacedItems: { type: Array, default: () => [] },
     },
 
@@ -57,9 +58,13 @@
         renameModal: false,
         accessModal: false,
         defaultItems: [
-          { title: 'Переименовать', callback: () => this.showRename() },
-          { title: 'Доступы', callback: () => this.showAccess() },
-          { title: 'Удалить', callback: () => this.$store.dispatch('removeObj', this.currentObj) },
+          { title: 'Переименовать', callback: () => this.showRename(), level: 'canWrite' },
+          { title: 'Доступы', callback: () => this.showAccess(), level: 'canFull' },
+          {
+            title: 'Удалить',
+            callback: () => this.$store.dispatch('removeObj', this.currentObj),
+            level: 'canFull',
+          },
         ],
       }
     },
@@ -80,7 +85,12 @@
 
       items: {
         get() {
-          return this.replacedItems.length > 0 ? this.replacedItems : this.defaultItems
+          let list = this.replacedItems.length > 0 ? this.replacedItems : this.defaultItems
+          list = list.filter(item => {
+            if (!this.acl || !item.level) return true
+            return this.acl[item.level]
+          })
+          return list
         },
       },
     },
