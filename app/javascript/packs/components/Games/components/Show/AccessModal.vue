@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="openDialog" width="300">
+  <v-dialog :value="openDialog" width="350">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>
         Доступы
@@ -8,33 +8,60 @@
         <div v-if="!loaded" class="loaded">
           <loader />
         </div>
-        <v-row align="center" justify="center">
-          <v-col cols="12">
-            <v-form>
-              <v-list>
-                <div class="user-grid">
-                  <span>Игрок</span>
-                  <span>Просмотр</span>
-                  <span>Изменение</span>
-                </div>
-                <template v-for="acl in acls">
-                  <v-list-item :key="acl.user.id" class="border-bottom">
-                    <v-list-item-content>
-                      <div v-if="acl.isOwner" class="owner-grid">
-                        <span>{{ acl.user.nickname }}</span>
-                        <span>Владелец</span>
-                      </div>
-                      <div v-else class="user-grid">
-                        <span>{{ acl.user.nickname }}</span>
-                        <span>{{ acl.camRead }}</span>
-                        <span>{{ acl.camWrite }}</span>
-                      </div>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-list>
-            </v-form>
-          </v-col>
+        <v-row v-else align="center" justify="center">
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Игрок</th>
+                  <th class="text-left">Просмотр</th>
+                  <th class="text-left">Изменение</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(record, index) in acl.levels" :key="record.user.id">
+                  <td>{{ record.user.nickname }}</td>
+                  <template v-if="record.owner" class="owner-grid">
+                    <td>Владелец</td>
+                  </template>
+                  <template v-else class="user-grid">
+                    <td>
+                      <v-checkbox
+                        color="indigo"
+                        :input-value="record.read"
+                        @change="changePermission(`levels[${index}].read`, !record.read)"
+                      />
+                    </td>
+                    <td>
+                      <v-checkbox
+                        color="indigo"
+                        :input-value="record.write"
+                        @change="changePermission(`levels[${index}].write`, !record.write)"
+                      />
+                    </td>
+                  </template>
+                </tr>
+
+                <tr>
+                  <td>Все</td>
+                  <td>
+                    <v-checkbox
+                      color="indigo"
+                      :input-value="acl.read_all"
+                      @change="changePermission('read_all', !acl.read_all)"
+                    />
+                  </td>
+                  <td>
+                    <v-checkbox
+                      color="indigo"
+                      :input-value="acl.write_all"
+                      @change="changePermission('write_all', !acl.write_all)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-row>
       </v-container>
       <v-divider />
@@ -49,11 +76,11 @@
         </v-btn>
         <v-spacer />
         <v-btn
-          :disabled="!isValid"
+          dark
           color="indigo"
-          @click="rename"
+          @click="save"
         >
-          <span :class="{ whiteText: isValid }">Переименовать</span>
+          <span :class="{ whiteText: isValid }">Изменить</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -62,10 +89,10 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { set } from 'lodash'
 
   import Loader from '../../../ui/components/Loader'
   import { AclUsers } from '../../api'
-  import { AclModel } from '../../../../models/AclModel'
 
   export default {
     name: 'AccessModal',
@@ -83,12 +110,17 @@
     data() {
       return {
         newObjName: this.obj.name,
-        acls: [],
+        acl: {},
         loaded: false,
       }
     },
 
     computed: {
+      ...mapState({
+        currentUser: state => state.game.currentUser,
+        game: state => state.game.info,
+      }),
+
       isValid() {
         return this.name && this.name !== ''
       },
@@ -104,20 +136,33 @@
     },
 
     created() {
-      AclUsers({ ...this.obj }).then(acls => {
-        this.acls = acls.map(raw => new AclModel().setInfo(raw))
+      AclUsers({ ...this.obj }).then(acl => {
+        this.acl = acl
         this.loaded = true
       })
     },
 
     methods: {
-      close() {
-        this.$emit('open', false)
+      changePermission(path, value) {
+        set(this.acl, path, value)
       },
 
-      rename() {
+      close() {
+        this.$emit('open', false)
+        this.loaded = false
+        this.acl = {}
+      },
+
+      save() {
+        const data = { ...this.acl, type: this.obj.type }
+        data.levels = data.levels.map(level => ({ ...level, user: null, user_id: level.user.id }))
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'change_access',
+          data,
+        })
+
         this.close()
-        this.$store.dispatch('renameObj', { ...this.obj, name: this.name })
       },
     },
   }

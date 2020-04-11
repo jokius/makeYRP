@@ -2,6 +2,11 @@ import axios from 'axios'
 
 import links from '../../../helpers/links'
 
+export const loadCurrentUser = () =>
+  axios
+    .get(links.json(links.base.currentUser))
+    .then(response => response.data)
+
 export const loadGames = params =>
   axios
     .get(links.base.home, { params })

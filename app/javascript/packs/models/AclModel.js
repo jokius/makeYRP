@@ -1,19 +1,43 @@
-import { UserModel } from './UserModel'
-
 export class AclModel {
   id = null
-  user = {}
-  is_owner = false
-  cam_read = false
-  cam_write = false
+  masterId = null
+  currentUserId = null
+  writeAll = false
+  readAll = false
+  ownerId = null
+  readIds = []
+  writeIds = []
 
   setInfo(raw) {
+    if (!raw) return this
+
     this.id = raw.id
-    this.user = new UserModel().setInfo(raw.user)
-    this.isOwner = raw.is_owner
-    this.camRead = raw.cam_read
-    this.camWrite = raw.cam_write
+    this.writeAll = raw.write_all
+    this.readAll = raw.read_all
+    this.ownerId = raw.owner_id
+    this.readIds = raw.read_ids
+    this.writeIds = raw.write_ids
 
     return this
+  }
+
+  get isMaster() {
+    return this.masterId === this.currentUserId
+  }
+
+  get isOwner() {
+    return this.ownerId === this.currentUserId
+  }
+
+  get canFull() {
+    return this.isMaster || this.isOwner
+  }
+
+  get canWrite() {
+    return this.writeAll || this.isMaster || this.writeIds.includes(this.currentUserId)
+  }
+
+  get canRead() {
+    return this.readAll || this.isMaster || this.isOwner || this.canWrite || this.readIds.includes(this.currentUserId)
   }
 }

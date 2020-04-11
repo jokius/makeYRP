@@ -3,7 +3,7 @@
     <div v-for="sheet in sheets" :key="sheet.id" class="list-item">
       <drag :transfer-data="{ sheet }">
         <div class="pointer" @click="showSheet(sheet)">
-          <right-click-menu :position="position" :current-obj="sheetObj(sheet)">
+          <right-click-menu :position="position" :current-obj="sheetObj(sheet)" :acl="sheet.acl">
             <div
               :style="baseStyle"
               class="drag-part"
@@ -24,6 +24,7 @@
         </div>
       </drag>
       <v-btn
+        v-if="sheet.acl.canFull"
         color="red darken-4"
         icon
         small
