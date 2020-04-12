@@ -23,7 +23,7 @@ class Games::AddMenus
 
   def add_notes(game)
     menu = game.menus.find_or_initialize_by(identifier: :notes)
-    menu.params = { icon: 'mdi-notebook', name: 'Заметки', type: :notes }
+    menu.params = { icon: 'mdi-notebook', name: 'Заметки', type: :notes, mark: :notes }
     if menu.save
       Success(game)
     else

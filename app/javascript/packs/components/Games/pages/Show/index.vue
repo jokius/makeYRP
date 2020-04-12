@@ -81,6 +81,7 @@
     computed: {
       ...mapState({
         game: state => state.game,
+        marks: state => state.game.marks,
       }),
 
       loaded() {

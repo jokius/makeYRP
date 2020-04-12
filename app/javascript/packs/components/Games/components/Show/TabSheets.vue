@@ -18,6 +18,7 @@
   import { mapState } from 'vuex'
 
   import SheetsList from '../../components/Show/SheetsList'
+  import { RESET_MARKER } from '../../stores/mutation-types'
 
   export default {
     name: 'TabSheets',
@@ -35,6 +36,10 @@
           callback: () => this.add(type.value),
         }))
       },
+    },
+
+    activated() {
+      this.$store.commit(RESET_MARKER, 'sheet')
     },
 
     methods: {

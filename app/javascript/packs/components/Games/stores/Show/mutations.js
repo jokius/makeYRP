@@ -35,7 +35,11 @@ import {
   CHANGE_BORDER_SIZE,
   CHANGE_BORDER_COLOR,
   CHANGE_BODY_COLOR,
-  USER_LOADED, ACCESS_SHEET,
+  USER_LOADED,
+  ACCESS_SHEET,
+  ADD_MARKER,
+  RESET_MARKER,
+  ADD_CURRENT_ITEM,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -95,6 +99,7 @@ export default {
 
   [ADD_SHEET](state, raw) {
     addSheet(state, raw)
+    if (state.currentItem.mark !== 'sheet') state.marks = { ...state.marks, sheet: state.marks.sheet + 1 }
   },
 
   [SHEETS_LOADED](state, sheets) {
@@ -181,6 +186,7 @@ export default {
 
   [ADD_MESSAGE](state, message) {
     state.messages.push(new MessageModel().setInfo(message))
+    if (state.currentItem.mark !== 'chat') state.marks = { ...state.marks, chat: state.marks.chat + 1 }
   },
 
   [UPDATE_SHEET](state, raw) {
@@ -211,6 +217,10 @@ export default {
   [ADD_MENU_ITEM](state, raw) {
     const menu = state.info.menus.find(item => item.id === raw.menu_id)
     menu.addItem(raw)
+    const mark = menu.params.mark
+    if (!mark) return
+
+    if (state.currentItem.mark !== mark) state.marks = { ...state.marks, [mark]: state.marks[mark] + 1 }
   },
 
   [UPDATE_MENU_ITEM](state, raw) {
@@ -242,5 +252,17 @@ export default {
 
   [CHANGE_BODY_COLOR](state, value) {
     state.bodyColor = value
+  },
+
+  [ADD_MARKER](state, mark) {
+    state.marks = { ...state.marks, [mark]: 0 }
+  },
+
+  [RESET_MARKER](state, mark) {
+    state.marks = { ...state.marks, [mark]: 0 }
+  },
+
+  [ADD_CURRENT_ITEM](state, value) {
+    state.currentItem = value
   },
 }

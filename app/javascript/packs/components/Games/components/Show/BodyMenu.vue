@@ -45,7 +45,14 @@
           <v-list-item-action>
             <v-tooltip left>
               <template v-slot:activator="{ on }">
-                <v-icon v-on="on">{{ item.icon }}</v-icon>
+                <v-badge
+                  :content="content(item.mark)"
+                  :value="content(item.mark)"
+                  color="red"
+                  overlap
+                >
+                  <v-icon v-on="on"> {{ item.icon }}</v-icon>
+                </v-badge>
               </template>
               <span>{{ item.label }}</span>
             </v-tooltip>
@@ -69,6 +76,7 @@
   import TabNotes from './notes/TabNotes'
 
   import BidTabClock from '../../../Templates/components/BladeInTheDarck/menus/BidTabClock'
+  import { ADD_CURRENT_ITEM, ADD_MARKER } from '../../stores/mutation-types'
 
   export default {
     name: 'BodyMenu',
@@ -76,7 +84,7 @@
 
     data() {
       return {
-        currentIndex: 0,
+        privateCurrentIndex: 0,
         navigation: {
           width: 356,
           borderSize: 3,
@@ -87,42 +95,63 @@
     computed: {
       ...mapState({
         menus: state => state.game.info.menus,
+        marks: state => state.game.marks,
+        currentItem: state => state.game.currentItem,
       }),
 
       items: {
         get() {
           const beforeSystem = [
-            { label: 'Чат', icon: 'mdi-chat', type: 'chat' },
-            { label: 'Персонажи', icon: 'mdi-account', type: 'sheets' },
+            { label: 'Чат', icon: 'mdi-chat', type: 'chat', mark: 'chat' },
+            { label: 'Персонажи', icon: 'mdi-account', type: 'sheets', mark: 'sheet' },
             // { label: 'Карты', icon: 'mdi-map', type: 'maps' },
           ]
           const afterSystem = [
-            { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings' },
+            { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings', mark: null },
           ]
 
           const system = this.menus.map(menu => ({
             label: menu.params.name,
             icon: menu.params.icon,
             type: menu.params.type,
+            mark: menu.params.mark || null,
           }))
 
           return beforeSystem.concat(system).concat(afterSystem)
         },
       },
 
-      currentItem: {
+      currentIndex: {
         get() {
-          return this.items[this.currentIndex]
+          return this.privateCurrentIndex
+        },
+
+        set(index) {
+          this.privateCurrentIndex = index
+          this.$store.commit(ADD_CURRENT_ITEM, this.items[index])
         },
       },
     },
 
+    created() {
+      this.$store.commit(ADD_CURRENT_ITEM, this.items[0])
+      this.items.forEach(item => {
+        if (item.mark) this.$store.commit(ADD_MARKER, item.mark)
+      })
+    },
+
     mounted() {
-      this.setBorderWidth();
-      this.setEvents();
+      this.setBorderWidth()
+      this.setEvents()
     },
 
     methods: {
+      content(mark) {
+        if (!mark) return 0
+
+        return this.marks[mark] || 0
+      },
+
       setBorderWidth() {
         const drawer = this.$refs.drawer.$el.querySelector('.v-navigation-drawer__border')
         drawer.style.width = `${this.navigation.borderSize}px`
