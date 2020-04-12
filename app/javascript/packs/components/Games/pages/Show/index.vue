@@ -106,7 +106,7 @@
         if (obj.sheet) this.$store.commit(ADD_SHEET, obj.sheet)
         if (obj.page) this.$store.commit(ADD_PAGE, obj.page)
         if (obj.menu_item) this.$store.commit(ADD_MENU_ITEM, obj.menu_item)
-        if (obj.message) this.$store.commit(ADD_MESSAGE, obj.message)
+        if (obj.message) this.addMessage(obj.message)
       },
 
       updateObj(obj) {
@@ -121,6 +121,12 @@
 
       accessObj(obj) {
         if (obj.sheet) this.$store.commit(ACCESS_SHEET, obj.sheet)
+      },
+
+      addMessage(message) {
+        this.$store.commit(ADD_MESSAGE, message)
+        const audio = new Audio('/sounds/intuition.mp3')
+        audio.play()
       },
     },
   }
