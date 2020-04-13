@@ -1,7 +1,17 @@
 <template>
   <div class="sheet-body" :style="{ width, height }">
     <div class="main-row">
-      <avatar :sheet="sheet" />
+      <div class="main-row-col1">
+        <avatar :sheet="sheet" />
+        <v-text-field
+          v-model="name"
+          label="Имя"
+          color="indigo"
+          class="name"
+          flat
+          @change="saveSheet"
+        />
+      </div>
       <div class="main-row-col2">
         <v-select
           :value="role.key"
@@ -40,7 +50,7 @@
   import Avatar from './Avatar'
 
   import { Pbta } from '../../../../../../lib/Pbta'
-  import { UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
+  import { UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
 
   export default {
     name: 'MonsterSheet',
@@ -116,6 +126,15 @@
         set(value) {
           this.changeRole(value)
           this.saveSheet()
+        },
+      },
+
+      name: {
+        get() {
+          return this.sheet.name
+        },
+        set(name) {
+          this.$store.commit(UPDATE_SHEET_NAME, { id: this.sheet.id, name })
         },
       },
 
