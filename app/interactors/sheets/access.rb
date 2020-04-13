@@ -5,18 +5,22 @@ class Sheets::Access
 
   SHEETS_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
-    required(:user_id).maybe(:integer)
-    required(:read).filled(:bool)
-    required(:write).filled(:bool)
+    required(:read_all).filled(:bool)
+    required(:write_all).filled(:bool)
+    required(:levels).each do
+      hash do
+        required(:user_id).filled(:integer)
+        required(:read).filled(:bool)
+        required(:write).filled(:bool)
+      end
+    end
   end
 
   def call(input)
-    params = yield validate(input)
-    sheet = yield fetch_sheet(params)
-    if params[:user_id]
-      user_access(sheet, params)
-    else
-      all_access(sheet, params)
+    ActiveRecord::Base.transaction do
+      params = yield validate(input)
+      sheet = yield fetch_sheet(params)
+      save_access(sheet, params)
     end
   end
 
@@ -40,25 +44,25 @@ class Sheets::Access
     end
   end
 
-  def user_access(sheet, params)
-    acl = sheet.access_levels.find_or_initialize_by(user_id: params[:user_id])
-    acl.read = params[:read]
-    acl.write = params[:write]
-    if acl.save
-      Success(sheet)
-    else
-      Failure(message: acl.errors.to_h)
-    end
-  end
-
-  def all_access(sheet, params)
-    sheet.read_all = params[:read]
-    sheet.write_all = params[:write]
-
+  def save_access(sheet, params)
+    yield save_access_levels(sheet, params.delete(:levels))
+    sheet.assign_attributes(params)
     if sheet.save
       Success(sheet)
     else
       Failure(message: sheet.errors.to_h)
     end
+  end
+
+  def save_access_levels(sheet, levels)
+    levels.each do |item|
+      item[:user_id]
+      acl = sheet.access_levels.find_or_initialize_by(user_id: item[:user_id])
+      acl.read = item[:read]
+      acl.write = item[:write]
+      return Failure(message: acl.errors.to_h) unless acl.save
+    end
+
+    Success()
   end
 end

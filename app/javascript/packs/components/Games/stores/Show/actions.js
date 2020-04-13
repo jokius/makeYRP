@@ -3,6 +3,7 @@ import {
   createFolder,
   deleteFolder,
   deleteImage,
+  loadCurrentUser,
   loadFolder,
   loadGame,
   loadMessages,
@@ -11,6 +12,7 @@ import {
   updateImage,
 } from '../../api'
 import {
+  USER_LOADED,
   DELETE_FOLDER,
   DELETE_IMAGE,
   FOLDERS_LOADED,
@@ -28,6 +30,7 @@ import {
 export default {
   async loadGame({ commit }, id) {
     try {
+      commit(USER_LOADED, await loadCurrentUser())
       commit(GAME_LOADED, await loadGame(id))
       commit(SHEETS_LOADED, await loadSheets(id))
       commit(MESSAGES_LOADED, await loadMessages(id))

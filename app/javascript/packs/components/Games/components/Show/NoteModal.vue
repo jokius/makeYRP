@@ -5,7 +5,7 @@
     :title="contentTitle"
     :width="size.width"
     :height="size.height"
-    :disable-actions="isEdit"
+    :disable-actions="!isEdit"
     resizable
   >
     <template v-slot:body>

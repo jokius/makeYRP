@@ -30,6 +30,8 @@
 
   import ChatMessage from './chat/ChatMessage'
 
+  import { RESET_MARKER } from '../../stores/mutation-types'
+
   export default {
     name: 'TabChat',
     components: { ChatMessage },
@@ -47,6 +49,7 @@
     },
 
     activated() {
+      this.$store.commit(RESET_MARKER, 'chat')
       this.$nextTick(function () {
         this.scrollDown()
       })

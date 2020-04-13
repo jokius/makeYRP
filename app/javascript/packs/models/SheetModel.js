@@ -1,16 +1,20 @@
 import { get } from 'lodash'
 
+import { AclModel } from './AclModel'
+
 export class SheetModel {
   id = null
   name = ''
   params = {}
   sheetType = ''
+  acl = {}
 
   setInfo(raw) {
     this.id = raw.id
     this.sheetType = raw.sheet_type
     this.name = raw.name
     this.params = raw.params
+    this.acl = new AclModel().setInfo(raw.acl)
     return this
   }
 

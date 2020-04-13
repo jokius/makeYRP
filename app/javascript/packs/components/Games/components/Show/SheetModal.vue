@@ -17,6 +17,12 @@
         :key="key"
         :size="size"
       />
+      <hmw-monster-sheet
+        v-else-if="sheetName === 'horror_movie_world-monster'"
+        :id="id"
+        :key="key"
+        :size="size"
+      />
       <v-alert
         v-else
         :key="key"
@@ -40,11 +46,12 @@
   import BidCharacterSheet from '../../../Templates/components/BladeInTheDarck/sheets/CharacterSheet'
   import BidTeamSheet from '../../../Templates/components/BladeInTheDarck/sheets/TeamSheet'
   import HmwCharacterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/CharacterSheet'
+  import HmwMonsterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/MonsterSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog, HmwCharacterSheet },
+    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog, HmwCharacterSheet, HmwMonsterSheet },
 
     props: {
       uniqKey: { type: Number, required: true },
@@ -107,6 +114,8 @@
             case 'blade_in_the_dark-team':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'horror_movie_world-character':
+              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'horror_movie_world-monster':
               return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
