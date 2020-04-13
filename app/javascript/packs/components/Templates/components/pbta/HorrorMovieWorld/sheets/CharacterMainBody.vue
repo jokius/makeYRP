@@ -267,13 +267,9 @@
 
       tableRoles: {
         get() {
-          const list = []
-          const raw = this.tables.roles
-          for (const item in raw) {
-            list.push({ value: item, text: raw[item].name })
-          }
-
-          return list
+          return this.tables.roles.map(item => (
+            { value: item.key, text: item.name }
+          ))
         },
       },
 
@@ -313,7 +309,7 @@
       },
 
       changeRole(roleName) {
-        const role = this.tables.roles[roleName]
+        const role = this.tables.roles.find(item => item.key === roleName)
         this.input('role', role)
         this.changeCharacteristic(roleName)
         this.changeStats(roleName)
