@@ -6,18 +6,13 @@
         :class="[{enable: move.enable }, 'box']"
         @click="changeMove(!move.enable)"
       />
-      <div class="title-cell">
+      <div v-if="typeof move.full === 'string' || typeof move.who === 'object'" class="title-cell button">
         <span class="dice dice6">25</span>
-        <span
-          v-if="typeof move.full === 'string' || typeof move.who === 'object'"
-          class="move-name button"
-          @click="modalOpen = true"
-        >
+        <span class="move-name" @click="modalOpen = true">
           {{ move.name }}
         </span>
-        <span v-else class="move-name">{{ move.name }}</span>
       </div>
-
+      <span v-else class="move-name">{{ move.name }}</span>
       <v-select
         v-if="typeof move.type === 'object'"
         v-model="type"
@@ -246,6 +241,8 @@
   }
 
   .dice {
+    margin-left: 5px;
+    margin-right: -5px;
     font-size: 16px;
   }
 
@@ -274,6 +271,7 @@
   }
 
   .move-name {
+    margin-left: 5px;
     font-size: 18px;
     font-weight: 600;
   }
