@@ -83,7 +83,7 @@
           </div>
           <div class="black">
             <v-checkbox
-              :value="characteristic.injury.enable"
+              :input-value="characteristic.injury.enable"
               color="white"
               class="checkbox-injury"
               :label="characteristic.injury.name"
@@ -216,6 +216,19 @@
         set(value) {
           this.changeRole(value)
           this.saveSheet()
+        },
+      },
+
+      selectCharacteristics: {
+        get() {
+          return this.params.characteristics.map(item => {
+            item.injury.enable = false
+            return item
+          })
+        },
+
+        set(value) {
+          this.input('characteristics', value)
         },
       },
 
