@@ -7,7 +7,7 @@
       <template v-slot:activator="{ on }">
         <p class="number" v-on="on">{{ result }}</p>
       </template>
-      <span>{{ fullResult }}</span>
+      <div v-html="fullResult" />
     </v-tooltip>
 
     <div v-if="results">
@@ -95,20 +95,10 @@
 
       fullResult: {
         get() {
-          let message = this.dices.join('+')
-          if (this.characteristic.value > 0) {
-            message += `+${this.characteristic.value}`
-          } else if (this.characteristic.value < 0) {
-            message += `${this.characteristic.value}`
-          }
-
-          if (this.characteristic.injury.enable) message += '-1'
-
-          if (this.modifier > 0) {
-            message += `+${this.modifier}`
-          } else if (this.modifier < 0) {
-            message += `-${this.modifier}`
-          }
+          let message = `<div>бросок: ${this.dices.join('+')}</div>`
+          message += `<div>${this.characteristic.name}: ${this.characteristic.value}</div>`
+          if (this.characteristic.injury.enable) message += `${this.characteristic.injury.name}`
+          message += `<div>модификатор: ${this.modifier}</div>`
 
           return message
         },
