@@ -6,8 +6,8 @@ class UsersAclSerializer < ActiveModel::Serializer
     instance_options[:users].map do |user|
       { user: ShortUserSerializer.new(user),
         owner: object.owner?(user),
-        read: object.read?(user),
-        write: object.write?(user) }
+        read: object.read_record?(user),
+        write: object.write_record?(user) }
     end
   end
 end

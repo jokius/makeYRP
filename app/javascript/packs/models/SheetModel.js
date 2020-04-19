@@ -9,12 +9,12 @@ export class SheetModel {
   sheetType = ''
   acl = {}
 
-  setInfo(raw) {
+  setInfo(raw, changeAcl = true) {
     this.id = raw.id
     this.sheetType = raw.sheet_type
     this.name = raw.name
     this.params = raw.params
-    this.acl = new AclModel().setInfo(raw.acl)
+    if (changeAcl) this.acl = new AclModel().setInfo(raw.acl)
     return this
   }
 
