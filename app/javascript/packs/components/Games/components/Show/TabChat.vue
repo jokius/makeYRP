@@ -10,6 +10,7 @@
       outlined
       placeholder="сообщение..."
       class="field-text"
+      type="text"
       @keypress.enter="sendMessage"
     />
 

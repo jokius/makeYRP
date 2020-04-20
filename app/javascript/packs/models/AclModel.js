@@ -21,23 +21,24 @@ export class AclModel {
     return this
   }
 
-  get isMaster() {
+  isMaster() {
     return this.masterId === this.currentUserId
   }
 
-  get isOwner() {
+  isOwner() {
     return this.ownerId === this.currentUserId
   }
 
   get canFull() {
-    return this.isMaster || this.isOwner
+    return this.isMaster() || this.isOwner()
   }
 
   get canWrite() {
-    return this.writeAll || this.isMaster || this.writeIds.includes(this.currentUserId)
+    return this.writeAll || this.isMaster() || this.writeIds.includes(this.currentUserId)
   }
 
   get canRead() {
-    return this.readAll || this.isMaster || this.isOwner || this.canWrite || this.readIds.includes(this.currentUserId)
+    return this.readAll || this.isMaster() || this.isOwner() || this.canWrite
+      || this.readIds.includes(this.currentUserId)
   }
 }

@@ -1,4 +1,4 @@
-import { Graphics, Rectangle } from 'pixi.js-legacy'
+import { Graphics, Rectangle } from 'pixi.js'
 
 import { rgbToXhex } from '../rgbToXhex'
 

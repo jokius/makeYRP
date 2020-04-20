@@ -13,12 +13,19 @@ module Acl
   end
 
   def read?(user)
-    owner?(user) || write_all? || read_all? ||
-      access_levels.where(user: user, read: true).or(access_levels.where(user: user, write: true)).any?
+    owner?(user) || write_all? || read_all? || read_record?(user)
+  end
+
+  def read_record?(user)
+    access_levels.where(user: user, read: true).or(access_levels.where(user: user, write: true)).any?
   end
 
   def write?(user)
-    owner?(user) || write_all? || access_levels.where(user: user, write: true).any?
+    owner?(user) || write_all? || write_record?(user)
+  end
+
+  def write_record?(user)
+    access_levels.where(user: user, write: true).any?
   end
 
   def read_ids

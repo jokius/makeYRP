@@ -196,7 +196,7 @@ export default {
 
   [UPDATE_SHEETS](state, sheet) {
     const index = state.sheets.findIndex(item => item.id === sheet.id)
-    state.sheets[index] = state.sheets[index].setInfo(sheet)
+    state.sheets[index] = state.sheets[index].setInfo(sheet, false)
   },
 
   [UPDATE_SHEET_NAME](state, { id, name }) {

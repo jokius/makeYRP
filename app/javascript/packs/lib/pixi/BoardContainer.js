@@ -1,4 +1,4 @@
-import { Container, Graphics, Loader, Rectangle, TilingSprite } from 'pixi.js-legacy'
+import { Container, Graphics, Loader, Rectangle, TilingSprite } from 'pixi.js'
 
 import { rgbToXhex } from '../rgbToXhex'
 
