@@ -22,6 +22,7 @@
         dark
         flat
       />
+      <v-spacer v-else-if="typeof move.who !== 'object'" />
       <v-select
         v-if="typeof move.who === 'object'"
         v-model="who"
@@ -31,6 +32,9 @@
         dark
         flat
       />
+      <v-spacer v-else />
+      <v-spacer />
+      <span v-if="move.remove" class="move-remove" @click="removeMove">Удалить</span>
     </div>
 
     <span class="move-description" v-html="move.description" />
@@ -48,8 +52,8 @@
     />
     <div v-if="move.selects" class="selects">
       <v-select
-        v-for="(select, index) in selects"
-        :key="`other-select-${index}`"
+        v-for="(select, selectIndex) in selects"
+        :key="`other-select-${selectIndex}`"
         :items="select.items"
         class="other-select"
         color="black"
@@ -57,7 +61,7 @@
         flat
         :value="select.value"
         :label="select.label"
-        @change="value => otherSelect(index, value)"
+        @change="value => otherSelect(selectIndex, value)"
       />
     </div>
     <roll-modifier-modal v-model="obj" />
@@ -73,7 +77,7 @@
     components: { RollModifierModal },
     props: {
       move: { type: Object, required: true },
-      path: { type: String, required: true },
+      index: { type: Number, required: true },
       sheet: { type: Object, required: true },
     },
 
@@ -163,11 +167,22 @@
         this.saveSheet()
       },
 
+      removeMove() {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: 'moves',
+                             value: this.index,
+                             remove: true,
+                           })
+        this.saveSheet()
+      },
+
       input(target, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `${this.path}.${target}`,
+                             path: `moves[${this.index}].${target}`,
                              value: value,
                            })
       },
@@ -222,7 +237,7 @@
 
   .title-move-checkbox {
     display: grid;
-    grid-template-columns: 30px max-content repeat(2, 135px);
+    grid-template-columns: 30px max-content repeat(2, 135px) 1fr max-content;
     background-color: $black;
     color: $white;
     height: 35px;
@@ -232,7 +247,7 @@
 
   .title-move {
     display: grid;
-    grid-template-columns: max-content repeat(2, 135px);
+    grid-template-columns: max-content repeat(2, 135px) 1fr max-content;
     background-color: $black;
     color: $white;
     height: 35px;
@@ -292,5 +307,10 @@
     display: grid;
     grid-auto-flow: column;
     grid-column-gap: 5px;
+  }
+
+  .move-remove {
+    cursor: pointer;
+    margin-right: 10px;
   }
 </style>
