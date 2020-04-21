@@ -97,6 +97,8 @@
         menus: state => state.game.info.menus,
         marks: state => state.game.marks,
         currentItem: state => state.game.currentItem,
+        master: state => state.game.info.master,
+        currentUser: state => state.game.currentUser,
       }),
 
       items: {
@@ -106,9 +108,13 @@
             { label: 'Персонажи', icon: 'mdi-account', type: 'sheets', mark: 'sheet' },
             // { label: 'Карты', icon: 'mdi-map', type: 'maps' },
           ]
-          const afterSystem = [
-            { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings', mark: null },
-          ]
+          let afterSystem = []
+
+          if (this.currentUser.id === this.master.id) {
+            afterSystem =  [
+              { label: 'Настройки страници', icon: 'mdi-cog', type: 'settings', mark: null },
+            ]
+          }
 
           const system = this.menus.map(menu => ({
             label: menu.params.name,
