@@ -1,4 +1,4 @@
-import { get, set } from 'lodash'
+import { defaultsDeep, get, set } from 'lodash'
 
 import {
   ADD_OPEN_MODAL,
@@ -39,7 +39,7 @@ import {
   ACCESS_SHEET,
   ADD_MARKER,
   RESET_MARKER,
-  ADD_CURRENT_ITEM,
+  ADD_CURRENT_ITEM, UPDATE_PAGE_PARAMS, CHANGE_PAGE_COLOR,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -165,6 +165,12 @@ export default {
     state.info = state.info.updatePage(page)
   },
 
+  [UPDATE_PAGE_PARAMS](state, { id, params }) {
+    const page = this.pages.find(item => item.id === id)
+    page.params = defaultsDeep(params, page.params)
+    state.info = state.info.updatePage(page)
+  },
+
   [CHANGE_TARGET_COLOR](state, obj) {
     switch (obj.type) {
       case 'page':
@@ -264,5 +270,12 @@ export default {
 
   [ADD_CURRENT_ITEM](state, value) {
     state.currentItem = value
+  },
+
+  [CHANGE_PAGE_COLOR](state, { id, type, color }) {
+    const colorObj = {}
+    colorObj[id] = {}
+    colorObj[id][type] = { color }
+    state.pageColor = { ...state.pageColor, ...colorObj  }
   },
 }

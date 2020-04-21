@@ -25,7 +25,7 @@
       <v-spacer />
       <v-btn
         color="indigo"
-        @click="save"
+        @click="onSave"
       >
         <span class="whiteText">Изменить</span>
       </v-btn>
@@ -35,14 +35,12 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { defaultsDeep } from 'lodash'
 
   import DraggableDialog from './DraggableDialog'
 
   import {
     CHANGE_BODY_COLOR,
-    CHANGE_BORDER_COLOR,
-    CHANGE_TARGET_COLOR,
+    CHANGE_BORDER_COLOR, CHANGE_PAGE_COLOR,
     REMOVE_OPEN_MODAL,
   } from '../../stores/mutation-types'
 
@@ -70,18 +68,24 @@
 
       currentColor: {
         get() {
+          // console.log('this.startColor', this.startColor)
           return this.color
         },
         set(value) {
           this.color = value
-          this.$store.commit(CHANGE_TARGET_COLOR, { ...this.target, color: value })
+          // this.$store.commit(CHANGE_TARGET_COLOR, { ...this.target, color: value })
         },
       },
     },
 
     methods: {
       onClose() {
-        this.$store.commit(REMOVE_OPEN_MODAL, this.uniqKey)
+        this.color = null
+        this.save()
+      },
+
+      onSave() {
+        this.save()
       },
 
       save() {
@@ -89,7 +93,7 @@
         switch (this.target.type) {
           case 'page':
           case 'grid':
-            this.changePage()
+            this.$store.commit(CHANGE_PAGE_COLOR, { id: this.target.id, type: this.target.type, color: this.color })
             break
           case 'borderColor':
             this.$store.commit(CHANGE_BORDER_COLOR, this.color)
@@ -99,25 +103,6 @@
             break
           default:
             break
-        }
-      },
-
-      changePage() {
-        const page = this.currentPage
-        if (this.target.type === 'page') {
-          const page_params = defaultsDeep({ background: { color: this.color } }, page.params)
-          this.$cable.perform({
-            channel: 'GameChannel',
-            action: 'change',
-            data: { page_params, id: page.id, name: page.name, type: 'page' },
-          })
-        } else if (this.target.type === 'grid') {
-          const page_params = defaultsDeep({ grid: { color: this.color } }, page.params)
-          this.$cable.perform({
-            channel: 'GameChannel',
-            action: 'change',
-            data: { page_params, id: page.id, name: page.name, type: 'page' },
-          })
         }
       },
     },

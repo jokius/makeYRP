@@ -20,6 +20,7 @@ export default {
       borderSize: 3,
       borderColor: { r: 0, g: 0, b: 0, a: 1 },
       bodyColor: { r: 0, g: 0, b: 0, a: 0 },
+      pageColor: {},
       marks: {},
       currentItem: {},
     }

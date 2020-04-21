@@ -74,6 +74,16 @@
       />
       <span v-if="gridType" class="color-text">Цвет сетки</span>
       <div v-if="gridType" :style="styleGrid" class="color-current" @click="openGridColorSelect" />
+
+      <v-btn
+        class="selectButton"
+        color="indigo"
+        tile
+        dark
+        @click="changePage"
+      >
+        Сохранить
+      </v-btn>
     </div>
 
     <folders-modal
@@ -87,7 +97,7 @@
 
 <script>
   import { mapState } from 'vuex'
-  import { defaultsDeep } from 'lodash'
+  import { get } from 'lodash'
 
   import FoldersModal from './folders/FoldersModal'
 
@@ -104,6 +114,21 @@
           { text: 'Клетки', value: 'cell' },
           { text: 'Гексы', value: 'hex' },
         ],
+
+        privateParams: {
+          grid: {
+            type: null,
+            width: null,
+            height: null,
+            color: null,
+          },
+          background: {
+            color: null,
+          },
+
+          width: null,
+          height: null,
+        },
       }
     },
 
@@ -111,6 +136,7 @@
       ...mapState({
         game: state => state.game.info,
         currentPage: state => state.game.currentPage,
+        pageColor: state => state.game.pageColor,
       }),
 
       params: {
@@ -144,10 +170,22 @@
         },
       },
 
+      privatePageColor: {
+        get() {
+          return get(this.pageColor, `${this.currentPage.id}.page.color`, null)
+        },
+      },
+
+      backgroundColor: {
+        get() {
+          return this.privatePageColor || this.background.color
+        }
+      },
+
       stylePage: {
         get() {
           return {
-            backgroundColor: this.background.color,
+            backgroundColor: this.backgroundColor,
           }
         },
       },
@@ -158,9 +196,21 @@
         },
       },
 
+      privateGridColor: {
+        get() {
+          return get(this.pageColor, `${this.currentPage.id}.grid.color`, null)
+        },
+      },
+
+      gridColor: {
+        get() {
+          return this.privateGridColor || this.grid.color
+        }
+      },
+
       styleGrid: {
         get() {
-          const color = this.grid.color
+          const color = this.gridColor
           const rgba = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`
           return {
             backgroundColor: rgba,
@@ -170,64 +220,83 @@
 
       gridType: {
         get() {
-          return this.params.grid.type || null
+          return this.privateParams.grid.type || this.params.grid.type || null
         },
 
         set(value) {
-          this.changePage({ grid: { type: value } })
+          this.privateParams.grid.type = value
         },
       },
 
       gridWidth: {
         get() {
-          return this.params.grid.width
+          return this.privateParams.grid.width || this.params.grid.width
         },
 
         set(value) {
-          this.changePage({ grid: { width: value } })
+          this.privateParams.grid.width = value
         },
       },
 
       gridHeight: {
         get() {
-          return this.params.grid.height
+          return this.privateParams.grid.height || this.params.grid.height
         },
 
         set(value) {
-          this.changePage({ grid: { height: value } })
+          this.privateParams.grid.height = value
         },
       },
 
       boardWidth: {
         get() {
-          return this.params.width
+          return this.privateParams.width || this.params.width
         },
 
         set(value) {
-          this.changePage({ width: value })
+          this.privateParams.width = value
         },
       },
 
       boardHeight: {
         get() {
-          return this.params.height
+          return this.privateParams.height || this.params.height
         },
 
         set(value) {
-          this.changePage({ height: value })
+          this.privateParams.height = value
+        },
+      },
+
+      pageParams: {
+        get() {
+          return {
+            grid: {
+              type: this.gridType,
+              width: this.gridWidth,
+              height: this.gridHeight,
+              color: this.gridColor,
+            },
+            background: {
+              image: this.background.image,
+              color: this.backgroundColor,
+            },
+
+            width: this.boardWidth,
+            height: this.boardHeight,
+          }
         },
       },
     },
 
     methods: {
-      changePage(params) {
+      changePage() {
         const page = this.currentPage
-        const page_params = defaultsDeep(params, page.params)
 
         this.$cable.perform({
           channel: 'GameChannel',
           action: 'change',
-          data: { page_params, id: page.id, name: page.name, type: 'page' },
+          data: { page_params: this.pageParams, id: page.id, name: page.name, type: 'page' },
         })
       },
 
@@ -237,7 +306,7 @@
           key,
           name: 'color-picker',
           target: this.targetPage,
-          startColor: { hex: this.background.color },
+          startColor: { hex: this.privatePageColor || this.background.color },
         })
       },
 
@@ -247,7 +316,7 @@
           key,
           name: 'color-picker',
           target: this.targetGrid,
-          startColor: this.grid.color,
+          startColor: this.privateGridColor || this.grid.color,
         })
       },
     },
