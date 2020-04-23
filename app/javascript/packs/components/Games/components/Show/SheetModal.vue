@@ -8,9 +8,9 @@
     resizable
   >
     <template v-slot:body>
-      <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size" />
-      <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size" />
-      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size" />
+      <mutant-sheet v-if="sheetName === 'mutant_year_zero-mutant'" :id="id" :key="key" :size="size"/>
+      <bid-character-sheet v-else-if="sheetName === 'blade_in_the_dark-character'" :id="id" :key="key" :size="size"/>
+      <bid-team-sheet v-else-if="sheetName === 'blade_in_the_dark-team'" :id="id" :key="key" :size="size"/>
       <hmw-character-sheet
         v-else-if="sheetName === 'horror_movie_world-character'"
         :id="id"
@@ -19,6 +19,12 @@
       />
       <hmw-monster-sheet
         v-else-if="sheetName === 'horror_movie_world-monster'"
+        :id="id"
+        :key="key"
+        :size="size"
+      />
+      <eou-character-sheet
+        v-else-if="sheetName === 'edge_of_universe-character'"
         :id="id"
         :key="key"
         :size="size"
@@ -47,11 +53,20 @@
   import BidTeamSheet from '../../../Templates/components/BladeInTheDarck/sheets/TeamSheet'
   import HmwCharacterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/CharacterSheet'
   import HmwMonsterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/MonsterSheet'
+  import EouCharacterSheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/CharacterSheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
-    components: { MutantSheet, BidCharacterSheet, BidTeamSheet, DraggableDialog, HmwCharacterSheet, HmwMonsterSheet },
+    components: {
+      MutantSheet,
+      BidCharacterSheet,
+      BidTeamSheet,
+      DraggableDialog,
+      HmwCharacterSheet,
+      HmwMonsterSheet,
+      EouCharacterSheet,
+    },
 
     props: {
       uniqKey: { type: Number, required: true },
@@ -110,13 +125,15 @@
             case 'mutant_year_zero-mutant':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-character':
-              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'blade_in_the_dark-team':
-              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'horror_movie_world-character':
-              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'horror_movie_world-monster':
-              return {  width: this.privateWidth || 950, height: this.privateHeight || 600 }
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'edge_of_universe-character':
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
           }
