@@ -36,6 +36,7 @@
           <v-select
             :value="role.key"
             :items="tableRoles"
+            label="Роль"
             class="input"
             color="indigo"
             @change="(value) => role = value"
@@ -43,6 +44,7 @@
           <v-select
             v-model="appearance"
             :items="appearances"
+            label="Внешность"
             class="input"
             color="indigo"
           />
@@ -96,6 +98,17 @@
                 >
                   <div :class="[{enable: damage >= number }, 'box']" />
                 </div>
+                <div>
+                  <v-btn
+                    class="button-damage"
+                    raised
+                    color="black"
+                    dark
+                    @click="modalOpen = true"
+                  >
+                    Нанести урон
+                  </v-btn>
+                </div>
               </div>
               <div class="protection">
                 <img src="/img/riot-shield.svg" class="icon" alt="Защита" />
@@ -136,7 +149,7 @@
       </div>
     </div>
     <div class="main-row2">
-      <v-expansion-panels v-model="panel" flat hover>
+      <v-expansion-panels flat hover>
         <v-expansion-panel>
           <v-expansion-panel-header>Описание</v-expansion-panel-header>
           <v-expansion-panel-content>
@@ -144,7 +157,23 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+
+      <specials :id="id" />
+      <v-textarea
+        v-model="notes"
+        auto-grow
+        no-resize
+        rows="2"
+        color="indigo"
+        background-color="white"
+        class="notes"
+        hide-details
+        label="Заметки"
+        @change="saveSheet"
+      />
     </div>
+
+    <roll-damage-modal v-model="obj" />
   </div>
 </template>
 
@@ -152,13 +181,15 @@
   import { mapState } from 'vuex'
 
   import Avatar from './Avatar'
+  import Specials from './Specials'
 
   import { UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
   import { Pbta } from '../../../../../../lib/Pbta'
+  import RollDamageModal from '../modals/RollDamageModal'
 
   export default {
     name: 'CharacterMainBody',
-    components: { Avatar },
+    components: { RollDamageModal, Specials, Avatar },
 
     props: {
       id: { type: Number, required: true },
@@ -167,8 +198,6 @@
     data() {
       return {
         modalOpen: false,
-        currentCharacteristic: {},
-        panel: 0,
       }
     },
 
@@ -324,17 +353,6 @@
         },
       },
 
-      obj: {
-        get() {
-          return { open: this.modalOpen, modifier: 0 }
-        },
-
-        set({ open, modifier, isClose }) {
-          if (!isClose) this.roll(parseInt(modifier))
-          this.modalOpen = open
-        },
-      },
-
       notes: {
         get() {
           return this.params.notes
@@ -366,6 +384,17 @@
           return this.params.description
         },
       },
+
+      obj: {
+        get() {
+          return { open: this.modalOpen, dices: 1 }
+        },
+
+        set({ open, dices, isClose }) {
+          if (!isClose) this.rollDamage(parseInt(dices))
+          this.modalOpen = open
+        },
+      },
     },
 
     created() {
@@ -376,20 +405,15 @@
     },
 
     methods: {
-      openModal(characteristic){
-        this.modalOpen = true
-        this.currentCharacteristic = characteristic
-      },
-
       changeRole(roleName) {
         const role = this.tables.roles.find(item => item.key === roleName)
         this.input('role', role)
         this.changeStats()
         this.changeRoleAppearance()
         this.changeRoleDescription()
-        // this.changeRelationship(roleName)
-        // this.changeMoves(roleName)
-        // this.changeSpecials(roleName)
+        this.changeMoves()
+        this.changeSpecials()
+        this.changeRelationship()
       },
 
       changeStats() {
@@ -442,47 +466,33 @@
                            })
       },
 
-      changeRelationship() {
-        const roleRelationship = this.tables.relationship[this.role] || []
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: 'relationship',
-                             value: roleRelationship,
-                           })
-      },
-
-      changeMoves(role) {
-        const roleMoves = this.tables.moves[role] || []
+      changeMoves() {
+        let moves = this.tables.startMoves[this.role.key] || []
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
                              path: 'moves',
-                             value: roleMoves,
-                           })
-
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: 'fearMove',
-                             value: this.tables.fearMove[role] || "",
-                           })
-
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: 'deadMove',
-                             value: this.tables.deadMove[role] || "",
+                             value: moves,
                            })
       },
 
-      changeSpecials(role) {
-        const roleSpecials = this.tables.specials[role] || []
+      changeSpecials() {
+        const roleSpecials = this.tables.specials[this.role.key] || []
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
                              path: 'specials',
                              value: roleSpecials,
+                           })
+      },
+
+      changeRelationship() {
+        const roleRelationship = this.tables.relationship[this.role.key] || []
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: 'relationship',
+                             value: roleRelationship,
                            })
       },
 
@@ -516,7 +526,7 @@
         this.saveSheet()
       },
 
-      roll(modifier) {
+      rollDamage(dices) {
         this.$cable.perform({
           channel: 'GameChannel',
           action: 'add',
@@ -524,10 +534,9 @@
             type: 'message',
             body: {
               as: this.sheet.id,
-              name: this.currentCharacteristic.name,
-              dices: { d6: 2 },
-              characteristic: this.currentCharacteristic,
-              modifier,
+              name: 'Урон',
+              dices: { d6: dices },
+              damage: true,
             },
           },
         })
@@ -635,61 +644,18 @@
     background-color: $white;
   }
 
-
-
-
-
-  .stat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .characteristics-grid {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 20px;
-    margin-right: 5px;
-    height: 127px;
-  }
-
-  .characteristic {
-    background: $white;
-    border: 1px solid $black;
-  }
-
-  .characteristic-title-text {
-    font-size: 25px;
-  }
-
-  .button {
-    cursor: pointer;
-  }
-
   .black {
     background-color: $black;
     color: $white;
     text-align: center;
   }
 
-  .number {
-    font-weight: bold;
-    font-size: 25px;
-    margin: 0;
-    text-align: center;
-    height: 60px;
-    line-height: 60px;
-  }
-
-  .checkbox-injury {
-    margin: 0;
+  .button-damage {
+    margin-left: 5px;
   }
 
   .enable {
     background-color: $black;
-  }
-
-  .characteristics-select {
-    height: 20px;
   }
 
   .specials {
@@ -699,24 +665,8 @@
     width: 99%;
   }
 
-  .special-title {
-    font-weight: bold;
-    font-size: 25px;
-    margin: 0;
-  }
-
-  .special-select {
-    margin: 0;
-  }
-
   .notes {
     margin-right: 5px;
     margin-bottom: 5px;
-  }
-
-  .role-title {
-    margin-right: 2px;
-    font-weight: bold;
-    font-style: italic;
   }
 </style>
