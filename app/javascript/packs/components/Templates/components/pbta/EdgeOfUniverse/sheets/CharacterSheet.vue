@@ -9,34 +9,36 @@
       <v-tab class="tab" active-class="tab-active">
         <span class="xolonium-font">О персанаже</span>
       </v-tab>
-<!--      <v-tab class="tab" active-class="tab-active">-->
-<!--        <span class="xolonium-font">Ходы</span>-->
-<!--      </v-tab>-->
-<!--      <v-tab class="tab" active-class="tab-active">-->
-<!--        <span class="xolonium-font">Отношения</span>-->
-<!--      </v-tab>-->
+      <v-tab class="tab" active-class="tab-active">
+        <span class="xolonium-font">Ходы</span>
+      </v-tab>
+      <v-tab class="tab" active-class="tab-active">
+        <span class="xolonium-font">Отношения</span>
+      </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab" continuous>
       <v-tab-item>
         <character-main-body :id="id" />
       </v-tab-item>
-<!--      <v-tab-item>-->
-<!--        <character-move-body :id="id" />-->
-<!--      </v-tab-item>-->
-<!--      <v-tab-item>-->
-<!--        <character-relationship-body :id="id" />-->
-<!--      </v-tab-item>-->
+      <v-tab-item>
+        <character-move-body :id="id" />
+      </v-tab-item>
+      <v-tab-item>
+        <character-relationship-body :id="id" />
+      </v-tab-item>
     </v-tabs-items>
   </div>
 </template>
 
 <script>
   import CharacterMainBody from './CharacterMainBody'
+  import CharacterMoveBody from './CharacterMoveBody'
+  import CharacterRelationshipBody from './CharacterRelationshipBody'
 
   export default {
     name: 'CharacterSheet',
-    components: { CharacterMainBody },
+    components: { CharacterRelationshipBody, CharacterMoveBody, CharacterMainBody },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },
