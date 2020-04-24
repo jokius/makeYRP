@@ -71,6 +71,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
+
   import { UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
   import RollModifierModal from '../modals/RollModifierModal'
 
@@ -91,6 +93,11 @@
     },
 
     computed: {
+      ...mapState({
+        sheets: state => state.game.sheets,
+        tables: state => state.game.info.template.tables,
+      }),
+
       type: {
         get() {
           return this.privateType
@@ -223,6 +230,7 @@
       },
 
       roll(modifier) {
+        const state = { name: this.tables.stats[this.type], value: this.sheet.params.stats[this.type] }
         this.$cable.perform({
           channel: 'GameChannel',
           action: 'add',
@@ -232,7 +240,7 @@
               as: this.sheet.id,
               name: this.move.name,
               dices: { d6: 2 },
-              state: this.type,
+              state,
               modifier,
               results: this.results,
               detailsAlways: this.move.detailsAlways || false,
