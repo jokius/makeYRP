@@ -10,7 +10,7 @@
   import DiceRoll from './DiceRoll'
 
   export default {
-    name: 'EofRoll',
+    name: 'EouRoll',
     components: { DiceRoll, AutoPart, AutoFull },
     props: {
       body: { type: Object, required: true },
