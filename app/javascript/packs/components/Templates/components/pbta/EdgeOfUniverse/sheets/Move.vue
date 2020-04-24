@@ -24,12 +24,12 @@
       />
       <div v-if="move.autoFull" class="title-cell button">
         <span class="move-name" @click="autoFull">
-          Автоматический успех
+          | Автоматический успех
         </span>
       </div>
       <div v-if="move.autoPart" class="title-cell button">
         <span class="move-name" @click="autoPart">
-          Автоматический частичный успех
+          | Автоматический частичный успех
         </span>
       </div>
       <v-spacer v-if="typeof move.type !== 'object'" />
