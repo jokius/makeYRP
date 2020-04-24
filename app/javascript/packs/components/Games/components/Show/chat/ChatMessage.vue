@@ -45,6 +45,10 @@
         v-else-if="!body.noSystem && body.dices && system === 'horror_movie_world'"
         :body="body"
       />
+      <eof-roll
+        v-else-if="(!body.noSystem && body.dices || body.autoFull || body.autoPart) && system === 'edge_of_universe'"
+        :body="body"
+      />
       <default-roll v-else-if="body.dices" :roll="body.dices" />
     </div>
   </div>
@@ -59,10 +63,11 @@
   import BidRoll from '../../../../Templates/components/BladeInTheDarck/chat/BidRoll'
   import HmwRoll from '../../../../Templates/components/pbta/HorrorMovieWorld/chat/HmwRoll'
   import * as dateTime from '../../../../../lib/dateTime'
+  import EofRoll from '../../../../Templates/components/pbta/EdgeOfUniverse/chat/EofRoll'
 
   export default {
     name: 'ChatMessage',
-    components: { HmwRoll, BidRoll, DefaultRoll, MyzRoll },
+    components: { EofRoll, HmwRoll, BidRoll, DefaultRoll, MyzRoll },
 
     props: {
       message: { type: Object, required: true },
