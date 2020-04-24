@@ -1,56 +1,25 @@
 <template>
   <div class="moves-body">
-    <v-expansion-panels v-model="panels" hover multiple>
-      <v-expansion-panel>
-        <v-expansion-panel-header class="gray">Базовые ходы</v-expansion-panel-header>
-        <v-expansion-panel-content class="gray">
-          <move
-            v-for="(move, index) in baseMoves"
-            :key="`base-moves-${index}`"
-            :sheet="sheet"
-            :move="move"
-            :index="index"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header class="gray">Ходы роли</v-expansion-panel-header>
-        <v-expansion-panel-content class="gray">
-          <move
-            v-for="(move, index) in moves"
-            :key="`moves-${index}`"
-            :sheet="sheet"
-            :move="move"
-            :index="index"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header class="gray">Опциональные ходы</v-expansion-panel-header>
-        <v-expansion-panel-content class="gray">
-          <move
-            v-for="(move, index) in optionalMoves"
-            :key="`optional-moves-${index}`"
-            :sheet="sheet"
-            :move="move"
-            :index="index"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header class="gray">Космические ходы</v-expansion-panel-header>
-        <v-expansion-panel-content class="gray">
-          <move
-            v-for="(move, index) in spaceMoves"
-            :key="`space-moves-${index}`"
-            :sheet="sheet"
-            :move="move"
-            :index="index"
-          />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-
+    <div class="moves">
+      <p class="moves-title">Базовые ходы</p>
+      <move
+        v-for="(move, index) in baseMoves"
+        :key="`base-moves-${index}`"
+        :sheet="sheet"
+        :move="move"
+        :index="index"
+      />
+    </div>
+    <div class="moves">
+      <p class="moves-title">Ходы роли</p>
+      <move
+        v-for="(move, index) in moves"
+        :key="`moves-${index}`"
+        :sheet="sheet"
+        :move="move"
+        :index="index"
+      />
+    </div>
     <div class="actions">
       <v-spacer />
       <v-btn
@@ -73,6 +42,26 @@
         Добавить Мировой ход
       </v-btn>
       <v-spacer />
+    </div>
+    <div class="moves">
+      <p class="moves-title">Опциональные ходы</p>
+      <move
+        v-for="(move, index) in optionalMoves"
+        :key="`optional-moves-${index}`"
+        :sheet="sheet"
+        :move="move"
+        :index="index"
+      />
+    </div>
+    <div class="moves">
+      <p class="moves-title">Космические ходы</p>
+      <move
+        v-for="(move, index) in spaceMoves"
+        :key="`space-moves-${index}`"
+        :sheet="sheet"
+        :move="move"
+        :index="index"
+      />
     </div>
 
     <add-move-modal v-if="modalOpen" v-model="obj" :select-moves="selectMoves" :moves="moves" />
@@ -229,6 +218,18 @@
     height: 570px;
   }
 
+  .moves {
+    margin-bottom: 5px;
+  }
+
+  .moves-title {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
   .gray {
     background-color: $grayC5;
   }
@@ -237,5 +238,6 @@
     display: grid;
     grid-template-columns: 1fr max-content 10px max-content 1fr;
     margin-top: 15px;
+    margin-bottom: 5px;
   }
 </style>
