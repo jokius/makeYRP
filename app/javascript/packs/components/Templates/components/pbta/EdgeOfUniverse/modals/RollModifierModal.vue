@@ -56,7 +56,7 @@
 
     data() {
       return {
-        modifiers: [-3, -2, -1, 0, 1, 2, 3],
+        modifiers: [-3, -2, -1, 0, 1, 2, 3, 10],
         modifier: 0,
       }
     },
