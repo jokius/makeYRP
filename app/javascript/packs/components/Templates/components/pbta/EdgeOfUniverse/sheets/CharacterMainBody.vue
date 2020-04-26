@@ -143,6 +143,15 @@
     </div>
     <specials :id="id" />
     <div class="main-row2">
+      <v-select
+        v-model="origin"
+        :items="origins"
+        :label="originTitle"
+        class="input"
+        color="indigo"
+        @change="saveSheet"
+      />
+      <div class="origin" v-html="origin" />
       <v-expansion-panels flat hover>
         <v-expansion-panel>
           <v-expansion-panel-header>Описание</v-expansion-panel-header>
@@ -252,6 +261,28 @@
         set(value) {
           this.changeRole(value)
           this.saveSheet()
+        },
+      },
+
+      origins: {
+        get() {
+          return this.tables.origin[this.role.key].list.map(item => ({ text: item.value, value: item.description }))
+        },
+      },
+
+      originTitle: {
+        get() {
+          return this.tables.origin[this.role.key].title
+        },
+      },
+
+      origin: {
+        get() {
+          return this.params.origin
+        },
+
+        set(value) {
+          this.input('origin', value)
         },
       },
 
@@ -674,6 +705,10 @@
     margin-left: 5px;
     margin-right: 5px;
     width: 99%;
+  }
+
+  .origin {
+    margin-bottom: 5px;
   }
 
   .notes {
