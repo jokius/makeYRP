@@ -4,7 +4,7 @@
       <div class="main-row1-col1">
         <avatar :sheet="sheet" />
         <div class="resources">
-          <img src="/img/strongbox.svg" class="icon" alt="Благосостояние" />
+          <img src="/img/strongbox.svg" class="icon" title="Благосостояние" alt="Благосостояние" />
           <div
             v-for="number in 5"
             :key="`welfare-${number}`"
@@ -13,7 +13,7 @@
           >
             <div :class="[{ enable: welfare >= number }, 'box']" />
           </div>
-          <img src="/img/banknote.svg" class="icon" alt="Прибыль" />
+          <img src="/img/banknote.svg" class="icon" title="Прибыль" alt="Прибыль" />
           <div
             v-for="number in 3"
             :key="`profit-${number}`"
@@ -89,7 +89,7 @@
             </div>
             <div class="attributes-col2">
               <div class="damage">
-                <img src="/img/fist.svg" class="icon" alt="Урон" />
+                <img src="/img/fist.svg" class="icon" title="Урон" alt="Урон" />
                 <div
                   v-for="number in 5"
                   :key="`damage-${number}`"
@@ -111,7 +111,7 @@
                 </div>
               </div>
               <div class="protection">
-                <img src="/img/riot-shield.svg" class="icon" alt="Защита" />
+                <img src="/img/riot-shield.svg" class="icon" title="Защита" alt="Защита" />
                 <div
                   v-for="number in 5"
                   :key="`protection-${number}`"
@@ -122,7 +122,7 @@
                 </div>
               </div>
               <div class="hp">
-                <img src="/img/health-normal.svg" class="icon" alt="Здоровье" />
+                <img src="/img/health-normal.svg" class="icon" title="Здоровье" alt="Здоровье" />
                 <div
                   v-for="number in hp.max"
                   :key="`hp-${number}`"
@@ -133,7 +133,7 @@
                 </div>
               </div>
               <div class="supply">
-                <img src="/img/ammo-box.svg" class="icon" alt="Припасы" />
+                <img src="/img/ammo-box.svg" class="icon" title="Припасы" alt="Припасы" />
                 <div
                   v-for="number in 10"
                   :key="`supply-${number}`"
