@@ -92,6 +92,7 @@
 
     methods: {
       specialsItems(special) {
+        console.log('special', special)
         return special.filter(item => !item.key || this.keys.includes(item.key))
       },
 
