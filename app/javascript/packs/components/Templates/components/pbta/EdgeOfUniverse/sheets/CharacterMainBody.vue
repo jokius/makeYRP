@@ -44,7 +44,9 @@
           <div class="attributes">
             <div class="attributes-col1">
               <div class="state">
-                <span class="state-label">ЯРОСТЬ</span>
+                <span class="state-label" @click="openModifier({ name: 'ЯРОСТЬ', value: fury })">
+                  ЯРОСТЬ
+                </span>
                 <input
                   v-model.number="fury"
                   class="state-input"
@@ -53,7 +55,9 @@
                 />
               </div>
               <div class="state">
-                <span class="state-label">КОНТРОЛЬ</span>
+                <span class="state-label" @click="openModifier({ name: 'КОНТРОЛЬ', value: control })">
+                  КОНТРОЛЬ
+                </span>
                 <input
                   v-model.number="control"
                   class="state-input"
@@ -62,7 +66,9 @@
                 />
               </div>
               <div class="state">
-                <span class="state-label">НАВЫК</span>
+                <span class="state-label" @click="openModifier({ name: 'НАВЫК', value: skill })">
+                  НАВЫК
+                </span>
                 <input
                   v-model.number="skill"
                   class="state-input"
@@ -71,7 +77,9 @@
                 />
               </div>
               <div class="state">
-                <span class="state-label">РЕПУТАЦИЯ</span>
+                <span class="state-label" @click="openModifier({ name: 'РЕПУТАЦИЯ', value: reputation })">
+                  РЕПУТАЦИЯ
+                </span>
                 <input
                   v-model.number="reputation"
                   class="state-input"
@@ -216,6 +224,7 @@
     </div>
 
     <roll-damage-modal v-model="obj" />
+    <roll-modifier-modal :obj="modifierObj" @roll="value => modifierObj = value" />
   </div>
 </template>
 
@@ -228,10 +237,11 @@
   import { UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
   import { Pbta } from '../../../../../../lib/Pbta'
   import RollDamageModal from '../modals/RollDamageModal'
+  import RollModifierModal from '../../HorrorMovieWorld/modals/RollModifierModal'
 
   export default {
     name: 'CharacterMainBody',
-    components: { RollDamageModal, Specials, Avatar },
+    components: { RollModifierModal, RollDamageModal, Specials, Avatar },
 
     props: {
       id: { type: Number, required: true },
@@ -240,6 +250,8 @@
     data() {
       return {
         modalOpen: false,
+        modalModifierOpen: false,
+        currentState: {},
       }
     },
 
@@ -480,6 +492,17 @@
           this.modalOpen = open
         },
       },
+
+      modifierObj: {
+        get() {
+          return { open: this.modalModifierOpen, modifier: 0 }
+        },
+
+        set({ open, modifier, isClose }) {
+          if (!isClose) this.roll(parseInt(modifier))
+          this.modalModifierOpen = open
+        },
+      },
     },
 
     created() {
@@ -612,6 +635,11 @@
         this.saveSheet()
       },
 
+      openModifier(state) {
+        this.currentState = state
+        this.modalModifierOpen = true
+      },
+
       rollDamage(dices) {
         this.$cable.perform({
           channel: 'GameChannel',
@@ -623,6 +651,26 @@
               name: 'Урон',
               dices: { d6: dices },
               damage: true,
+            },
+          },
+        })
+      },
+
+      roll(modifier) {
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'add',
+          data: {
+            type: 'message',
+            body: {
+              as: this.sheet.id,
+              name: this.currentState.name,
+              dices: { d6: 2 },
+              state: this.currentState,
+              modifier,
+              results: null,
+              detailsAlways: false,
+              details: null,
             },
           },
         })
@@ -697,6 +745,7 @@
   }
 
   .state-label {
+    cursor: pointer;
     margin-left: 10px;
   }
 
