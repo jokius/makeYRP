@@ -89,7 +89,7 @@
                   class="box-line"
                   @click="damage = number"
                 >
-                  <div :class="[{enable: damage >= number }, 'box']" />
+                  <div :class="[{ enable: damage >= number }, 'box']" />
                 </div>
                 <div>
                   <v-btn
@@ -111,7 +111,7 @@
                   class="box-line"
                   @click="protection = number"
                 >
-                  <div :class="[{enable: protection >= number }, 'box']" />
+                  <div :class="[{ enable: protection >= number }, 'box']" />
                 </div>
               </div>
               <div class="hp">
@@ -122,7 +122,7 @@
                   class="box-line"
                   @click="hp = number"
                 >
-                  <div :class="[{enable: hp.current >= number }, 'box']" />
+                  <div :class="[{ enable: hp.current >= number }, 'box']" />
                 </div>
               </div>
               <div class="supply">
@@ -133,10 +133,33 @@
                   class="box-line"
                   @click="supply = number"
                 >
-                  <div :class="[{enable: supply >= number }, 'box']" />
+                  <div :class="[{ enable: supply >= number }, 'box']" />
                 </div>
               </div>
             </div>
+          </div>
+          <div class="exp-grid">
+            <span>EXP:</span>
+            <div class="exp-boxes">
+              <div
+                v-for="number in 4"
+                :key="`exp-${number}`"
+                class="box-line"
+                @click="exp = number"
+              >
+                <div :class="[{ enable: exp >= number }, 'box']" />
+              </div>
+            </div>
+            <span>Уровень:</span>
+            <v-text-field
+              v-model.number="level"
+              color="indigo"
+              class="input level"
+              type="number"
+              flat
+              hide-details
+              @change="saveSheet"
+            />
           </div>
         </div>
       </div>
@@ -383,6 +406,27 @@
 
         set(value) {
           this.inputBox('profit', value, 3)
+        },
+      },
+
+      exp: {
+        get() {
+          return this.params.exp
+        },
+
+        set(value) {
+          this.inputBox('exp.current', value, this.params.exp.max)
+        },
+      },
+
+
+      level: {
+        get() {
+          return this.params.level
+        },
+
+        set(value) {
+          this.input('level', value)
         },
       },
 
@@ -711,6 +755,20 @@
     margin-bottom: 5px;
   }
 
+  .exp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, max-content) 50px;
+    grid-column-gap: 10px;
+  }
+
+  .exp-boxes {
+    margin-top: 7px;
+  }
+
+  .level {
+    margin-top: -5px;
+  }
+  
   .notes {
     margin-right: 5px;
     margin-bottom: 5px;
