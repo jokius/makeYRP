@@ -13,6 +13,9 @@
         <span class="xolonium-font">Ходы</span>
       </v-tab>
       <v-tab class="tab" active-class="tab-active">
+        <span class="xolonium-font">Снаряжение</span>
+      </v-tab>
+      <v-tab class="tab" active-class="tab-active">
         <span class="xolonium-font">Отношения</span>
       </v-tab>
     </v-tabs>
@@ -25,6 +28,9 @@
         <character-move-body :id="id" />
       </v-tab-item>
       <v-tab-item>
+        <character-equipment-body :id="id" />
+      </v-tab-item>
+      <v-tab-item>
         <character-relationship-body :id="id" />
       </v-tab-item>
     </v-tabs-items>
@@ -35,10 +41,11 @@
   import CharacterMainBody from './CharacterMainBody'
   import CharacterMoveBody from './CharacterMoveBody'
   import CharacterRelationshipBody from './CharacterRelationshipBody'
+  import CharacterEquipmentBody from './CharacterEquipmentBody'
 
   export default {
     name: 'CharacterSheet',
-    components: { CharacterRelationshipBody, CharacterMoveBody, CharacterMainBody },
+    components: { CharacterEquipmentBody, CharacterRelationshipBody, CharacterMoveBody, CharacterMainBody },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },

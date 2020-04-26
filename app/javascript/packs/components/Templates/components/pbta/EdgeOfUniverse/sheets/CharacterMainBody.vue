@@ -411,8 +411,9 @@
         this.changeStats()
         this.changeRoleAppearance()
         this.changeRoleDescription()
-        this.changeMoves()
         this.changeSpecials()
+        this.changeMoves()
+        this.changeEquipment()
         this.changeRelationship()
       },
 
@@ -473,6 +474,16 @@
                              id: this.sheet.id,
                              path: 'moves',
                              value: moves,
+                           })
+      },
+
+      changeEquipment() {
+        let equipment = this.tables.startingEquipment[this.role.key] || []
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: 'equipment',
+                             value: equipment,
                            })
       },
 
