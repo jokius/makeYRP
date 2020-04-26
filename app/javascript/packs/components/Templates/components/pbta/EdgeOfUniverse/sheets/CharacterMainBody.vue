@@ -41,13 +41,6 @@
             color="indigo"
             @change="(value) => role = value"
           />
-          <v-select
-            v-model="appearance"
-            :items="appearances"
-            label="Внешность"
-            class="input"
-            color="indigo"
-          />
           <div class="attributes">
             <div class="attributes-col1">
               <div class="state">
@@ -148,17 +141,34 @@
         </div>
       </div>
     </div>
+    <specials :id="id" />
     <div class="main-row2">
       <v-expansion-panels flat hover>
         <v-expansion-panel>
           <v-expansion-panel-header>Описание</v-expansion-panel-header>
           <v-expansion-panel-content>
             {{ description }}
+            <br />
+            <br />
+            <div>Примеры внешности:</div>
+            <div v-for="example in appearances" :key="example">
+              <span>{{ example }}</span>
+            </div>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-
-      <specials :id="id" />
+      <v-textarea
+        v-model="appearance"
+        auto-grow
+        no-resize
+        rows="1"
+        color="indigo"
+        background-color="white"
+        class="notes"
+        hide-details
+        label="Внешность"
+        @change="saveSheet"
+      />
       <v-textarea
         v-model="notes"
         auto-grow
@@ -409,7 +419,6 @@
         const role = this.tables.roles.find(item => item.key === roleName)
         this.input('role', role)
         this.changeStats()
-        this.changeRoleAppearance()
         this.changeRoleDescription()
         this.changeSpecials()
         this.changeMoves()
@@ -446,15 +455,6 @@
                              id: this.sheet.id,
                              path: 'supply',
                              value: role.supply,
-                           })
-      },
-
-      changeRoleAppearance() {
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: 'appearance',
-                             value: this.appearances[0] || '',
                            })
       },
 
