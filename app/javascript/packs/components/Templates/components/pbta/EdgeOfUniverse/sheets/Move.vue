@@ -7,7 +7,7 @@
         @click="changeMove(!move.enable)"
       />
       <div v-if="typeof move.full === 'string'" class="title-cell button">
-        <span class="dice dice6">25</span>
+        <span class="dice dice6" @click="modalOpen = true">25</span>
         <span class="move-name" @click="modalOpen = true">
           {{ move.name }}
         </span>
