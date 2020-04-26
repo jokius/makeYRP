@@ -164,6 +164,7 @@
               color="indigo"
               class="input level"
               type="number"
+              min="0"
               flat
               hide-details
               @change="saveSheet"

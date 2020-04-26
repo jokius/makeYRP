@@ -12,6 +12,7 @@
               color="indigo"
               type="number"
               flat
+              min="0"
             />
           </v-col>
         </v-row>
