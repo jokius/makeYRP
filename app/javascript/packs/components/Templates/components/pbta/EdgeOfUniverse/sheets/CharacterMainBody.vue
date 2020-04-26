@@ -768,7 +768,7 @@
   .level {
     margin-top: -5px;
   }
-  
+
   .notes {
     margin-right: 5px;
     margin-bottom: 5px;
