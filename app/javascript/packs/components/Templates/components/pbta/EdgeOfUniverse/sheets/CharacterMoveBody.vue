@@ -8,6 +8,7 @@
         :sheet="sheet"
         :move="move"
         :index="index"
+        path="moves"
       />
     </div>
     <div class="moves">
@@ -18,6 +19,7 @@
         :sheet="sheet"
         :move="move"
         :index="index"
+        path="moves"
       />
     </div>
     <div class="actions">
@@ -51,6 +53,7 @@
         :sheet="sheet"
         :move="move"
         :index="index"
+        path="moves"
       />
     </div>
     <div class="moves">
@@ -61,6 +64,7 @@
         :sheet="sheet"
         :move="move"
         :index="index"
+        path="moves"
       />
     </div>
 

@@ -59,7 +59,6 @@
       return {
         panels: [],
         startingEquipmentOpen: false,
-        selectMoves: [],
       }
     },
 
