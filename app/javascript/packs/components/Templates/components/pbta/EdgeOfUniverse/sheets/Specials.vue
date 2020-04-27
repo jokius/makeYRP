@@ -34,6 +34,16 @@
             :index-move="indexMove"
           />
         </div>
+        <div v-if="item.type === 'counter'" class="counter">
+          <div
+            v-for="number in item.max"
+            :key="`counter-${index}-${number}`"
+            class="box-line"
+            @click="boxSet(index, itemIndex, number, item.max)"
+          >
+            <div :class="[{ enable: item.current >= number }, 'box']" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -41,6 +51,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { get } from 'lodash'
 
   import SpecialsMove from './SpecialsMove'
 
@@ -106,6 +117,20 @@
         this.saveSheet()
       },
 
+      boxSet(index, itemIndex, number, max) {
+        const current = get(this.params, `specials[${index}][${itemIndex}].current`)
+        let value = current < max ? number : 0
+        value = number === current && number === 1 ? 0 : number
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `specials[${index}][${itemIndex}].current`,
+                             value: value,
+                           })
+
+        this.saveSheet()
+      },
+
       saveSheet() {
         this.$cable.perform({
           channel: 'GameChannel',
@@ -142,5 +167,28 @@
   .special-select {
     margin: 0;
     padding: 0;
+  }
+
+  .counter {
+    margin-left: -5px;
+  }
+
+  .box-line {
+    display: inline-flex;
+  }
+
+  .box {
+    position: relative;
+    bottom: 8px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    border: 2px solid $black;
+    background-color: $white;
+  }
+
+  .enable {
+    background-color: $black;
   }
 </style>
