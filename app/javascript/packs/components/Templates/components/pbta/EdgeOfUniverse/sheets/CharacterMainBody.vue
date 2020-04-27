@@ -150,12 +150,12 @@
             <span>EXP:</span>
             <div class="exp-boxes">
               <div
-                v-for="number in 4"
+                v-for="number in exp.max"
                 :key="`exp-${number}`"
                 class="box-line"
                 @click="exp = number"
               >
-                <div :class="[{ enable: exp >= number }, 'box']" />
+                <div :class="[{ enable: exp.current >= number }, 'box']" />
               </div>
             </div>
             <span>Уровень:</span>
@@ -231,6 +231,7 @@
 
 <script>
   import { mapState } from 'vuex'
+  import { get } from 'lodash'
 
   import Avatar from './Avatar'
   import Specials from './Specials'
@@ -428,7 +429,7 @@
         },
 
         set(value) {
-          this.inputBox('exp.current', value, this.params.exp.max)
+          this.inputBox('exp.current', value, this.exp.max)
         },
       },
 
@@ -624,8 +625,9 @@
       },
 
       inputBox(target, number, max) {
-        let value = this.params[target] < max ? number : 0
-        value = number === this.params[target] && number === 1 ? 0 : number
+        const current = get(this.params, target)
+        let value = current < max ? number : 0
+        value = number === current && number === 1 ? 0 : number
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
