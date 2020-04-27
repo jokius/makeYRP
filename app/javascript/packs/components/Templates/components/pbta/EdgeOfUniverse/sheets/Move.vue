@@ -82,6 +82,7 @@
     props: {
       move: { type: Object, required: true },
       index: { type: Number, required: true },
+      path: { type: String, required: true },
       sheet: { type: Object, required: true },
     },
 
@@ -169,7 +170,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: 'moves',
+                             path: this.path,
                              value: this.index,
                              remove: true,
                            })
@@ -180,7 +181,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `moves[${this.index}].${target}`,
+                             path: `${this.path}[${this.index}].${target}`,
                              value: value,
                            })
       },
