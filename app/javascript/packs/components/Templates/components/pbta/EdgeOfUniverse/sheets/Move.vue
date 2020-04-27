@@ -1,10 +1,10 @@
 <template>
-  <div class="move-grid">
+  <div :key="`move-${path}`" class="move-grid">
     <div :class="typeof move.enable === 'boolean' ? 'title-move-checkbox' : 'title-move'">
       <div
         v-if="typeof move.enable === 'boolean'"
-        :class="[{enable: move.enable }, 'box']"
-        @click="changeMove(!move.enable)"
+        :class="[{enable: enable }, 'box']"
+        @click="changeMove(!enable)"
       />
       <div v-if="typeof move.full === 'string'" class="title-cell button">
         <span class="dice dice6" @click="modalOpen = true">25</span>
@@ -90,6 +90,7 @@
       return {
         privateType: {},
         modalOpen: false,
+        enable: false,
       }
     },
 
@@ -153,6 +154,8 @@
       } else {
         this.privateType = this.move.type
       }
+
+      this.enable = this.move.enable
     },
 
     methods: {
@@ -162,6 +165,7 @@
       },
 
       changeMove(value) {
+        this.enable = value
         this.input('enable', value)
         this.saveSheet()
       },

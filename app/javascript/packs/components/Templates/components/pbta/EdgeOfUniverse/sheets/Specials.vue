@@ -5,44 +5,40 @@
       :key="`special-${index}`"
       class="specials"
     >
-      <div
-        v-for="(item, itemIndex) in specialsItems(special)"
-        :key="`special-item-${itemIndex}`"
-        class="specials"
-      >
-        <p class="special-title">{{ item.name }}</p>
-        <p class="special-description">{{ item.description }}</p>
-        <v-select
-          v-if="item.type === 'select'"
-          :items="item.list"
-          class="special-select"
-          color="black"
-          :multiple="item.multiple"
-          :attach="item.multiple"
-          :chips="item.multiple"
-          :value="item.value"
-          @change="value => selectSet(index, itemIndex, value)"
+      <p class="special-title">{{ special.name }}</p>
+      <p class="special-description">{{ special.description }}</p>
+      <v-select
+        v-if="special.type === 'select'"
+        :items="special.list"
+        class="special-select"
+        color="black"
+        :multiple="special.multiple"
+        :attach="special.multiple"
+        :chips="special.multiple"
+        :value="special.value"
+        @change="value => selectSet(index, value)"
+      />
+      <p v-if="special.value && special.value.description" class="special-description">
+        {{ special.value.description }}
+      </p>
+      <div v-if="special.type === 'moves'" class="moves">
+        <move
+          v-for="(move, indexMove) in special.list"
+          :key="`special-moves-${indexMove}`"
+          :sheet="sheet"
+          :move="move"
+          :index="indexMove"
+          :path="`specials[${index}].list`"
         />
-        <div v-if="item.type === 'moves'" class="moves">
-          <specials-move
-            v-for="(move, indexMove) in item.list"
-            :key="`item-moves-${indexMove}`"
-            :sheet="sheet"
-            :move="move"
-            :index="index"
-            :item-index="itemIndex"
-            :index-move="indexMove"
-          />
-        </div>
-        <div v-if="item.type === 'counter'" class="counter">
-          <div
-            v-for="number in item.max"
-            :key="`counter-${index}-${number}`"
-            class="box-line"
-            @click="boxSet(index, itemIndex, number, item.max)"
-          >
-            <div :class="[{ enable: item.current >= number }, 'box']" />
-          </div>
+      </div>
+      <div v-if="special.type === 'counter'" class="counter">
+        <div
+          v-for="number in special.max"
+          :key="`counter-${index}-${number}`"
+          class="box-line"
+          @click="boxSet(index, number, special.max)"
+        >
+          <div :class="[{ enable: special.current >= number }, 'box']" />
         </div>
       </div>
     </div>
@@ -53,13 +49,13 @@
   import { mapState } from 'vuex'
   import { get } from 'lodash'
 
-  import SpecialsMove from './SpecialsMove'
+  import Move from './Move'
 
   import { UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
 
   export default {
     name: 'Specials',
-    components: { SpecialsMove },
+    components: { Move },
     props: {
       id: { type: Number, required: true },
     },
@@ -67,13 +63,13 @@
     data() {
       return {
         modalOpen: false,
+        types: ['select', 'moves', 'counter'],
       }
     },
 
     computed: {
       ...mapState({
         sheets: state => state.game.sheets,
-        tables: state => state.game.info.template.tables,
       }),
 
       sheet: {
@@ -90,7 +86,9 @@
 
       specials: {
         get() {
-          return this.params.specials
+          return this.params.specials.filter(item =>
+            this.types.includes(item.type) || !item.key || this.keys.includes(item.key)
+          )
         },
       },
 
@@ -102,29 +100,25 @@
     },
 
     methods: {
-      specialsItems(special) {
-        return special.filter(item => !item.key || this.keys.includes(item.key))
-      },
-
-      selectSet(index, selectIndex, value) {
+      selectSet(index, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `specials[${index}][${selectIndex}].value`,
+                             path: `specials[${index}].value`,
                              value,
                            })
 
         this.saveSheet()
       },
 
-      boxSet(index, itemIndex, number, max) {
-        const current = get(this.params, `specials[${index}][${itemIndex}].current`)
+      boxSet(index, number, max) {
+        const current = get(this.params, `specials[${index}].current`)
         let value = current < max ? number : 0
         value = number === current && number === 1 ? 0 : number
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `specials[${index}][${itemIndex}].current`,
+                             path: `specials[${index}].current`,
                              value: value,
                            })
 
