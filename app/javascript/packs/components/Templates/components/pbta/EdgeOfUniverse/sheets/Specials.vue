@@ -95,7 +95,7 @@
       specials: {
         get() {
           return this.params.specials.filter(item =>
-            this.types.includes(item.type) || !item.key || this.keys.includes(item.key)
+            this.types.includes(item.type) && (!item.key || this.keys.includes(item.key))
           )
         },
       },
