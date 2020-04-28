@@ -23,6 +23,7 @@ export default {
       pageColor: {},
       marks: {},
       currentItem: {},
+      specialTabs: [],
     }
   },
 

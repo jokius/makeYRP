@@ -63,13 +63,13 @@
     data() {
       return {
         tab: null,
-        specialTabs: [],
       }
     },
 
     computed: {
       ...mapState({
         sheets: state => state.game.sheets,
+        specialTabs: state => state.game.specialTabs,
       }),
 
       sheet: {
@@ -91,15 +91,6 @@
           return typeof height === 'number' ? `${height}px` : height
         },
       },
-    },
-
-    created() {
-      this.specialTabs = []
-      this.sheet.params.specials.forEach((item, index) => {
-        if (item && item.type === 'tab') {
-          this.specialTabs.push({ index: index, tab: item })
-        }
-      })
     },
   }
 </script>

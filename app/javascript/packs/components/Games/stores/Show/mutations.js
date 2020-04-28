@@ -39,7 +39,10 @@ import {
   ACCESS_SHEET,
   ADD_MARKER,
   RESET_MARKER,
-  ADD_CURRENT_ITEM, UPDATE_PAGE_PARAMS, CHANGE_PAGE_COLOR,
+  ADD_CURRENT_ITEM,
+  UPDATE_PAGE_PARAMS,
+  CHANGE_PAGE_COLOR,
+  UPDATE_SPECIAL_TABS,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -218,6 +221,13 @@ export default {
       mutVal.splice(value, 1)
     }
     set(state.sheets[index].params, path, mutVal)
+  },
+
+  [UPDATE_SPECIAL_TABS](state, specials) {
+
+    state.specialTabs = specials.map((item, index) => {
+      if (item && item.type === 'tab') return { index: index, tab: item }
+    }).filter(Boolean)
   },
 
   [ADD_MENU_ITEM](state, raw) {

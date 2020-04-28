@@ -236,7 +236,11 @@
   import Avatar from './Avatar'
   import Specials from './Specials'
 
-  import { UPDATE_SHEET_NAME, UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
+  import {
+    UPDATE_SHEET_NAME,
+    UPDATE_SHEET_PARAMS,
+    UPDATE_SPECIAL_TABS,
+  } from '../../../../../Games/stores/mutation-types'
   import { Pbta } from '../../../../../../lib/Pbta'
   import RollDamageModal from '../modals/RollDamageModal'
   import RollModifierModal from '../../HorrorMovieWorld/modals/RollModifierModal'
@@ -261,6 +265,7 @@
       ...mapState({
         sheets: state => state.game.sheets,
         tables: state => state.game.info.template.tables,
+        specialTabs: state => state.game.specialTabs,
       }),
 
       sheet: {
@@ -595,6 +600,9 @@
                              path: 'specials',
                              value: roleSpecials,
                            })
+
+
+        this.$store.commit(UPDATE_SPECIAL_TABS, roleSpecials)
       },
 
       changeRelationship() {
@@ -704,7 +712,7 @@
 
   .main-row2 {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 0.99fr;
     grid-template-rows: max-content;
     margin-left: 5px;
   }
@@ -794,13 +802,6 @@
 
   .enable {
     background-color: $black;
-  }
-
-  .specials {
-    margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 99%;
   }
 
   .origin {
