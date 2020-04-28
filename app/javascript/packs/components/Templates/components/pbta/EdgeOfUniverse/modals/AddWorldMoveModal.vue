@@ -8,8 +8,16 @@
         <v-row align="center" justify="center">
           <v-col cols="12">
             <v-select
+              v-model="selectRole"
+              :items="roles"
+              color="indigo"
+              label="Роль"
+            />
+
+            <v-select
               v-model="move"
               :items="selectMoves"
+              :disabled="privateSelectRole === ''"
               color="indigo"
               label="Ход"
             />
@@ -65,6 +73,7 @@
     data() {
       return {
         move: {},
+        privateSelectRole: '',
       }
     },
 
@@ -98,9 +107,30 @@
         },
       },
 
+      roles: {
+        get() {
+          return this.tables.roles.filter(item => item.key !== this.role).map(item => (
+            { value: item.key, text: item.name }
+          ))
+        },
+      },
+
+      selectRole: {
+        get() {
+          return this.privateSelectRole
+        },
+
+        set(value) {
+          this.move = {}
+          this.privateSelectRole = value
+        },
+      },
+
       selectMoves: {
         get() {
-          return Pbta.mapMoves(this.tables.specialMoves[this.role], this.moves)
+          if (this.privateSelectRole === '') return []
+
+          return Pbta.mapMoves(this.tables.specialMoves[this.privateSelectRole], this.moves)
         },
       },
     },

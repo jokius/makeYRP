@@ -13,4 +13,17 @@ export class Pbta {
       edit: true,
     }
   }
+
+  static mapMoves(list, moves) {
+    return list.map(item => {
+      if (moves.find(move => move.name === item.name)) return
+      const value = item
+      value.remove = true
+
+      return {
+        text: item.name,
+        value,
+      }
+    }).filter(Boolean)
+  }
 }

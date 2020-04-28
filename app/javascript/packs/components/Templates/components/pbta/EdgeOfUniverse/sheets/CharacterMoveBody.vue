@@ -29,7 +29,7 @@
         raised
         color="black"
         dark
-        @click="specialMoves"
+        @click="specialMovesOpen = true"
       >
         Добавить Специальный ход
       </v-btn>
@@ -39,7 +39,7 @@
         raised
         color="black"
         dark
-        @click="otherMoves"
+        @click="otherMovesOpen = true"
       >
         Добавить Мировой ход
       </v-btn>
@@ -68,7 +68,18 @@
       />
     </div>
 
-    <add-move-modal v-if="modalOpen" v-model="obj" :select-moves="selectMoves" :moves="moves" />
+    <add-move-modal
+      v-if="specialMovesOpen"
+      :id="id"
+      :obj="specialMoveObj"
+      @completed="value => specialMoveObj = value"
+    />
+    <add-world-move-modal
+      v-if="otherMovesOpen"
+      :id="id"
+      :obj="otherMoveObj"
+      @completed="value => otherMoveObj = value"
+    />
   </div>
 </template>
 
@@ -79,10 +90,11 @@
 
   import { UPDATE_SHEET_PARAMS } from '../../../../../Games/stores/mutation-types'
   import AddMoveModal from '../modals/AddMoveModal'
+  import AddWorldMoveModal from '../modals/AddWorldMoveModal'
 
   export default {
     name: 'CharacterMoveBody',
-    components: { AddMoveModal, Move },
+    components: { AddWorldMoveModal, AddMoveModal, Move },
     props: {
       id: { type: Number, required: true },
     },
@@ -90,8 +102,8 @@
     data() {
       return {
         panels: [],
-        modalOpen: false,
-        selectMoves: [],
+        specialMovesOpen: false,
+        otherMovesOpen: false,
       }
     },
 
@@ -137,54 +149,30 @@
         },
       },
 
-      obj: {
+      specialMoveObj: {
         get() {
-          return { open: this.modalOpen, move: {} }
+          return { open: this.specialMovesOpen, move: {} }
         },
 
         set({ open, move }) {
           this.setMove(move)
-          this.modalOpen = open
+          this.specialMovesOpen = open
+        },
+      },
+
+      otherMoveObj: {
+        get() {
+          return { open: this.otherMovesOpen, move: {} }
+        },
+
+        set({ open, move }) {
+          this.setMove(move)
+          this.otherMovesOpen = open
         },
       },
     },
 
     methods: {
-      specialMoves() {
-        this.selectMoves = this.mapMoves(this.tables.specialMoves[this.params.role.key])
-        this.modalOpen = true
-      },
-
-      otherMoves() {
-        const role = this.params.role.key
-        const list = this.tables.specialMoves
-        let result = []
-
-        for (let key in list) {
-          if (role !== key) {
-            const name = this.tables.roles.find(item => item.key === key).name
-            result.push({ text: name, value: false, disabled: true })
-            result = result.concat(this.mapMoves(list[role]))
-          }
-        }
-
-        this.selectMoves = result
-        this.modalOpen = true
-      },
-
-      mapMoves(list) {
-        return list.map(item => {
-          if (this.moves.find(move => move.name === item.name)) return
-          const value = item
-          value.remove = true
-
-          return {
-            text: item.name,
-            value,
-          }
-        }).filter(Boolean)
-      },
-
       setMove(move) {
         if (!move.name) return
 
