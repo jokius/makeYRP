@@ -517,6 +517,8 @@
         this.changeRole(Pbta.randomRole(this.tableRoles).value)
         this.saveSheet()
       }
+
+      this.update_special_tabs()
     },
 
     methods: {
@@ -602,7 +604,7 @@
                            })
 
 
-        this.$store.commit(UPDATE_SPECIAL_TABS, roleSpecials)
+        this.update_special_tabs()
       },
 
       changeRelationship() {
@@ -613,6 +615,10 @@
                              path: 'relationship',
                              value: roleRelationship,
                            })
+      },
+
+      update_special_tabs() {
+        this.$store.commit(UPDATE_SPECIAL_TABS, this.tables.specials[this.role.key] || [])
       },
 
       saveSheet() {
