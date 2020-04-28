@@ -1,23 +1,28 @@
 <template>
-  <div>
+  <div class="specials">
     <div
       v-for="(special, index) in specials"
       :key="`special-${index}`"
-      class="specials"
+      class="special"
     >
       <p class="special-title">{{ special.name }}</p>
       <p class="special-description">{{ special.description }}</p>
-      <v-select
-        v-if="special.type === 'select'"
-        :items="special.list"
-        class="special-select"
-        color="black"
-        :multiple="special.multiple"
-        :attach="special.multiple"
-        :chips="special.multiple"
-        :value="special.value"
-        @change="value => selectSet(index, value)"
-      />
+      <div v-if="special.type === 'select'" class="select">
+        <v-select
+          :items="special.list"
+          class="special-select"
+          color="black"
+          :multiple="special.multiple"
+          :attach="special.multiple"
+          :chips="special.multiple"
+          :value="special.value"
+          @change="value => selectSet(index, value)"
+        />
+
+        <div v-for="(description, selectIndex) in selectDescriptions(special.value)" :key="`description-${selectIndex}`">
+          <div v-html="description" />
+        </div>
+      </div>
       <p v-if="special.value && special.value.description" class="special-description">
         {{ special.value.description }}
       </p>
@@ -41,6 +46,9 @@
           <div :class="[{ enable: special.current >= number }, 'box']" />
         </div>
       </div>
+      <div v-if="special.type === 'description'" class="description">
+        {{ special.text }}
+      </div>
     </div>
   </div>
 </template>
@@ -63,7 +71,7 @@
     data() {
       return {
         modalOpen: false,
-        types: ['select', 'moves', 'counter'],
+        types: ['select', 'moves', 'counter', 'description'],
       }
     },
 
@@ -100,6 +108,12 @@
     },
 
     methods: {
+      selectDescriptions(values) {
+        if (Array.isArray(values)) return values
+
+        return [values]
+      },
+
       selectSet(index, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
@@ -146,10 +160,7 @@
   }
 
   .specials {
-    margin-top: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-    width: 99%;
+    margin: 10px 5px 15px;
   }
 
   .special-title {
