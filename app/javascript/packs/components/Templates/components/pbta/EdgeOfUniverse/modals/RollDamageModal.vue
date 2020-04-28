@@ -65,7 +65,9 @@
 
     methods: {
       roll() {
-        this.$emit('roll', { open: false, dices: this.dices })
+        let dices = this.dices > 10 ? 10 : this.dices
+        dices = dices < 1 ? 1 : dices
+        this.$emit('roll', { open: false, dices })
         this.dices = 1
       },
 
