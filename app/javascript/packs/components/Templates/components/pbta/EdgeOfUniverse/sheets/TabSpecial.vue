@@ -142,4 +142,8 @@
     margin: 0;
     padding: 0;
   }
+
+  .block {
+    margin-bottom: 15px;
+  }
 </style>
