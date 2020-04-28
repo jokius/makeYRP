@@ -28,6 +28,19 @@
             />
           </div>
 
+          <v-select
+            v-if="block.itemType === 'select'"
+            :items="block.list"
+            :label="block.label"
+            class="special-select"
+            color="black"
+            :multiple="block.multiple"
+            :attach="block.multiple"
+            :chips="block.multiple"
+            :value="block.value"
+            @change="value => selectSet(`[${index}]`, value)"
+          />
+
           <move
             v-else-if="block.itemType === 'move'"
             :sheet="sheet"
@@ -80,7 +93,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `specials[${path}].value`,
+                             path: `specials${path}.value`,
                              value,
                            })
 
