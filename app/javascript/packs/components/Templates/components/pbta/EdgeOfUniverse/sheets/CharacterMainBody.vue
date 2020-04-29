@@ -224,8 +224,8 @@
       />
     </div>
 
-    <roll-damage-modal v-model="obj" />
-    <roll-modifier-modal :obj="modifierObj" @roll="value => modifierObj = value" />
+    <roll-damage-modal v-if="modalOpen" v-model="obj" :damage="damage" />
+    <roll-modifier-modal v-if="modalModifierOpen" :obj="modifierObj" @roll="value => modifierObj = value" />
   </div>
 </template>
 
