@@ -15,6 +15,14 @@
       </div>
       <div class="main-row1-col2">
         <div class="main-row1-col2-base-info">
+          <v-select
+            :value="enemySelect"
+            :items="enemies"
+            label="Стандартный противник"
+            class="input name"
+            color="indigo"
+            @change="setEnemy"
+          />
           <v-text-field
             v-model="name"
             color="indigo"
@@ -157,7 +165,6 @@
       ...mapState({
         sheets: state => state.game.sheets,
         tables: state => state.game.info.template.tables,
-        specialTabs: state => state.game.specialTabs,
       }),
 
       sheet: {
@@ -253,6 +260,18 @@
         },
       },
 
+      enemies: {
+        get() {
+          return this.tables.enemies.map(enemy => ({ text: enemy.name, value: enemy }))
+        },
+      },
+
+      enemySelect: {
+        get() {
+          return this.enemies.find(enemy => enemy.text === this.name)
+        }
+      },
+
       obj: {
         get() {
           return { open: this.modalOpen, dices: 1 }
@@ -289,6 +308,29 @@
       openModifier(state) {
         this.currentState = state
         this.modalModifierOpen = true
+      },
+
+      setEnemy(value) {
+        this.name = value.name
+        this.description = value.description
+        this.damage = value.damage
+        this.protection = value.protection
+        this.woundsMax = value.woundsMax
+        const moves = []
+        value.moves.forEach(name => {
+          const move = this.tables.enemyMoves.find(move => move.name === name)
+          move.remove = true
+          moves.push(move)
+        })
+
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `moves`,
+                             value: moves,
+                           })
+
+        this.saveSheet()
       },
 
       setMove(move) {
