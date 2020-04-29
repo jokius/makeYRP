@@ -29,6 +29,12 @@
         :key="key"
         :size="size"
       />
+      <eou-enemy-sheet
+        v-else-if="sheetName === 'edge_of_universe-enemy'"
+        :id="id"
+        :key="key"
+        :size="size"
+      />
       <v-alert
         v-else
         :key="key"
@@ -54,11 +60,13 @@
   import HmwCharacterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/CharacterSheet'
   import HmwMonsterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/MonsterSheet'
   import EouCharacterSheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/CharacterSheet'
+  import EouEnemySheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/EnemySheet'
   import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
     components: {
+      EouEnemySheet,
       MutantSheet,
       BidCharacterSheet,
       BidTeamSheet,
@@ -133,6 +141,8 @@
             case 'horror_movie_world-monster':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             case 'edge_of_universe-character':
+              return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
+            case 'edge_of_universe-enemy':
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
             default:
               return { width: this.privateWidth || 950, height: this.privateHeight || 600 }
