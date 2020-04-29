@@ -26,6 +26,7 @@
         <tab-notes v-else-if="currentItem.type === 'notes'" />
         <tab-settings v-else-if="currentItem.type === 'settings'" />
         <bid-tab-clock v-else-if="currentItem.type === 'bid-clock'" />
+        <eou-tab-counters v-else-if="currentItem.type === 'eou-clock'" />
         <span v-else>В разработке</span>
       </keep-alive>
     </v-navigation-drawer>
@@ -77,10 +78,11 @@
 
   import BidTabClock from '../../../Templates/components/BladeInTheDarck/menus/BidTabClock'
   import { ADD_CURRENT_ITEM, ADD_MARKER } from '../../stores/mutation-types'
+  import EouTabCounters from '../../../Templates/components/pbta/EdgeOfUniverse/menus/EouTabCounters'
 
   export default {
     name: 'BodyMenu',
-    components: { TabNotes, BidTabClock, TabSettings, TabSheets, TabChat },
+    components: { EouTabCounters, TabNotes, BidTabClock, TabSettings, TabSheets, TabChat },
 
     data() {
       return {
