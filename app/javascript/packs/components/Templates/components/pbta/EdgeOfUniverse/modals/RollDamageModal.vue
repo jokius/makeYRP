@@ -55,11 +55,12 @@
 
     props: {
       obj: { type: Object, required: true },
+      damage: { type: Number, required: true },
     },
 
     data() {
       return {
-        dices: 1,
+        dices: this.damage,
       }
     },
 
