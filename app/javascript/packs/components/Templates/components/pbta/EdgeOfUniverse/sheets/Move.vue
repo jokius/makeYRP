@@ -40,7 +40,7 @@
           dark
           @click="autoFull"
         >
-          Авто частичный успех
+          Авто полный успех
         </v-btn>
         <v-btn
           class="button-add"
