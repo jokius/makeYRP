@@ -1,72 +1,78 @@
 <template>
   <div class="moves-body">
-    <div class="moves">
-      <p class="moves-title">Базовые ходы</p>
-      <move
-        v-for="(move, index) in baseMoves"
-        :key="`base-moves-${index}`"
-        :sheet="sheet"
-        :move="move"
-        :index="index"
-        path="moves"
-      />
-    </div>
-    <div class="moves">
-      <p class="moves-title">Ходы роли</p>
-      <move
-        v-for="(move, index) in moves"
-        :key="`moves-${index}`"
-        :sheet="sheet"
-        :move="move"
-        :index="index"
-        path="moves"
-      />
-    </div>
-    <div class="actions">
-      <v-spacer />
-      <v-btn
-        class="button-add"
-        raised
-        color="black"
-        dark
-        @click="specialMovesOpen = true"
-      >
-        Добавить Специальный ход
-      </v-btn>
-      <v-spacer />
-      <v-btn
-        class="button-add"
-        raised
-        color="black"
-        dark
-        @click="otherMovesOpen = true"
-      >
-        Добавить Мировой ход
-      </v-btn>
-      <v-spacer />
-    </div>
-    <div class="moves">
-      <p class="moves-title">Опциональные ходы</p>
-      <move
-        v-for="(move, index) in optionalMoves"
-        :key="`optional-moves-${index}`"
-        :sheet="sheet"
-        :move="move"
-        :index="index"
-        path="moves"
-      />
-    </div>
-    <div class="moves">
-      <p class="moves-title">Космические ходы</p>
-      <move
-        v-for="(move, index) in spaceMoves"
-        :key="`space-moves-${index}`"
-        :sheet="sheet"
-        :move="move"
-        :index="index"
-        path="moves"
-      />
-    </div>
+    <details class="moves" open>
+      <summary class="moves-title">Базовые ходы</summary>
+      <div class="moves-grid">
+        <move
+          v-for="(move, index) in baseMoves"
+          :key="`base-moves-${index}`"
+          :sheet="sheet"
+          :move="move"
+          :index="index"
+          path="moves"
+        />
+      </div>
+    </details>
+    <details class="moves" open>
+      <summary class="moves-title">Ходы роли</summary>
+      <div class="moves-grid">
+        <move
+          v-for="(move, index) in moves"
+          :key="`moves-${index}`"
+          :sheet="sheet"
+          :move="move"
+          :index="index"
+          path="moves"
+        />
+      </div>
+      <div class="actions">
+        <v-btn
+          class="button-add"
+          raised
+          color="black"
+          dark
+          @click="specialMovesOpen = true"
+        >
+          Добавить Специальный ход
+        </v-btn>
+        <v-spacer />
+        <v-btn
+          class="button-add"
+          raised
+          color="black"
+          dark
+          @click="otherMovesOpen = true"
+        >
+          Добавить Мировой ход
+        </v-btn>
+      </div>
+    </details>
+    <details class="moves">
+      <summary class="moves-title">Опциональные ходы</summary>
+      <div class="moves-grid">
+        <move
+          v-for="(move, index) in optionalMoves"
+          :key="`optional-moves-${index}`"
+          :sheet="sheet"
+          :move="move"
+          :index="index"
+          path="moves"
+        />
+      </div>
+    </details>
+    <details class="moves">
+      <summary class="moves-title">Космические ходы</summary>
+      <div class="moves-grid">
+        <move
+          v-for="(move, index) in spaceMoves"
+          :key="`space-moves-${index}`"
+          :sheet="sheet"
+          :move="move"
+          :index="index"
+          path="moves"
+        />
+      </div>
+    </details>
 
     <add-move-modal
       v-if="specialMovesOpen"
@@ -207,7 +213,6 @@
     grid-template-columns: 1fr;
     grid-template-rows: max-content;
     padding: 0 5px;
-    height: 570px;
   }
 
   .moves {
@@ -222,13 +227,20 @@
     text-align: center;
   }
 
+  .moves-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 15px;
+  }
+
   .gray {
     background-color: $grayC5;
   }
 
   .actions {
     display: grid;
-    grid-template-columns: 1fr max-content 10px max-content 1fr;
+    grid-template-columns: max-content 10px max-content;
+    justify-content: center;
     margin-top: 15px;
     margin-bottom: 5px;
   }
