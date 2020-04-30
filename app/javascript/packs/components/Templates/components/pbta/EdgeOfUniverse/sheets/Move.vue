@@ -1,5 +1,5 @@
 <template>
-  <div :key="`move-${path}`" class="move-grid">
+  <div class="move-block">
     <div :class="typeof move.enable === 'boolean' ? 'title-move-checkbox' : 'title-move'">
       <div
         v-if="typeof move.enable === 'boolean'"
@@ -7,65 +7,104 @@
         @click="changeMove(!enable)"
       />
       <div v-if="typeof move.full === 'string'" class="title-cell button">
-        <span class="dice dice6" @click="modalOpen = true">25</span>
+        <span class="dice dice6 white-dice" @click="modalOpen = true">25</span>
         <span class="move-name" @click="modalOpen = true">
           {{ move.name }}
         </span>
       </div>
       <span v-else class="move-name">{{ move.name }}</span>
-      <v-select
-        v-if="typeof move.type === 'object'"
-        v-model="type"
-        :items="move.type"
-        class="type-select"
-        color="black"
-        dark
-        flat
-      />
-      <div v-if="move.autoFull" class="title-cell button">
-        <span class="move-name" @click="autoFull">
-          | Автоматический успех
-        </span>
-      </div>
-      <div v-if="move.autoPart" class="title-cell button">
-        <span class="move-name" @click="autoPart">
-          | Автоматический частичный успех
-        </span>
-      </div>
-      <v-spacer v-if="typeof move.type !== 'object'" />
-      <v-spacer v-if="!move.autoFull" />
-      <v-spacer v-if="!move.autoPart" />
       <v-spacer />
-      <span v-if="move.remove" class="move-remove" @click="removeMove">Удалить</span>
+      <v-btn
+        v-if="move.remove"
+        color="red darken-4"
+        icon
+        small
+        dark
+        class="delete-button"
+        @click="removeMove"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </div>
 
-    <span class="move-description" v-html="move.description" />
-    <v-textarea
-      v-if="move.textarea"
-      v-model="textarea"
-      auto-grow
-      no-resize
-      rows="2"
-      color="indigo"
-      background-color="white"
-      class="notes"
-      hide-details
-      @change="saveSheet"
-    />
-    <div v-if="move.selects" class="selects">
-      <v-select
-        v-for="(select, selectIndex) in selects"
-        :key="`other-select-${selectIndex}`"
-        :items="select.items"
-        class="other-select"
-        color="black"
-        :multiple="select.limit > 1"
+    <details>
+      <summary class="pointer">
+        Подробнее
+      </summary>
+      <div v-if="typeof move.full === 'string'" class="actions">
+        <v-btn
+          class="button-add"
+          raised
+          color="black"
+          small
+          dark
+          @click="autoFull"
+        >
+          Авто частичный успех
+        </v-btn>
+        <v-btn
+          class="button-add"
+          raised
+          color="black"
+          small
+          dark
+          @click="autoPart"
+        >
+          Авто частичный успех
+        </v-btn>
+        <div class="select-grid">
+          <span class="select-title">Способ</span>
+          <v-select
+            v-if="typeof move.type === 'object'"
+            v-model="type"
+            :items="move.type"
+            class="type-select"
+            color="black"
+            flat
+            hide-details
+          />
+        </div>
+      </div>
+
+      <span class="move-description" v-html="move.description" />
+      <v-text-field
+        v-if="texField"
+        v-model="texField"
+        color="indigo"
+        class="input name"
         flat
-        :value="select.value"
-        :label="select.label"
-        @change="value => otherSelect(selectIndex, value)"
+        hide-details
+        @change="saveSheet"
       />
-    </div>
+      <v-textarea
+        v-if="textarea"
+        v-model="textarea"
+        auto-grow
+        no-resize
+        rows="2"
+        color="indigo"
+        background-color="white"
+        class="notes"
+        hide-details
+        @change="saveSheet"
+      />
+      <div v-if="move.selects" class="selects">
+        <v-select
+          v-for="(select, selectIndex) in selects"
+          :key="`other-select-${selectIndex}`"
+          :items="select.items"
+          class="other-select"
+          color="black"
+          :multiple="select.limit > 1"
+          flat
+          :value="select.value"
+          :label="select.label"
+          hide-details
+          @change="value => otherSelect(selectIndex, value)"
+        />
+      </div>
+    </details>
+
     <roll-modifier-modal v-model="obj" />
   </div>
 </template>
@@ -110,13 +149,23 @@
         },
       },
 
-      textarea: {
+      texField: {
         get() {
-          return this.move.textarea.value
+          return this.move.texField
         },
 
         set(value) {
-          this.input('textarea.value', value)
+          this.input('texField', value)
+        },
+      },
+
+      textarea: {
+        get() {
+          return this.move.textarea
+        },
+
+        set(value) {
+          this.input('textarea', value)
         },
       },
 
@@ -261,14 +310,13 @@
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
 
-  .move-grid {
-    display: grid;
+  .move-block {
     margin-bottom: 5px;
   }
 
   .title-move-checkbox {
     display: grid;
-    grid-template-columns: 30px repeat(4, max-content) 1fr max-content;
+    grid-template-columns: 30px max-content 1fr max-content;
     background-color: $black;
     color: $white;
     height: 35px;
@@ -278,7 +326,7 @@
 
   .title-move {
     display: grid;
-    grid-template-columns: repeat(4, max-content) 1fr max-content;
+    grid-template-columns: max-content 1fr max-content;
     background-color: $black;
     color: $white;
     height: 35px;
@@ -302,6 +350,10 @@
     }
   }
 
+  .pointer {
+    cursor: pointer;
+  }
+
   .box {
     cursor: pointer;
     width: 20px;
@@ -318,15 +370,20 @@
 
   .move-name {
     margin-left: 5px;
-    font-size: 18px;
     font-weight: 600;
   }
 
   .type-select {
-    width: 135px;
-    height: 35px;
     padding: 0;
-    margin: 0 0 0 10px;
+    margin: 0;
+    background-color: $white;
+  }
+
+  .select-grid {
+    display: grid;
+    grid-template-columns: max-content 135px;
+    grid-column-gap: 10px;
+    height: 35px;
   }
 
   .selects {
@@ -335,8 +392,24 @@
     grid-column-gap: 5px;
   }
 
-  .move-remove {
-    cursor: pointer;
-    margin-right: 10px;
+  .select-title {
+    line-height: 35px;
+  }
+
+  .delete-button {
+    margin-top: 4px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: max-content;
+    grid-row-gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  .white-dice {
+    background-color: $white;
+    color: $black;
   }
 </style>
