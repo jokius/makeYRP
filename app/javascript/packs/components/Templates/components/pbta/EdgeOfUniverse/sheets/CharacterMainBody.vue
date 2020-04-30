@@ -618,7 +618,7 @@
       },
 
       update_special_tabs() {
-        this.$store.commit(UPDATE_SPECIAL_TABS, this.tables.specials[this.role.key] || [])
+        this.$store.commit(UPDATE_SPECIAL_TABS, this.params.specials || [])
       },
 
       saveSheet() {
