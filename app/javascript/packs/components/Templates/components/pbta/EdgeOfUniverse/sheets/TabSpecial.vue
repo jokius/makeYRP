@@ -24,7 +24,9 @@
               :attach="select.multiple"
               :chips="select.multiple"
               :value="select.value"
-              @change="value => selectSet(`[${index}][${selectIndex}]`, value)"
+              @change="value =>
+                selectSet(`specials[${specialIndex}].items[${index}].items[${blockIndex}].selects[${selectIndex}].value`,
+                          value)"
             />
           </div>
 
@@ -38,7 +40,7 @@
             :attach="block.multiple"
             :chips="block.multiple"
             :value="block.value"
-            @change="value => selectSet(`[${index}]`, value)"
+            @change="value => selectSet(`specials[${specialIndex}].items[${index}].items[${blockIndex}].value`, value)"
           />
 
           <move
@@ -90,13 +92,7 @@
 
     methods: {
       selectSet(path, value) {
-        this.$store.commit(UPDATE_SHEET_PARAMS,
-                           {
-                             id: this.sheet.id,
-                             path: `specials${path}.value`,
-                             value,
-                           })
-
+        this.$store.commit(UPDATE_SHEET_PARAMS, { id: this.sheet.id, path, value })
         this.saveSheet()
       },
 
