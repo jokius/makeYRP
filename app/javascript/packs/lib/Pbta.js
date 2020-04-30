@@ -11,6 +11,7 @@ export class Pbta {
       protection: 0,
       quantity: 1,
       edit: true,
+      tags: [],
     }
   }
 
