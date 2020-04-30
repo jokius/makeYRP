@@ -1,7 +1,7 @@
 <template>
   <div class="pan-zoom-body" @contextmenu="handler">
     <div v-if="!loaded" class="loaded">
-      <body-loader />
+<!--      <body-loader />-->
     </div>
     <pan-zoom
       class="pan-zoom"
@@ -15,7 +15,7 @@
     >
       <drop class="drop" @drop="handleDrop">
         <right-click-menu :position="position" :current-obj="item" :replaced-items="menuItems">
-          <canvas ref="renderCanvas" />
+<!--          <canvas ref="renderCanvas" />-->
         </right-click-menu>
       </drop>
     </pan-zoom>
@@ -169,9 +169,9 @@
     mounted() {
       const pageId = this.currentPage.id
       this.$cable.subscribe({ channel: 'PageChannel', page_id: pageId })
-      this.loadBoard()
-      this.loadTokens(pageId)
-      this.loadGraphics(pageId)
+      // this.loadBoard()
+      // this.loadTokens(pageId)
+      // this.loadGraphics(pageId)
     },
 
     methods: {
