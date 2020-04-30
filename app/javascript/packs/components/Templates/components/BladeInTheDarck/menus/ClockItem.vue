@@ -20,7 +20,6 @@
 
 <script>
   import Clock from '../ui/Clock'
-  import { DELETE_MENU_ITEM, UPDATE_MENU_ITEM } from '../../../../Games/stores/mutation-types'
 
   export default {
     name: 'ClockItem',
@@ -28,19 +27,6 @@
 
     props: {
       clock: { type: Object, required: true },
-    },
-
-    channels: {
-      MenusItemChannel: {
-        received(obj) {
-          if (obj.delete) {
-            this.$cable.unsubscribe('MenusItemChannel')
-            this.$store.commit(DELETE_MENU_ITEM, obj.delete)
-          } else {
-            this.$store.commit(UPDATE_MENU_ITEM, obj)
-          }
-        },
-      },
     },
 
     computed: {

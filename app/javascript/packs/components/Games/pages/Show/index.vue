@@ -36,9 +36,12 @@
     ADD_MESSAGE,
     ADD_PAGE,
     ADD_SHEET,
+    DELETE_MENU_ITEM,
     DELETE_PAGE,
     DELETE_SHEET,
+    UPDATE_MENU_ITEM,
     UPDATE_PAGE,
+    UPDATE_SHEET,
     UPDATE_SHEETS,
   } from '../../stores/mutation-types'
   import LeftMenu from '../../components/Show/LeftMenu'
@@ -74,6 +77,41 @@
           if (obj.update) this.updateObj(obj)
           if (obj.delete) this.deleteObj(obj)
           if (obj.access) this.accessObj(obj)
+        },
+      },
+
+      MenusItemChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.$cable.unsubscribe('MenusItemChannel')
+            this.$store.commit(DELETE_MENU_ITEM, obj.delete)
+          } else {
+            this.$store.commit(UPDATE_MENU_ITEM, obj)
+          }
+        },
+      },
+
+      PageChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.deleteObj(obj)
+          } else if (obj.update) {
+            this.changeObj(obj)
+          } else {
+            this.addObj(obj)
+          }
+        },
+      },
+
+      SheetChannel: {
+        received(obj) {
+          if (obj.delete) {
+            this.$cable.unsubscribe('SheetChannel')
+            this.onClose()
+            this.$store.commit(DELETE_SHEET, obj.delete)
+          } else {
+            this.$store.commit(UPDATE_SHEET, obj)
+          }
         },
       },
     },
