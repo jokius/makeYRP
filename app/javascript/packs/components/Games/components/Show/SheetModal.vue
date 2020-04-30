@@ -89,20 +89,6 @@
       }
     },
 
-    channels: {
-      SheetChannel: {
-        received(obj) {
-          if (obj.delete) {
-            this.$cable.unsubscribe('SheetChannel')
-            this.onClose()
-            this.$store.commit(DELETE_SHEET, obj.delete)
-          } else {
-            this.$store.commit(UPDATE_SHEET, obj)
-          }
-        },
-      },
-    },
-
     computed: {
       ...mapState({
         game: state => state.game.info,

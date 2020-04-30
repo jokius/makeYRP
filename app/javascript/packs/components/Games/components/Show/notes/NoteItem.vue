@@ -30,7 +30,8 @@
 </template>
 
 <script>
-  import { ADD_OPEN_MODAL, DELETE_MENU_ITEM, UPDATE_MENU_ITEM } from '../../../../Games/stores/mutation-types'
+
+  import { ADD_OPEN_MODAL } from '../../../stores/mutation-types'
 
   export default {
     name: 'NoteItem',
@@ -42,19 +43,6 @@
       return {
         privateObj: { open: this.modalOpen, edit: true, note: this.note.params },
       }
-    },
-
-    channels: {
-      MenusItemChannel: {
-        received(obj) {
-          if (obj.delete) {
-            this.$cable.unsubscribe('MenusItemChannel')
-            this.$store.commit(DELETE_MENU_ITEM, obj.delete)
-          } else {
-            this.$store.commit(UPDATE_MENU_ITEM, obj)
-          }
-        },
-      },
     },
 
     computed: {
