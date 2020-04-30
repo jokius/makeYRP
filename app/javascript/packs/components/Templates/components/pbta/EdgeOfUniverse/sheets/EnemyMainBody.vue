@@ -59,7 +59,7 @@
               @change="saveSheet"
             />
             <v-text-field
-              v-model.number="wounds"
+              v-model.number="woundsMax"
               color="indigo"
               class="input"
               label="Ранения макс"
