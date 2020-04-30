@@ -216,6 +216,7 @@
   }
 
   .moves {
+    cursor: pointer;
     margin-bottom: 5px;
   }
 
