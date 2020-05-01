@@ -33,14 +33,42 @@
             flat
             @change="saveSheet"
           />
-          <v-select
-            :value="role.key"
-            :items="tableRoles"
-            label="Роль"
-            class="input"
-            color="indigo"
-            @change="(value) => role = value"
-          />
+          <div class="role-grid">
+            <v-select
+              :value="role.key"
+              :items="tableRoles"
+              label="Роль"
+              class="input"
+              color="indigo"
+              @change="(value) => role = value"
+            />
+
+            <div class="exp-grid">
+              <span>EXP:</span>
+              <div class="exp-boxes">
+                <div
+                  v-for="number in exp.max"
+                  :key="`exp-${number}`"
+                  class="box-line"
+                  @click="exp = number"
+                >
+                  <div :class="[{ enable: exp.current >= number }, 'box']" />
+                </div>
+              </div>
+              <span>Уровень:</span>
+              <v-text-field
+                v-model.number="level"
+                color="indigo"
+                class="input level"
+                type="number"
+                min="0"
+                flat
+                hide-details
+                @change="saveSheet"
+              />
+            </div>
+          </div>
+
           <div class="attributes">
             <div class="attributes-col1">
               <div class="state">
@@ -135,40 +163,24 @@
               </div>
               <div class="supply">
                 <img src="/img/ammo-box.svg" class="icon" title="Припасы" alt="Припасы" />
-                <div
-                  v-for="number in 10"
-                  :key="`supply-${number}`"
-                  class="box-line"
-                  @click="supply = number"
-                >
-                  <div :class="[{ enable: supply >= number }, 'box']" />
-                </div>
+                <v-text-field
+                  v-model.number="supply"
+                  color="indigo"
+                  class="input"
+                  flat
+                  type="number"
+                  @change="saveSheet"
+                />
+                <v-text-field
+                  v-model.number="supplyMax"
+                  color="indigo"
+                  class="input"
+                  flat
+                  type="number"
+                  @change="saveSheet"
+                />
               </div>
             </div>
-          </div>
-          <div class="exp-grid">
-            <span>EXP:</span>
-            <div class="exp-boxes">
-              <div
-                v-for="number in exp.max"
-                :key="`exp-${number}`"
-                class="box-line"
-                @click="exp = number"
-              >
-                <div :class="[{ enable: exp.current >= number }, 'box']" />
-              </div>
-            </div>
-            <span>Уровень:</span>
-            <v-text-field
-              v-model.number="level"
-              color="indigo"
-              class="input level"
-              type="number"
-              min="0"
-              flat
-              hide-details
-              @change="saveSheet"
-            />
           </div>
         </div>
       </div>
@@ -400,11 +412,21 @@
 
       supply: {
         get() {
-          return this.params.supply
+          return this.params.supply.current
         },
 
         set(value) {
-          this.inputBox('supply', value, 10)
+          this.input('supply.current', value)
+        },
+      },
+
+      supplyMax: {
+        get() {
+          return this.params.supply.max
+        },
+
+        set(value) {
+          this.input('supply.max', value)
         },
       },
 
@@ -515,6 +537,12 @@
     created() {
       if (this.params.role === '@random') {
         this.changeRole(Pbta.randomRole(this.tableRoles).value)
+        this.saveSheet()
+      }
+
+      if (typeof this.params.supply.current === 'undefined') {
+        const value = this.params.supply
+        this.input('supply', { current: value, max: value })
         this.saveSheet()
       }
 
@@ -732,6 +760,12 @@
     margin-top: 10px;
   }
 
+  .role-grid {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    grid-column-gap: 10px;
+  }
+
   .resources {
     margin-top: 10px;
   }
@@ -818,6 +852,7 @@
     display: grid;
     grid-template-columns: repeat(3, max-content) 50px;
     grid-column-gap: 10px;
+    margin-top: 10px;
   }
 
   .exp-boxes {
@@ -831,5 +866,11 @@
   .notes {
     margin-right: 5px;
     margin-bottom: 5px;
+  }
+
+  .supply {
+    display: grid;
+    grid-template-columns: max-content repeat(2, 60px);
+    grid-column-gap: 10px;
   }
 </style>
