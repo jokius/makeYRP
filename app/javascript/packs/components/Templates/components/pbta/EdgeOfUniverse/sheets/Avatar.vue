@@ -3,7 +3,7 @@
     <v-btn
       class="button"
       outlined
-      @click="openSelect = true"
+      @click="openSelect = sheet.acl.canWrite"
     >
       <v-img
         class="image"
