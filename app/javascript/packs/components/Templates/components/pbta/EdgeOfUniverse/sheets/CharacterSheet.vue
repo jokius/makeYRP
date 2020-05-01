@@ -1,5 +1,5 @@
 <template>
-  <div class="sheet-body" :style="{ width, height }">
+  <div v-if="canWrite" class="sheet-body" :style="{ width, height }">
     <v-tabs
       v-model="tab"
       color="basil"
@@ -41,6 +41,9 @@
       </v-tab-item>
     </v-tabs-items>
   </div>
+  <div v-else class="sheet-body" :style="{ width, height }">
+    <character-read-only :id="id" />
+  </div>
 </template>
 
 <script>
@@ -51,10 +54,18 @@
   import CharacterRelationshipBody from './CharacterRelationshipBody'
   import CharacterEquipmentBody from './CharacterEquipmentBody'
   import TabSpecial from './TabSpecial'
+  import CharacterReadOnly from './CharacterReadOnly'
 
   export default {
     name: 'CharacterSheet',
-    components: { TabSpecial, CharacterEquipmentBody, CharacterRelationshipBody, CharacterMoveBody, CharacterMainBody },
+    components: {
+      CharacterReadOnly,
+      TabSpecial,
+      CharacterEquipmentBody,
+      CharacterRelationshipBody,
+      CharacterMoveBody,
+      CharacterMainBody,
+    },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },
@@ -75,6 +86,12 @@
       sheet: {
         get() {
           return this.sheets.find(sheet => sheet.id === this.id)
+        },
+      },
+
+      canWrite: {
+        get() {
+          return this.sheet.acl.canWrite
         },
       },
 
