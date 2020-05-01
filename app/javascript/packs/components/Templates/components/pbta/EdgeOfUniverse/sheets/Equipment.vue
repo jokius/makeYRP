@@ -15,81 +15,87 @@
       <span class="equipment-remove" @click="removeEquipment">Удалить</span>
     </div>
 
-    <div class="markers-grid">
-      <div class="input-grid">
-        <span class="label">Количество</span>
-        <v-text-field
-          v-model.number="quantity"
-          color="indigo"
-          class="input"
-          flat
-          type="number"
-          hide-details
-          @change="saveSheet"
-        />
+    <details>
+      <summary class="pointer">
+        Подробнее
+      </summary>
+
+      <div class="markers-grid">
+        <div class="input-grid">
+          <span class="label">Количество</span>
+          <v-text-field
+            v-model.number="quantity"
+            color="indigo"
+            class="input"
+            flat
+            type="number"
+            hide-details
+            @change="saveSheet"
+          />
+        </div>
+
+        <div v-if="damage || edit" class="input-grid">
+          <span class="label">Урон</span>
+          <v-text-field
+            v-model.number="damage"
+            color="indigo"
+            class="input"
+            flat
+            type="number"
+            hide-details
+            @change="saveSheet"
+          />
+        </div>
+
+        <div v-if="protection || edit" class="input-grid">
+          <span class="label">Защита</span>
+          <v-text-field
+            v-model.number="protection"
+            color="indigo"
+            class="input"
+            flat
+            type="number"
+            hide-details
+            @change="saveSheet"
+          />
+        </div>
       </div>
 
-      <div v-if="damage || edit" class="input-grid">
-        <span class="label">Урон</span>
-        <v-text-field
-          v-model.number="damage"
-          color="indigo"
-          class="input"
-          flat
-          type="number"
-          hide-details
-          @change="saveSheet"
-        />
-      </div>
-
-      <div v-if="protection || edit" class="input-grid">
-        <span class="label">Защита</span>
-        <v-text-field
-          v-model.number="protection"
-          color="indigo"
-          class="input"
-          flat
-          type="number"
-          hide-details
-          @change="saveSheet"
-        />
-      </div>
-    </div>
-
-    <div class="tags-grid">
-      <span class="label tag-label">Теги</span>
-      <v-chip-group>
-        <v-chip
-          v-for="(tag, tagIndex) in tags"
-          :key="`tag-${tagIndex}`"
-          close
-          @click:close="removeTag(tagIndex)"
+      <div class="tags-grid">
+        <span class="label tag-label">Теги</span>
+        <v-chip-group>
+          <v-chip
+            v-for="(tag, tagIndex) in tags"
+            :key="`tag-${tagIndex}`"
+            close
+            @click:close="removeTag(tagIndex)"
+          >
+            {{ tag }}
+          </v-chip>
+        </v-chip-group>
+        <v-btn
+          class="tag-button"
+          dark
+          small
+          @click="modalOpen = true"
         >
-          {{ tag }}
-        </v-chip>
-      </v-chip-group>
-      <v-btn
-        class="tag-button"
-        dark
-        small
-        @click="modalOpen = true"
-      >
-        <v-icon dark>mdi-plus</v-icon>
-      </v-btn>
-    </div>
-    <v-textarea
-      v-if="edit"
-      v-model="description"
-      auto-grow
-      no-resize
-      rows="2"
-      color="indigo"
-      background-color="white"
-      class="notes"
-      hide-details
-      @change="saveSheet"
-    />
-    <span v-else class="equipment-description">{{ description }}</span>
+          <v-icon dark>mdi-plus</v-icon>
+        </v-btn>
+      </div>
+      <v-textarea
+        v-if="edit"
+        v-model="description"
+        auto-grow
+        no-resize
+        rows="2"
+        color="indigo"
+        background-color="white"
+        class="notes"
+        hide-details
+        @change="saveSheet"
+      />
+      <span v-else class="equipment-description">{{ description }}</span>
+    </details>
 
     <add-tag-modal v-model="obj" />
   </div>
@@ -277,6 +283,10 @@
     display: grid;
     margin-bottom: 5px;
     background-color: $grayC5;
+  }
+
+  .pointer {
+    cursor: pointer;
   }
 
   .title-equipment {
