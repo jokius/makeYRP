@@ -1,7 +1,6 @@
 <template>
   <div class="equipment-body">
-    <div class="equipment">
-      <p class="equipment-title">Снаряжение</p>
+    <div class="equipments-grid">
       <equipment
         v-for="(item, index) in equipment"
         :key="`equipment-${index}`"
@@ -145,26 +144,10 @@
     background-color: $grayC5;
   }
 
-  .moves-body {
-    background-color: $grayC5;
-    overflow: auto;
+  .equipments-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: max-content;
-    padding: 0 5px;
-    height: 570px;
-  }
-
-  .moves {
-    margin-bottom: 5px;
-  }
-
-  .moves-title {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 15px;
   }
 
   .actions {
