@@ -34,7 +34,7 @@ export class AclModel {
   }
 
   get canWrite() {
-    return this.writeAll || this.isMaster() || this.writeIds.includes(this.currentUserId)
+    return this.isOwner() || this.writeAll || this.isMaster() || this.writeIds.includes(this.currentUserId)
   }
 
   get canRead() {
