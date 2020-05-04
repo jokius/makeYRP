@@ -35,6 +35,12 @@
         :key="key"
         :size="size"
       />
+      <eou-ship-sheet
+        v-else-if="sheetName === 'edge_of_universe-ship'"
+        :id="id"
+        :key="key"
+        :size="size"
+      />
       <v-alert
         v-else
         :key="key"
@@ -61,7 +67,8 @@
   import HmwMonsterSheet from '../../../Templates/components/pbta/HorrorMovieWorld/sheets/MonsterSheet'
   import EouCharacterSheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/CharacterSheet'
   import EouEnemySheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/EnemySheet'
-  import { DELETE_SHEET, REMOVE_OPEN_MODAL, UPDATE_SHEET } from '../../stores/mutation-types'
+  import EouShipSheet from '../../../Templates/components/pbta/EdgeOfUniverse/sheets/ShipSheet'
+  import { REMOVE_OPEN_MODAL } from '../../stores/mutation-types'
 
   export default {
     name: 'SheetModal',
@@ -74,6 +81,7 @@
       HmwCharacterSheet,
       HmwMonsterSheet,
       EouCharacterSheet,
+      EouShipSheet,
     },
 
     props: {
