@@ -13,9 +13,19 @@
       <v-spacer />
       <div
         :class="[{ enable: damaged }, 'box']"
-        @click="input('damaged', !damaged)"
+        @click="changeBoolean('damaged', !damaged)"
       />
       <span>Поврежден</span>
+      <v-btn
+        color="red darken-4"
+        icon
+        small
+        dark
+        class="delete-button"
+        @click="remove"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
     </div>
 
     <details>
@@ -77,6 +87,12 @@
       sheet: { type: Object, required: true },
     },
 
+    data() {
+      return {
+        modalOpen: false,
+      }
+    },
+
     computed: {
       ...mapState({
         sheets: state => state.game.sheets,
@@ -94,7 +110,7 @@
         },
 
         set(value) {
-          return this.input('enable', value)
+          return this.input('name', value)
         },
       },
 
@@ -133,7 +149,7 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `${this.path}[${this.index}].tags[${this.tags.length}]`,
+                             path: `compartments.${this.path}[${this.index}].tags[${this.tags.length}]`,
                              value: tag,
                            })
 
@@ -144,10 +160,15 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `${this.path}[${this.index}].tags`,
+                             path: `compartments.${this.path}[${this.index}].tags`,
                              value,
                              remove: true,
                            })
+        this.saveSheet()
+      },
+
+      changeBoolean(target, value) {
+        this.input(target, value)
         this.saveSheet()
       },
 
@@ -155,9 +176,20 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `${this.path}[${this.index}].${target}`,
+                             path: `compartments.${this.path}[${this.index}].${target}`,
                              value: value,
                            })
+      },
+
+      remove() {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path: `compartments.${this.path}`,
+                             value: this.index,
+                             remove: true,
+                           })
+        this.saveSheet()
       },
 
       saveSheet() {
@@ -174,20 +206,28 @@
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
 
+  details {
+    padding-left: 5px;
+  }
+
   .compartment-block {
     margin-bottom: 5px;
   }
 
   .title-compartment {
     display: grid;
-    grid-template-columns: max-content 1fr 30px max-content;
+    grid-template-columns: max-content 1fr 30px max-content max-content;
     grid-column-gap: 5px;
     background-color: $black;
     color: $white;
-    height: 35px;
-    line-height: 35px;
-    margin-left: -5px;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 5px;
     padding-right: 10px;
+  }
+
+  .delete-button {
+    margin-top: 4px;
   }
 
   .pointer {
@@ -216,5 +256,21 @@
   .compartment-name {
     margin-left: 5px;
     font-weight: 600;
+  }
+
+  .tags-grid {
+    display: grid;
+    grid-template-columns: repeat(3, max-content);
+    grid-column-gap: 10px;
+    height: 35px;
+    line-height: 35px;
+  }
+
+  .tag-label {
+    margin-top: 5px;
+  }
+
+  .tag-button {
+    margin-top: 10px;
   }
 </style>

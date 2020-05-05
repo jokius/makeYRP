@@ -106,14 +106,16 @@
     </details>
     <details class="pointer" open>
       <summary class="black-title">{{ hydroponicCompartment.name }}</summary>
-      <compartment
-        v-for="(compartment, index) in hydroponicCompartment.items"
-        :key="`hold-${index}`"
-        :sheet="sheet"
-        :compartment="compartment"
-        :index="index"
-        path="hydroponicCompartment.items"
-      />
+      <div class="compartments-grid">
+        <compartment
+          v-for="(compartment, index) in hydroponicCompartment.items"
+          :key="`hold-${index}`"
+          :sheet="sheet"
+          :compartment="compartment"
+          :index="index"
+          path="hydroponicCompartment.items"
+        />
+      </div>
     </details>
     <details class="pointer" open>
       <summary class="black-title">{{ otherSystems.name }}</summary>

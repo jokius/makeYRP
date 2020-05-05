@@ -122,9 +122,11 @@
         this.$store.commit(UPDATE_SHEET_PARAMS,
                            {
                              id: this.sheet.id,
-                             path: `${this.path}[${this.index}].${target}`,
+                             path: `compartments.${this.path}[${this.index}].${target}`,
                              value: value,
                            })
+
+        this.saveSheet()
       },
 
       saveSheet() {
@@ -141,6 +143,10 @@
 <style scoped lang="scss">
   @import 'app/javascript/packs/components/ui/css/colors';
 
+  details {
+    padding-left: 5px;
+  }
+
   .compartment-block {
     margin-bottom: 5px;
   }
@@ -153,7 +159,7 @@
     color: $white;
     height: 35px;
     line-height: 35px;
-    margin-left: -5px;
+    padding-left: 5px;
     padding-right: 10px;
   }
 
@@ -165,7 +171,7 @@
     color: $white;
     height: 35px;
     line-height: 35px;
-    margin-left: -5px;
+    padding-left: 5px;
     padding-right: 10px;
   }
 
