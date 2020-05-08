@@ -734,7 +734,7 @@
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, max-content);
     grid-row-gap: 5px;
-    height: 570px;
+    min-height: 570px;
   }
 
   .main-row1 {
