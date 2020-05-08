@@ -1,21 +1,31 @@
 <template>
-  <div class="sheet-body" :style="{ width, height }">
+  <div v-if="canWrite" class="sheet-body" :style="{ width, height }">
     <enemy-main-body :id="id" />
+  </div>
+  <div v-else class="sheet-body" :style="{ width, height }">
+    <character-read-only :id="id" />
   </div>
 </template>
 
 <script>
   import EnemyMainBody from './EnemyMainBody'
+  import CharacterReadOnly from './CharacterReadOnly'
 
   export default {
     name: 'EnemySheet',
-    components: { EnemyMainBody },
+    components: { CharacterReadOnly, EnemyMainBody },
     props: {
       id: { type: Number, required: true },
       size: { type: Object, required: true },
     },
 
     computed: {
+      canWrite: {
+        get() {
+          return this.sheet.acl.canWrite
+        },
+      },
+
       width: {
         get() {
           const width = this.size.width
