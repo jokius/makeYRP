@@ -15,24 +15,6 @@
           />
 
           <div class="attributes">
-            <span class="state-label">Здоровье</span>
-            <v-text-field
-              v-model.number="hp"
-              color="indigo"
-              class="input"
-              flat
-              type="number"
-              @change="saveSheet"
-            />
-            <v-text-field
-              v-model.number="hpMax"
-              color="indigo"
-              class="input"
-              flat
-              type="number"
-              @change="saveSheet"
-            />
-
             <span class="state-label">Броня</span>
             <v-text-field
               v-model.number="protection"

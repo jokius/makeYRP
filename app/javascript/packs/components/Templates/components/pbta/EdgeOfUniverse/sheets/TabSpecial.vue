@@ -5,6 +5,59 @@
       :key="`special-${index}`"
       class="specials"
     >
+      <v-text-field
+        v-if="item.type === 'textField'"
+        :value="item.value"
+        :label="item.label"
+        color="indigo"
+        class="input name"
+        flat
+        hide-details
+        @input="value => input(`specials[${specialIndex}].items[${index}].value`, value)"
+        @change="saveSheet"
+      />
+      <div v-if="item.type === 'block-line'" class="block-line">
+        <div
+          v-for="(block, blockIndex) in item.items"
+          :key="`special-${index}-block-${blockIndex}`"
+          class="block"
+        >
+          <img
+            v-if="block.itemType === 'icon'"
+            :src="`/img/${block.path}`"
+            class="icon"
+            :title="block.label"
+            :alt="block.label"
+          />
+          <div v-if="block.itemType === 'text'" class="text-black">{{ block.text }}</div>
+          <v-text-field
+            v-if="block.itemType === 'numberField'"
+            :value="block.value"
+            :label="block.label"
+            color="indigo"
+            class="input number"
+            flat
+            hide-details
+            @input="value => input(`specials[${specialIndex}].items[${index}].value`, value)"
+            @change="saveSheet"
+          />
+          <div v-if="block.itemType === 'description'" class="description" v-html="block.text" />
+        </div>
+      </div>
+      <div v-if="item.type === 'description'" class="description" v-html="item.text" />
+      <v-select
+        v-if="item.type === 'select'"
+        :items="item.list"
+        :label="item.label"
+        class="special-select"
+        color="black"
+        :multiple="item.multiple"
+        :attach="item.multiple"
+        :chips="item.multiple"
+        :value="item.value"
+        hide-details
+        @change="value => selectSet(`specials[${specialIndex}].items[${index}].value`, value)"
+      />
       <details v-if="item.type === 'block'" class="pointer">
         <summary class="black-title">{{ item.name }}</summary>
         <div class="blocks-grid">
@@ -95,6 +148,15 @@
     },
 
     methods: {
+      input(path, value) {
+        this.$store.commit(UPDATE_SHEET_PARAMS,
+                           {
+                             id: this.sheet.id,
+                             path,
+                             value,
+                           })
+      },
+
       selectSet(path, value) {
         this.$store.commit(UPDATE_SHEET_PARAMS, { id: this.sheet.id, path, value })
         this.saveSheet()
@@ -122,9 +184,10 @@
     background-color: $grayC5;
     overflow: auto;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 0.99fr;
     grid-template-rows: max-content;
     padding: 0 5px;
+    min-height: 570px;
   }
 
   .black-title {
@@ -149,11 +212,31 @@
 
   .special-select {
     padding: 0;
-    margin: 0 0 10px;
+    margin: 10px 0 10px;
     background-color: $white;
   }
 
   .block {
     margin-bottom: 15px;
+  }
+
+  .block-line {
+    display: inline-flex;
+  }
+
+  .icon {
+    width: 35px;
+    height: 35px;
+    margin-top: 10px;
+  }
+
+  .number {
+    width: 70px;
+    margin-left: 10px;
+  }
+
+  .text-black {
+    margin-top: 17px;
+    font-size: 20px;
   }
 </style>
