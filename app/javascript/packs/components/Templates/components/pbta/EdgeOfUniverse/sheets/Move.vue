@@ -388,8 +388,7 @@
 
   .selects {
     display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 5px;
+    grid-template-columns: 1fr;
   }
 
   .select-title {

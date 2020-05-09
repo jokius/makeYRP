@@ -20,7 +20,7 @@
 
   import NotesList from './NotesList'
 
-  import { ADD_OPEN_MODAL } from '../../../stores/mutation-types'
+  import { ADD_OPEN_MODAL, RESET_MARKER } from '../../../stores/mutation-types'
 
   export default {
     name: 'TabNotes',
@@ -36,6 +36,10 @@
           return this.menus.find(item => item.type === 'notes')
         },
       },
+    },
+
+    activated() {
+      this.$store.commit(RESET_MARKER, 'notes')
     },
 
     methods: {
