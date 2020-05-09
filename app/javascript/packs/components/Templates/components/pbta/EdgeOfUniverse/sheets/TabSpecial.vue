@@ -38,7 +38,8 @@
             class="input number"
             flat
             hide-details
-            @input="value => input(`specials[${specialIndex}].items[${index}].value`, value)"
+            type="number"
+            @input="value => input(`specials[${specialIndex}].items[${index}].items[${blockIndex}].value`, value)"
             @change="saveSheet"
           />
           <div v-if="block.itemType === 'description'" class="description" v-html="block.text" />
