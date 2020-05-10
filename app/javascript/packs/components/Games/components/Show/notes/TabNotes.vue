@@ -21,6 +21,7 @@
   import NotesList from './NotesList'
 
   import { ADD_OPEN_MODAL, RESET_MARKER } from '../../../stores/mutation-types'
+  import { ItemMenuModel } from '../../../../../models/ItemMenuModel'
 
   export default {
     name: 'TabNotes',
@@ -45,7 +46,15 @@
     methods: {
       showModal() {
         const key = Date.now()
-        this.$store.commit(ADD_OPEN_MODAL, { name: 'note', key, id: this.menu.id, isNew: true, isEdit: true })
+        const note = new ItemMenuModel()
+        note.menuId = this.menu.id
+        this.$store.commit(ADD_OPEN_MODAL, {
+          name: 'note',
+          key,
+          isNew: true,
+          isEdit: true,
+          note: note,
+        })
       },
     },
   }

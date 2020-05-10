@@ -31,6 +31,8 @@ class GameChannel < ApplicationCable::Channel
       end
     when 'page'
       responds(Pages::Update, params.merge(data)) { |page| broadcast(update: true, page: page) }
+    when 'menu_item'
+      responds(Menus::Items::Update, params.merge(data)) { |menu_item| broadcast(update: true, menu_item: menu_item) }
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -45,6 +47,8 @@ class GameChannel < ApplicationCable::Channel
       remove_sheet(sheet)
     when 'page'
       remove_page(page_by_data(data))
+    when 'menu_item'
+      remove_menu_item(menu_item_by_data(data))
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -102,6 +106,13 @@ class GameChannel < ApplicationCable::Channel
     broadcast(delete: true, page: page.destroy.id)
   end
 
+  def remove_menu_item(menu_item)
+    return broadcast(errors: 'menu item not found') if menu_item.nil?
+
+    menu_item.destroy
+    broadcast(delete: true, menu_item: true, id: menu_item.id, menu_id: menu_item.menu_id)
+  end
+
   def add_message(data)
     responds(Messages::Create, params.merge(data).merge(user_id: current_user.id)) do |message|
       broadcast(new: true, message: MessageSerializer.new(message))
@@ -128,5 +139,9 @@ class GameChannel < ApplicationCable::Channel
 
   def page_by_data(data)
     Page.find_by(id: data['id'])
+  end
+
+  def menu_item_by_data(data)
+    Menus::Item.find_by(id: data['id'])
   end
 end

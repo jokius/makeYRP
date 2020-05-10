@@ -2,7 +2,7 @@
   <draggable-dialog
     v-model="size"
     :on-close="onClose"
-    :title="contentTitle"
+    :title="title"
     :width="size.width"
     :height="size.height"
     :disable-actions="!isEdit"
@@ -11,13 +11,13 @@
     <template v-slot:body>
       <div v-if="isEdit">
         <v-text-field
-          v-model="contentTitle"
+          v-model="title"
           required
           color="indigo"
           label="Название"
         />
         <wysiwyg
-          v-model="content"
+          v-model="text"
           :options="{ maxHeight: `${size.height - editorOffsetH}px` }"
           :style="{ width, height, minWidth }"
         />
@@ -25,7 +25,7 @@
       <div
         v-else
         :style="{ width, height, minWidth }"
-        v-html="content"
+        v-html="text"
       />
     </template>
     <template v-slot:actions>
@@ -54,24 +54,22 @@
 
   import DraggableDialog from './DraggableDialog'
 
-  import { REMOVE_OPEN_MODAL } from '../../stores/mutation-types'
+  import { REMOVE_OPEN_MODAL, UPDATE_MENU_ITEM_PARAMS } from '../../stores/mutation-types'
   export default {
     name: 'NoteModal',
     components: { DraggableDialog },
 
     props: {
-      id: { type: Number, required: true },
+      note: { type: Object, required: true },
       uniqKey: { type: Number, required: true },
-      title: { type: String, default: null },
-      text: { type: String, default: null },
       isEdit: { type: Boolean, required: true },
       isNew: { type: Boolean, required: true },
     },
 
     data() {
       return {
-        privateTitle: this.title || 'Новая заметка',
-        privateText: this.text,
+        privateTitle: 'Новая заметка',
+        privateText: '',
         minWidth: '516px',
         privateWidth: 516,
         privateHeight: 450,
@@ -81,23 +79,31 @@
     },
 
     computed: {
-      contentTitle: {
+      title: {
         get() {
-          return this.privateTitle
+          return this.note.params.title || this.privateTitle
         },
 
         set(value) {
-          this.privateTitle = value
+          if (this.isNew) {
+            this.privateTitle = value
+          } else {
+            this.input('title', value)
+          }
         },
       },
 
-      content: {
+      text: {
         get() {
-          return this.privateText
+          return this.note.params.text || this.privateText
         },
 
         set(value) {
-          this.privateText = value
+          if (this.isNew) {
+            this.privateText = value
+          } else {
+            this.input('text', value)
+          }
         },
       },
 
@@ -128,18 +134,31 @@
     },
 
     methods: {
+      input(path, value) {
+        this.$store.commit(UPDATE_MENU_ITEM_PARAMS, {
+          id: this.note.id,
+          menuId: this.note.menuId,
+          path,
+          value,
+        })
+      },
+
       change() {
         if (this.isNew) {
           this.$cable.perform({
             channel: 'GameChannel',
             action: 'add',
-            data: { menu_id: this.id,  params: { title: this.contentTitle, text: this.content }, type: 'menu_item' },
+            data: {
+              menu_id: this.note.menuId,
+              params: { title: this.privateTitle, text: this.privateText },
+              type: 'menu_item',
+            },
           })
         } else {
           this.$cable.perform({
-            channel: 'MenusItemChannel',
+            channel: 'GameChannel',
             action: 'change',
-            data: { title: this.contentTitle, text: this.content },
+            data: { ...this.note, type: 'menu_item' },
           })
         }
 
