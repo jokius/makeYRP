@@ -43,6 +43,7 @@ import {
   UPDATE_PAGE_PARAMS,
   CHANGE_PAGE_COLOR,
   UPDATE_SPECIAL_TABS,
+  UPDATE_MENU_ITEM_PARAMS,
 } from '../mutation-types'
 import { GameModel } from '../../../../models/GameModel'
 import { SheetModel } from '../../../../models/SheetModel'
@@ -224,7 +225,6 @@ export default {
   },
 
   [UPDATE_SPECIAL_TABS](state, specials) {
-
     state.specialTabs = specials.map((item, index) => {
       if (item && item.type === 'tab') return { index: index, tab: item }
     }).filter(Boolean)
@@ -240,14 +240,28 @@ export default {
   },
 
   [UPDATE_MENU_ITEM](state, raw) {
-    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    const menus = state.info.menus
+    const menuIndex = menus.findIndex(item => item.id === raw.menu_id)
+    const menu = menus[menuIndex]
     const item = menu.items.find(item => item.id === raw.id)
     item.setInfo(raw)
+    state.info = { ...state.info, menus }
+  },
+
+  [UPDATE_MENU_ITEM_PARAMS](state, { id, menuId, path, value }) {
+    const menus = state.info.menus
+    const menuIndex = menus.findIndex(item => item.id === menuId)
+    const menu = menus[menuIndex]
+    const item = menu.items.find(item => item.id === id)
+    set(item.params, path, value)
   },
 
   [DELETE_MENU_ITEM](state, raw) {
-    const menu = state.info.menus.find(item => item.id === raw.menu_id)
+    const menus = state.info.menus
+    const menuIndex = menus.findIndex(item => item.id === raw.menu_id)
+    const menu = menus[menuIndex]
     menu.items = menu.items.filter(item => item.id !== raw.id)
+    state.info = { ...state.info, menus }
   },
 
   [CHANGE_CURRENT_CURSOR](state, value) {

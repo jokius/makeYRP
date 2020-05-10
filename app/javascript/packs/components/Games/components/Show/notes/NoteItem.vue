@@ -61,13 +61,6 @@
       },
     },
 
-    mounted() {
-      this.$cable.subscribe({
-        channel: 'MenusItemChannel',
-        item_id: this.note.id,
-      })
-    },
-
     methods: {
       viewNote() {
         this.showModal(false)
@@ -80,11 +73,21 @@
       showModal(isEdit) {
         const key = Date.now()
         this.$store.commit(ADD_OPEN_MODAL,
-                           { name: 'note', key, id: this.note.id, isNew: false, isEdit: isEdit, ...this.note.params })
+                           {
+                             name: 'note',
+                             key,
+                             isNew: false,
+                             isEdit: isEdit,
+                             note: this.note,
+                           })
       },
 
       deleteNote() {
-        this.$cable.perform({ channel: 'MenusItemChannel', action: 'remove' })
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'remove',
+          data: { id: this.note.id, type: 'menu_item' },
+        })
       },
     },
   }

@@ -36,6 +36,8 @@
 </template>
 
 <script>
+  import { UPDATE_MENU_ITEM_PARAMS } from '../../../../../Games/stores/mutation-types'
+
   export default {
     name: 'CounterItem',
 
@@ -56,11 +58,17 @@
         },
 
         set(value) {
-          const current = this.current === value && value === 1 ? 0 : value
+          this.$store.commit(UPDATE_MENU_ITEM_PARAMS, {
+            id: this.clock.id,
+            menuId: this.clock.menuId,
+            path: 'current',
+            value: this.current === value && value === 1 ? 0 : value,
+          })
+
           this.$cable.perform({
-            channel: 'MenusItemChannel',
+            channel: 'GameChannel',
             action: 'change',
-            data: { ...this.clock.params, current },
+            data: { ...this.clock, type: 'menu_item' },
           })
         },
       },
@@ -72,16 +80,13 @@
       },
     },
 
-    mounted() {
-      this.$cable.subscribe({
-        channel: 'MenusItemChannel',
-        item_id: this.clock.id,
-      })
-    },
-
     methods: {
       deleteClock() {
-        this.$cable.perform({ channel: 'MenusItemChannel', action: 'remove' })
+        this.$cable.perform({
+          channel: 'GameChannel',
+          action: 'remove',
+          data: { id: this.clock.id, type: 'menu_item' },
+        })
       },
     },
   }

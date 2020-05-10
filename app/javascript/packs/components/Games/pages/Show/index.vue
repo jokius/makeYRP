@@ -80,17 +80,6 @@
         },
       },
 
-      MenusItemChannel: {
-        received(obj) {
-          if (obj.delete) {
-            this.$cable.unsubscribe('MenusItemChannel')
-            this.$store.commit(DELETE_MENU_ITEM, obj.delete)
-          } else {
-            this.$store.commit(UPDATE_MENU_ITEM, obj)
-          }
-        },
-      },
-
       PageChannel: {
         received(obj) {
           if (obj.delete) {
@@ -151,11 +140,13 @@
       updateObj(obj) {
         if (obj.sheet) this.$store.commit(UPDATE_SHEETS, obj.sheet)
         if (obj.page) this.$store.commit(UPDATE_PAGE, obj.page)
+        if (obj.menu_item) this.$store.commit(UPDATE_MENU_ITEM, obj.menu_item)
       },
 
       deleteObj(obj) {
         if (obj.sheet) this.$store.commit(DELETE_SHEET, obj.sheet)
         if (obj.page) this.$store.commit(DELETE_PAGE, obj.page)
+        if (obj.menu_item) this.$store.commit(DELETE_MENU_ITEM, obj)
       },
 
       accessObj(obj) {

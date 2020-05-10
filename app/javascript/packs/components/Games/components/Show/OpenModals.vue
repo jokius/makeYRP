@@ -26,13 +26,11 @@
       />
       <note-modal
         v-else-if="modal.name === 'note'"
-        :id="modal.id"
         :key="`note_${modal.key}`"
         :uniq-key="modal.key"
-        :title="modal.title"
-        :text="modal.text"
         :is-edit="modal.isEdit"
         :is-new="modal.isNew"
+        :note="modal.note"
       />
       <v-alert
         v-else
