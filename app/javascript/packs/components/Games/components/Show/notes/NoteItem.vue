@@ -39,28 +39,6 @@
       note: { type: Object, required: true },
     },
 
-    data() {
-      return {
-        privateObj: { open: this.modalOpen, edit: true, note: this.note.params },
-      }
-    },
-
-    computed: {
-      obj: {
-        get() {
-          return this.privateObj
-        },
-
-        set({ open, note }) {
-          if (note) {
-            this.editItem(note)
-          }
-
-          this.privateObj.modalOpen = open
-        },
-      },
-    },
-
     methods: {
       viewNote() {
         this.showModal(false)
