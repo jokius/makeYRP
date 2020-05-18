@@ -16,7 +16,7 @@
     "@rails/ujs": "^6.0.2",
     "@rails/webpacker": "^5.1.1",
     "@reststate/vuex": "^0.2.1",
-    "actioncable-vue": "^2.0.2",
+    "actioncable-vue": "^2.1.0",
     "axios": "^0.19.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
