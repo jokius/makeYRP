@@ -23,12 +23,7 @@ class GameChannel < ApplicationCable::Channel
   def change(data)
     case data['type']
     when 'sheet'
-      return change_access('write') unless allowed_to?(:write?, sheet_by_data(data))
-
-      responds(Sheets::Update, params.merge(data)) do |sheet|
-        SheetChannel.broadcast_to(sheet, sheet_serializer(sheet))
-        broadcast(update: true, sheet: sheet_serializer(sheet))
-      end
+      change_sheet(data)
     when 'page'
       responds(Pages::Update, params.merge(data)) { |page| broadcast(update: true, page: page) }
     when 'menu_item'
@@ -79,6 +74,15 @@ class GameChannel < ApplicationCable::Channel
   def add_sheet(data)
     responds(Sheets::Create, params.merge(data).merge(owner_id: current_user.id)) do |sheet|
       broadcast(new: true, sheet: sheet_serializer(sheet))
+    end
+  end
+
+  def change_sheet(data)
+    return change_access('write') unless allowed_to?(:write?, sheet_by_data(data))
+
+    responds(Sheets::Update, params.merge(data)) do |sheet|
+      SheetChannel.broadcast_to(sheet, sheet_serializer(sheet))
+      broadcast(update: true, sheet: sheet_serializer(sheet))
     end
   end
 
