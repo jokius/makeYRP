@@ -118,6 +118,25 @@ RSpec.describe GameChannel, type: :channel do
       end
     end
 
+    describe 'menu_item' do
+      let(:menu_item) { create(:menus_item) }
+      let(:menu_item_params) { { 'new_params' => 'updated' } }
+      let(:params) { { id: menu_item.id, params: menu_item_params, 'type' => 'menu_item' } }
+
+      it 'broadcasted to game' do
+        expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:menu_item]).to match_json_schema('games/menus/items/show')
+          expect(data[:update]).to be true
+        end)
+      end
+
+      it 'new params save' do
+        subscription.change(params)
+        menu_item.reload
+        expect(menu_item.params).to eq menu_item_params
+      end
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.change({})
@@ -166,6 +185,26 @@ RSpec.describe GameChannel, type: :channel do
         params = { 'id' => page.id, 'type' => 'page' }
         subscription.remove(params)
         expect(Page.find_by(id: page.id)).to be_nil
+      end
+    end
+
+    describe 'menu_item' do
+      it 'broadcasted to game' do
+        menu_item = create(:menus_item)
+        params = { 'id' => menu_item.id, 'type' => 'menu_item' }
+        expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:id]).to eq menu_item.id
+          expect(data[:menu_id]).to eq menu_item.menu_id
+          expect(data[:menu_item]).to be true
+          expect(data[:delete]).to be true
+        end)
+      end
+
+      it 'remove record' do
+        menu_item = create(:menus_item)
+        params = { 'id' => menu_item.id, 'type' => 'menu_item' }
+        subscription.remove(params)
+        expect(Menus::Item.find_by(id: menu_item.id)).to be_nil
       end
     end
 
