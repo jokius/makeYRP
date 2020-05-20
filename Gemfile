@@ -3,27 +3,27 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'sassc-rails'
+gem 'sassc-rails', '>= 2.1.2'
 
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.3', '>= 6.0.3.1'
 
 gem 'puma', '~> 4.3'
 
-gem 'webpacker', '~> 5.0'
+gem 'webpacker', '~> 5.1', '>= 5.1.1'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'listen', '>= 3.0.5'
 
 # JSON API
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'active_model_serializers', '~> 0.10.10'
 
 # Database
-gem 'awesome_nested_set'
+gem 'awesome_nested_set', '>= 3.2.0'
 gem 'pg'
 
 # Auth
-gem 'devise'
+gem 'devise', '>= 4.7.1'
 
 gem 'russian'
 
@@ -44,7 +44,7 @@ gem 'action_policy'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '>= 5.1.1'
 end
 
 group :development do
@@ -55,23 +55,23 @@ group :development do
   gem 'capistrano-rbenv', require: false
   gem 'capistrano3-puma', require: false
   gem 'foreman'
-  gem 'meta_request'
+  gem 'meta_request', '>= 0.7.2'
   gem 'reek', require: false
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rspec', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'strong_migrations'
-  gem 'web-console', '>= 3.3.0'
+  gem 'strong_migrations', '>= 0.6.4'
+  gem 'web-console', '>= 4.0.1'
 end
 
 group :test do
-  gem 'action-cable-testing'
+  gem 'action-cable-testing', '>= 0.6.1'
   gem 'database_cleaner'
   gem 'fasterer'
   gem 'json_matchers'
   gem 'mock_redis'
   gem 'rspec-mocks'
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 4.0.0'
 end
