@@ -7,7 +7,7 @@ gem 'sassc-rails'
 
 gem 'rails', '~> 6.0.0'
 
-gem 'puma', '~> 4.3'
+gem 'puma', '~> 4.3', '>= 4.3.5'
 
 gem 'webpacker', '~> 5.0'
 
@@ -53,7 +53,7 @@ group :development do
   gem 'capistrano', '~> 3.12', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
-  gem 'capistrano3-puma', require: false
+  gem 'capistrano3-puma', '>= 4.0.0', require: false
   gem 'foreman'
   gem 'meta_request'
   gem 'reek', require: false
