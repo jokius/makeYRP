@@ -10645,10 +10645,10 @@ vue-drag-drop@^1.1.4:
   dependencies:
     core-js "^2.5.3"
 
-vue-draggable-resizable@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/vue-draggable-resizable/-/vue-draggable-resizable-2.1.2.tgz#0108380a0bfb5e215007f2d5e0498c25d3c8a340"
-  integrity sha512-cprApv61gcVxm9wI105yIifj74KE2KH0z6itnsueTz4xOPEDRzS4kmLszHqQBEYyszSR99OasAPxNgvI/mqlIg==
+vue-draggable-resizable@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vue-draggable-resizable/-/vue-draggable-resizable-2.2.0.tgz#eb4581b6ddd6a20c5f54f99993c8646382523296"
+  integrity sha512-KjVyzg0OtLsyVhnwD/6NozJkLMD3li41QB/aJIJUr3VS75Gn32UPOWidLvhwsbkwNQcKajXW9QCV1aTrN6MY8w==
 
 vue-eslint-parser@^7.0.0:
   version "7.0.0"
