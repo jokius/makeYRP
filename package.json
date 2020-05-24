@@ -10,7 +10,7 @@
     "@babel/plugin-transform-regenerator": "^7.8.7",
     "@babel/plugin-transform-runtime": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "@mdi/font": "^5.2.45",
+    "@mdi/font": "^5.3.45",
     "@rails/actioncable": "^6.0.3",
     "@rails/activestorage": "^6.0.3",
     "@rails/ujs": "^6.0.3",
@@ -44,15 +44,14 @@
     "vue-template-compiler": "^2.6.11",
     "vue-wysiwyg": "^1.7.2",
     "vue2-dropzone": "^3.6.0",
-    "vuetify": "^2.2.28",
+    "vuetify": "^2.2.29",
     "vuex": "^3.4.0",
-    "webpack-cli": "^3.3.11",
-    "snyk": "^1.327.0"
+    "webpack-cli": "^3.3.11"
   },
   "version": "0.1.0",
   "devDependencies": {
     "deepmerge": "^4.2.2",
-    "eslint": "^7.0.0",
+    "eslint": "^7.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-import-resolver-node": "^0.3.3",
     "eslint-plugin-babel": "^5.3.0",
@@ -62,10 +61,5 @@
     "eslint-plugin-vue": "^6.2.2",
     "webpack": "^4.43.0",
     "webpack-dev-server": "^3.11.0"
-  },
-  "scripts": {
-    "snyk-protect": "snyk protect",
-    "prepare": "yarn run snyk-protect"
-  },
-  "snyk": true
+  }
 }
