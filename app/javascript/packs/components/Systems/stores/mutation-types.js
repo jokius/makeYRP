@@ -1,1 +1,0 @@
-export const UPDATE_SYSTEMS = 'UPDATE_SYSTEMS'
