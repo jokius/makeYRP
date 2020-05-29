@@ -115,6 +115,23 @@
                   @change="saveSheet"
                 />
               </div>
+              <div
+                v-for="raw in specialsStats"
+                :key="`${raw.index}-specialsStat`"
+                class="state"
+              >
+                <span class="state-label" @click="openModifier(specialsStat(raw))">
+                  {{ raw.state.name.toUpperCase() }}
+                </span>
+
+                <input
+                  class="state-input"
+                  type="number"
+                  :value="raw.state.current"
+                  @input="changeSpecialsStat(raw, $event.target.value)"
+                  @change="saveSheet"
+                />
+              </div>
             </div>
             <div class="attributes-col2">
               <div class="damage">
@@ -272,7 +289,6 @@
       ...mapState({
         sheets: state => state.game.sheets,
         tables: state => state.game.info.template.tables,
-        specialTabs: state => state.game.specialTabs,
       }),
 
       sheet: {
@@ -506,6 +522,20 @@
         },
       },
 
+      specials: {
+        get() {
+          return this.params.specials || []
+        }
+      },
+
+      specialsStats: {
+        get() {
+          return this.specials.map((item, index) => {
+            if (item && item.type === 'stats') return { index: index, state: item }
+          }).filter(Boolean)
+        }
+      },
+
       obj: {
         get() {
           return { open: this.modalOpen, dices: 1 }
@@ -541,7 +571,7 @@
         this.saveSheet()
       }
 
-      this.update_special_tabs()
+      this.updateSpecialTabs()
     },
 
     methods: {
@@ -627,7 +657,7 @@
                            })
 
 
-        this.update_special_tabs()
+        this.updateSpecialTabs()
       },
 
       changeRelationship() {
@@ -640,8 +670,13 @@
                            })
       },
 
-      update_special_tabs() {
-        this.$store.commit('game/updateSpecialTabs', this.params.specials || [])
+      updateSpecialTabs() {
+        this.$store.commit('game/updateSpecialTabs', this.specials)
+      },
+
+      specialsStat(raw) {
+        const name = raw.state.name.toUpperCase()
+        return { name, value: raw.state.current }
       },
 
       saveSheet() {
@@ -652,6 +687,10 @@
         })
       },
 
+      changeSpecialsStat(raw, value) {
+        this.input(`specials[${raw.index}].current`, parseInt(value, 10))
+      },
+
       input(target, value) {
         this.$store.commit('game/updateSheetParams',
                            {
@@ -660,6 +699,7 @@
                              value: value,
                            })
       },
+
 
       inputBox(target, number, max) {
         const current = get(this.params, target)
