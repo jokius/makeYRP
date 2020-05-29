@@ -1,0 +1,67 @@
+@import '~assets/css/mixins';
+
+@font-face {
+  font-family: "fontD4";
+  src: url('~assets/fonts/DPoly Four-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD6";
+  src: url('~assets/fonts/DPoly Six-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD8";
+  src: url('~assets/fonts/DPoly Eight-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD10";
+  src: url('~assets/fonts/DPoly Ten-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD12";
+  src: url('~assets/fonts/DPoly Twelve-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "fontD20";
+  src: url('~assets/fonts/DPoly Twenty-Sider.otf') format('truetype');
+  font-weight: bold;
+}
+
+.dice4 {
+  font-family: "fontD4";
+  @include dice;
+}
+
+.dice6 {
+  font-family: "fontD6";
+  @include dice;
+}
+
+.dice8 {
+  font-family: "fontD8";
+  @include dice;
+}
+
+.dice10 {
+  font-family: "fontD10";
+  @include dice;
+}
+
+.dice12 {
+  font-family: "fontD12";
+  @include dice;
+}
+
+.dice20 {
+  font-family: "fontD20";
+  @include dice;
+}
