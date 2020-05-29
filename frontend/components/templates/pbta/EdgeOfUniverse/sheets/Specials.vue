@@ -1,7 +1,7 @@
 <template>
   <div class="specials">
     <div
-      v-for="(special, index) in specials"
+      v-for="({ index, special }) in specials"
       :key="`special-${index}`"
       class="special"
     >
@@ -12,6 +12,7 @@
           :items="special.list"
           class="special-select"
           color="black"
+          :label="special.label"
           :multiple="special.multiple"
           :attach="special.multiple"
           :chips="special.multiple"
@@ -19,7 +20,10 @@
           @change="value => selectSet(index, value)"
         />
 
-        <div v-for="(description, selectIndex) in selectDescriptions(special.value)" :key="`description-${selectIndex}`">
+        <div
+          v-for="(description, selectIndex) in selectDescriptions(special.value)"
+          :key="`description-${selectIndex}`"
+        >
           <div v-html="description" />
         </div>
       </div>
@@ -92,9 +96,11 @@
 
       specials: {
         get() {
-          return this.params.specials.filter(item =>
-            this.types.includes(item.type) && (!item.key || this.keys.includes(item.key))
-          )
+          return this.params.specials.map((item, index) => {
+            if ( this.types.includes(item.type) && (!item.key || this.keys.includes(item.key))) {
+              return { index: index, special: item }
+            }
+          }).filter(Boolean)
         },
       },
 

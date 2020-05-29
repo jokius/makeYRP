@@ -183,6 +183,14 @@
         },
       },
 
+      specialsStats: {
+        get() {
+          return this.sheet.params.specials.map(item => {
+            if (item && item.type === 'stats') return item
+          }).filter(Boolean)
+        }
+      },
+
       obj: {
         get() {
           return { open: this.modalOpen, modifier: 0 }
@@ -283,6 +291,13 @@
 
       roll(modifier) {
         const state = { name: this.tables.stats[this.type], value: this.sheet.params.stats[this.type] }
+        console.log('state', state)
+        if (typeof state.value === 'undefined') {
+          const specialsStat = this.specialsStats.find(item => item.key === this.type)
+          state.name = specialsStat.name.toUpperCase()
+          state.value = specialsStat.current
+        }
+
         this.$cable.perform({
           channel: 'GameChannel',
           action: 'add',
