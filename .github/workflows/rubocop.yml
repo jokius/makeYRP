@@ -12,12 +12,7 @@ jobs:
         with:
           ruby-version: 2.7.x
 
-      - name: install PostgreSQL client
-        working-directory: ./backend
-        run: sudo apt-get install libpq-dev
-
       - name: Run rubocop
-        working-directory: ./backend
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3

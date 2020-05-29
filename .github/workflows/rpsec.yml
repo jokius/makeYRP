@@ -48,7 +48,6 @@ jobs:
           bin/rails db:setup
 
       - name: Run rpsec
-        working-directory: ./backend
         env:
           # use localhost for the host here because we have specified a container for the job.
           # If we were running the job on the VM this would be postgres
