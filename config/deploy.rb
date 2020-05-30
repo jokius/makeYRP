@@ -3,7 +3,7 @@
 set :rbenv_type, :user
 set :rbenv_ruby, '2.7.1'
 set :application, 'make_yrp'
-set :repo_url, 'git@github.com:jokius/makeYRP-backend.git'
+set :repo_url, 'git@github.com:jokius/makeYRP.git'
 
 ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
@@ -13,8 +13,6 @@ append :linked_dirs,
        'tmp/pids',
        'tmp/cache',
        'tmp/sockets',
-       'vendor/bundle',
-       '.bundle',
        'log',
        'storage'
 
