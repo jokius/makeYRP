@@ -215,8 +215,6 @@ GEM
     rack (2.2.2)
     rack-contrib (2.2.0)
       rack (~> 2.0)
-    rack-cors (1.1.1)
-      rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.1)
@@ -378,7 +376,6 @@ DEPENDENCIES
   mock_redis
   pg
   puma (~> 4.3, >= 4.3.5)
-  rack-cors
   rails (~> 6.0.3, >= 6.0.3.1)
   redis
   reek
