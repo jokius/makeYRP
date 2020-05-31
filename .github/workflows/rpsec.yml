@@ -28,7 +28,6 @@ jobs:
         run: sudo apt-get install libpq-dev
 
       - name: Setup database
-        working-directory: ./backend
         run: |
           cp config/database.yml.example config/database.yml
           cp config/storage.yml.example config/storage.yml
