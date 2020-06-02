@@ -10,9 +10,3 @@ set :default_env, {
                               'http://makeyrp.ru,'\
                               'https://makeyrp.ru'
 }
-
-set :puma_bind, %w[
-  tcp://0.0.0.0:9292
-  unix:///tmp/puma.sock
-  http://0.0.0.0:8080
-]
