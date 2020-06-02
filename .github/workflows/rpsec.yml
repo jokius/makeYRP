@@ -33,7 +33,6 @@ jobs:
           cp config/storage.yml.example config/storage.yml
 
       - name: Build and create DB
-        working-directory: ./backend
         env:
           # use localhost for the host here because we have specified a container for the job.
           # If we were running the job on the VM this would be postgres
