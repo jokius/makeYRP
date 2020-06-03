@@ -15,5 +15,6 @@ Devise.setup do |config|
   config.sign_out_via = :delete
   config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.jwt_secret
+    jwt.expiration_time = 1.year
   end
 end
