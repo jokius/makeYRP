@@ -20,8 +20,8 @@ RSpec.describe PageChannel, type: :channel do
   describe '#add' do
     it 'token' do
       sheet = create(:sheet)
-      data = { sheet_id: sheet.id, position_x: 1, position_y: 1, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, new: true, token: kind_of(Token))
+      data = { sheet_id: sheet.id, params: { x: 1, y: 1 }, 'type' => 'token' }
+      allow(channel).to receive(:broadcast_to).with(page, new: true, token: kind_of(TokenSerializer))
 
       subscription.add(data)
       expect(subscription).to have_stream_for(page)
@@ -50,15 +50,15 @@ RSpec.describe PageChannel, type: :channel do
   describe '#change' do
     it 'token' do
       token = create(:token)
-      data = { id: token.id, position_x: 2, position_y: 3, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, token: token.reload)
+      data = { id: token.id, params: { x: 2, y: 3 }, 'type' => 'token' }
+      allow(channel).to receive(:broadcast_to).with(page, update: true, token: kind_of(TokenSerializer))
 
       subscription.change(data)
       expect(subscription).to have_stream_for(page)
 
       token = token.reload
-      expect(token.position_x).to eq 2
-      expect(token.position_y).to eq 3
+      expect(token.params['x']).to eq 2
+      expect(token.params['y']).to eq 3
     end
 
     it 'graphic' do

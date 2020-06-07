@@ -2,12 +2,11 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["id", "sheet_id", "position_x", "position_y"],
+    "required": ["id", "sheet_id", "params"],
     "properties": {
       "id": { "type": "number" },
       "sheet_id": { "type": "number" },
-      "position_x": { "type": "number" },
-      "position_y": { "type": "number" }
+      "params": { "type": "object" }
     }
   }
 }
