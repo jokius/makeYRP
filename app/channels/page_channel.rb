@@ -8,7 +8,7 @@ class PageChannel < ApplicationCable::Channel
   def add(data)
     case data['type']
     when 'token'
-      responds(Tokens::Create, params.merge(data)) { |token| broadcast(new: true, token: token) }
+      responds(Tokens::Create, params.merge(data)) { |token| broadcast(new: true, token: TokenSerializer.new(token)) }
     when 'graphic'
       responds(Graphics::Create, params.merge(data)) { |graphic| broadcast(new: true, graphic: graphic) }
     else
@@ -19,7 +19,10 @@ class PageChannel < ApplicationCable::Channel
   def change(data)
     case data['type']
     when 'token'
-      responds(Tokens::Update, params.merge(data)) { |token| broadcast(update: true, token: token) }
+      responds(Tokens::Update, params.merge(data)) do |token|
+        broadcast(update: true, token: TokenSerializer.new(token))
+      end
+
     when 'graphic'
       responds(Graphics::Update, params.merge(data)) { |token| broadcast(update: true, graphic: token) }
     else

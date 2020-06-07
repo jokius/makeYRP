@@ -7,13 +7,16 @@
 #  id         :bigint           not null, primary key
 #  page_id    :bigint           not null
 #  sheet_id   :bigint           not null
-#  position_x :float            not null
-#  position_y :float            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  params     :jsonb            not null
 #
 
 class Token < ApplicationRecord
+  include Acl
+
   belongs_to :page
   belongs_to :sheet
+
+  delegate :owner, :owner_id, to: :sheet
 end

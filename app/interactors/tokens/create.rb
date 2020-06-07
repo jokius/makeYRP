@@ -6,13 +6,13 @@ class Tokens::Create
   TOKEN_CREATE_SCHEMA = Dry::Schema.Params do
     required(:page_id).filled(:integer)
     required(:sheet_id).filled(:integer)
-    required(:position_x).filled(:float)
-    required(:position_y).filled(:float)
+    required(:params).filled(:hash)
   end
 
   def call(input)
     params = yield validate(input)
-    create(params)
+    sheet = yield fetch_sheet(input)
+    create(sheet, params)
   end
 
   private
@@ -26,12 +26,30 @@ class Tokens::Create
     end
   end
 
-  def create(input)
+  def fetch_sheet(input)
+    sheet = Sheet.find_by(id: input[:sheet_id])
+    if sheet
+      Success(sheet)
+    else
+      Failure(message: 'sheet not found')
+    end
+  end
+
+  def create(sheet, input)
     token = Token.new(input)
+    token.read_all = sheet.read_all
+    token.write_all = sheet.write_all
     if token.save
+      create_access_levels(sheet, token)
       Success(token)
     else
       Failure(token.errors.to_h)
+    end
+  end
+
+  def create_access_levels(sheet, token)
+    sheet.access_levels.find_each do |al|
+      token.access_levels.create(user_id: al.user_id, write: al.write, read: al)
     end
   end
 end

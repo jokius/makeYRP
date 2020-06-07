@@ -18,5 +18,8 @@ FactoryBot.define do
   factory :access_level do
     trait(:write) { write { true } }
     trait(:read) { read { true } }
+    trait(:with_user) do
+      user { create(:user) }
+    end
   end
 end

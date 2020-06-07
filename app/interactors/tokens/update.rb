@@ -5,8 +5,7 @@ class Tokens::Update
 
   TOKEN_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
-    required(:position_x).filled(:float)
-    required(:position_y).filled(:float)
+    required(:params).filled(:hash)
   end
 
   def call(input)

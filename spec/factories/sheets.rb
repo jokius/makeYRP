@@ -22,5 +22,11 @@ FactoryBot.define do
     owner { create(:user) }
     sheet_type { 'character' }
     name { FFaker::Product.product_name }
+
+    trait :with_acl do
+      after(:create) do |sheet|
+        create(:access_level, :write, :read, :with_user, object: sheet)
+      end
+    end
   end
 end
