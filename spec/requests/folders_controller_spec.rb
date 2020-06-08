@@ -68,4 +68,13 @@ RSpec.describe FoldersController, type: :request do
 
     it { expect(response.status).to eq 204 }
   end
+
+  describe 'GET /folders/tree json' do
+    before { get '/api/folders/tree', **headers }
+
+    it 'correct json' do
+      expect(response.status).to eq 200
+      expect(response).to match_json_schema('folders/show')
+    end
+  end
 end

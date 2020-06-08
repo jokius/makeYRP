@@ -27,7 +27,9 @@ Rails.application.routes.draw do
     resources :systems, except: %i[delete update]
 
     resource :folder, only: %i[create show]
-    resources :folders, only: %i[update destroy] do
+    resources :folders, only: %i[show update destroy] do
+      get :tree, on: :collection
+
       scope module: :folders do
         resources :images
       end

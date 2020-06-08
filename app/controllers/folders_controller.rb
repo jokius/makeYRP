@@ -18,6 +18,10 @@ class FoldersController < ApplicationController
     head :no_content
   end
 
+  def tree
+    render json: folders.root, serializer: FolderTreeSerializer
+  end
+
   private
 
   def folders
