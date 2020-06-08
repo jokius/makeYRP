@@ -2,7 +2,8 @@
 
 class Pages::TokensController < ::ApplicationController
   def index
-    render json: page.tokens
+    tokens = authorized_scope(page.tokens, scope_options: { game: page.game })
+    render json: tokens
   end
 
   private

@@ -18,5 +18,5 @@ class Token < ApplicationRecord
   belongs_to :page
   belongs_to :sheet
 
-  delegate :owner, :owner_id, to: :sheet
+  delegate :owner, :owner_id, :game, to: :sheet
 end
