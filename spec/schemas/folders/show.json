@@ -1,6 +1,6 @@
 {
   "type": "object",
-  "required": ["id", "name", "parent_id", "children", "images"],
+  "required": ["id", "name", "children", "images"],
   "properties": {
     "id": { "type": "number" },
     "name": { "type": "string" },

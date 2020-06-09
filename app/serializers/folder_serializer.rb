@@ -19,7 +19,7 @@
 class FolderSerializer < ActiveModel::Serializer
   attributes :id, :name, :parent_id
   has_many :children, serializer: ShortFolderSerializer
-  has_many :images, serializer: ImageSerializer do
+  has_many :images, serializer: FolderImageSerializer do
     object.files.with_attached_image
   end
 end

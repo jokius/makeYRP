@@ -7,7 +7,7 @@ class Folders::ImagesController < ApplicationController
 
   def update
     responds(Folders::Images::Update, params) do |image|
-      render json: image, serializer: ImageSerializer, status: :created
+      render json: image, serializer: FolderImageSerializer, status: :created
     end
   end
 

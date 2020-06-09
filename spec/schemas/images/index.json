@@ -2,11 +2,10 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["id", "sheet_id", "page_id", "params"],
+    "required": ["id", "page_id", "params"],
     "properties": {
       "id": { "type": "number" },
       "page_id": { "type": "number" },
-      "sheet_id": { "type": "number" },
       "params": { "type": "object" }
     }
   }

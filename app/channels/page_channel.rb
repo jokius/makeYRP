@@ -9,6 +9,8 @@ class PageChannel < ApplicationCable::Channel
     case data['type']
     when 'token'
       responds(Tokens::Create, params.merge(data)) { |token| broadcast(new: true, token: TokenSerializer.new(token)) }
+    when 'image'
+      responds(Images::Create, params.merge(data)) { |image| broadcast(new: true, image: ImageSerializer.new(image)) }
     when 'graphic'
       responds(Graphics::Create, params.merge(data)) { |graphic| broadcast(new: true, graphic: graphic) }
     else
@@ -23,6 +25,11 @@ class PageChannel < ApplicationCable::Channel
         broadcast(update: true, token: TokenSerializer.new(token))
       end
 
+    when 'image'
+      responds(Images::Update, params.merge(data)) do |image|
+        broadcast(update: true, image: ImageSerializer.new(image))
+      end
+
     when 'graphic'
       responds(Graphics::Update, params.merge(data)) { |token| broadcast(update: true, graphic: token) }
     else
@@ -34,6 +41,8 @@ class PageChannel < ApplicationCable::Channel
     case data['type']
     when 'token'
       remove_token(token_by_data(data))
+    when 'image'
+      remove_image(image_by_data(data))
     when 'graphic'
       remove_graphic(graphic_by_data(data))
     else
@@ -57,6 +66,12 @@ class PageChannel < ApplicationCable::Channel
     broadcast(delete: true, token: { id: token.delete.id })
   end
 
+  def remove_image(image)
+    return broadcast(errors: 'image not found') if image.nil?
+
+    broadcast(delete: true, image: { id: image.delete.id })
+  end
+
   def remove_graphic(graphic)
     return broadcast(errors: 'graphic not found') if graphic.nil?
 
@@ -66,6 +81,10 @@ class PageChannel < ApplicationCable::Channel
 
   def token_by_data(data)
     Token.find_by(id: data['id'])
+  end
+
+  def image_by_data(data)
+    Image.find_by(id: data['id'])
   end
 
   def graphic_by_data(data)

@@ -10,6 +10,8 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  params     :jsonb            not null
+#  read_all   :boolean          default(FALSE), not null
+#  write_all  :boolean          default(FALSE), not null
 #
 
 class TokenSerializer < ActiveModel::Serializer

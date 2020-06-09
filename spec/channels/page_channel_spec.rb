@@ -30,6 +30,17 @@ RSpec.describe PageChannel, type: :channel do
       expect(token).not_to be_nil
     end
 
+    it 'image' do
+      data = { params: { x: 1, y: 1 }, 'type' => 'image' }
+      allow(channel).to receive(:broadcast_to).with(page, new: true, image: kind_of(ImageSerializer))
+
+      subscription.add(data)
+      expect(subscription).to have_stream_for(page)
+
+      image = Image.find_by(page: page)
+      expect(image).not_to be_nil
+    end
+
     it 'graphic' do
       data = { page_id: page.id, layer: 'test', params: { text: :params }, 'type' => 'graphic' }
       allow(channel).to receive(:broadcast_to).with(page, new: true, graphic: kind_of(Graphic))
@@ -61,6 +72,19 @@ RSpec.describe PageChannel, type: :channel do
       expect(token.params['y']).to eq 3
     end
 
+    it 'image' do
+      image = create(:image)
+      data = { id: image.id, params: { x: 2, y: 3 }, 'type' => 'image' }
+      allow(channel).to receive(:broadcast_to).with(page, update: true, image: kind_of(ImageSerializer))
+
+      subscription.change(data)
+      expect(subscription).to have_stream_for(page)
+
+      image = image.reload
+      expect(image.params['x']).to eq 2
+      expect(image.params['y']).to eq 3
+    end
+
     it 'graphic' do
       graphic = create(:graphic)
       new_text = 'new text'
@@ -90,6 +114,17 @@ RSpec.describe PageChannel, type: :channel do
       expect(subscription).to have_stream_for(page)
 
       expect(Token.find_by(id: data['id'])).to be_nil
+    end
+
+    it 'image' do
+      image = create(:image)
+      data = { 'id' => image.id, 'type' => 'image' }
+      allow(channel).to receive(:broadcast_to).with(page, delete: true, image: { id: image.id })
+
+      subscription.remove(data)
+      expect(subscription).to have_stream_for(page)
+
+      expect(Image.find_by(id: data['id'])).to be_nil
     end
 
     it 'graphic' do

@@ -17,8 +17,8 @@
 #
 
 class FolderTreeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :parent_id
-  has_many :images, serializer: ImageSerializer do
+  attributes :id, :name
+  has_many :images, serializer: FolderImageSerializer do
     object.files.with_attached_image
   end
 

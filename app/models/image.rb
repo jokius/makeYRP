@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: images
@@ -11,7 +9,6 @@
 #  updated_at :datetime         not null
 #
 
-
-class ImageSerializer < ActiveModel::Serializer
-  attributes :id, :page_id, :params
+class Image < ApplicationRecord
+  belongs_to :page
 end

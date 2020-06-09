@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_06_102108) do
+ActiveRecord::Schema.define(version: 2020_06_08_010423) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,6 +91,14 @@ ActiveRecord::Schema.define(version: 2020_06_06_102108) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["layer"], name: "index_graphics_on_layer"
     t.index ["page_id"], name: "index_graphics_on_page_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.bigint "page_id", null: false
+    t.jsonb "params", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_id"], name: "index_images_on_page_id"
   end
 
   create_table "menus", force: :cascade do |t|
