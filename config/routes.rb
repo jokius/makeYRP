@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       scope module: :games do
         resources :sheets, only: :index
         resources :messages, only: :index
+        resources :items, only: :index
       end
     end
 

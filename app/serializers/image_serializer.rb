@@ -11,7 +11,6 @@
 #  updated_at :datetime         not null
 #
 
-
 class ImageSerializer < ActiveModel::Serializer
   attributes :id, :page_id, :params
 end

@@ -22,6 +22,7 @@ class Game < ApplicationRecord
   has_many :pages
   has_many :menus
   has_many :messages
+  has_many :items
 
   def limit_messages(limit)
     messages.order(created_at: :desc).limit(limit).reverse

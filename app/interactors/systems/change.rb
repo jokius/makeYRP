@@ -22,6 +22,7 @@ class Systems::Change
   def transaction(input)
     hash = yield parse(input)
     system = yield save_system(hash)
+    update_items(system)
     update_games(system)
   end
 
@@ -33,6 +34,15 @@ class Systems::Change
     template = input[:template]
     version = template[:version]
     save(system(input, template, version))
+  end
+
+  def update_items(system)
+    system.games.find_each do |game|
+      result = Games::AddItems.new.call(game.id)
+      return result if result.failure?
+    end
+
+    Success(system)
   end
 
   def update_games(system)
@@ -50,18 +60,8 @@ class Systems::Change
     record
   end
 
-  def menu(raw:, system:)
-    record = menu_by_identifier(system: system, identifier: raw[:type])
-    record.assign_attributes(name: raw[name], params: raw)
-    record
-  end
-
   def system_by_identifier(identifier)
     System.find_or_initialize_by(key: identifier)
-  end
-
-  def menu_by_identifier(system:, identifier:)
-    system.menus.find_or_initialize_by(identifier: identifier)
   end
 
   def save(system)

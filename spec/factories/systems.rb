@@ -45,5 +45,24 @@ FactoryBot.define do
         }
       end
     end
+
+    trait :with_items do
+      template do
+        {
+          template: {
+            sheets: {
+              test_actor: { test: 'test_attr' }
+            },
+            items: [
+              {
+                type: 'base',
+                name: 'test_item',
+                description: 'test_description'
+              }
+            ]
+          }
+        }
+      end
+    end
   end
 end

@@ -5,7 +5,6 @@ require:
 
 AllCops:
   Exclude:
-  - node_modules/**/*
   - db/schema.rb
   - bin/*
   - locale/*
@@ -19,6 +18,7 @@ Metrics/BlockLength:
   Max: 30
   Exclude:
   - spec/**/*
+  - config/routes.rb
 
 Metrics/ClassLength:
   Max: 120
@@ -97,4 +97,13 @@ Style/SlicingWithRange:
   Enabled: true
 
 Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
   Enabled: true
