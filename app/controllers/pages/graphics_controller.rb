@@ -2,7 +2,8 @@
 
 class Pages::GraphicsController < ::ApplicationController
   def index
-    render json: page.graphics
+    tokens = page.graphics
+    render json: tokens
   end
 
   private

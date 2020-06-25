@@ -42,13 +42,13 @@ RSpec.describe PageChannel, type: :channel do
     end
 
     it 'graphic' do
-      data = { page_id: page.id, layer: 'test', params: { text: :params }, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to).with(page, new: true, graphic: kind_of(Graphic))
+      data = { page_id: page.id, kind: 'line', params: { text: :params }, 'type' => 'graphic' }
+      allow(channel).to receive(:broadcast_to).with(page, new: true, graphic: kind_of(GraphicSerializer))
 
       subscription.add(data)
       expect(subscription).to have_stream_for(page)
 
-      graphic = Graphic.find_by(page: page, layer: 'test')
+      graphic = Graphic.find_by(page: page)
       expect(graphic).not_to be_nil
     end
 
@@ -88,8 +88,8 @@ RSpec.describe PageChannel, type: :channel do
     it 'graphic' do
       graphic = create(:graphic)
       new_text = 'new text'
-      data = { id: graphic.id, layer: 'test', params: { text: new_text }, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, graphic: graphic.reload)
+      data = { id: graphic.id, params: { text: new_text }, 'type' => 'graphic' }
+      allow(channel).to receive(:broadcast_to).with(page, update: true, graphic: kind_of(GraphicSerializer))
 
       subscription.change(data)
       expect(subscription).to have_stream_for(page)
@@ -130,8 +130,7 @@ RSpec.describe PageChannel, type: :channel do
     it 'graphic' do
       graphic = create(:graphic)
       data = { 'id' => graphic.id, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to)
-        .with(page, delete: true, graphic: { id: graphic.id, layer: graphic.layer })
+      allow(channel).to receive(:broadcast_to).with(page, delete: true, graphic: { id: graphic.id })
 
       subscription.remove(data)
       expect(subscription).to have_stream_for(page)

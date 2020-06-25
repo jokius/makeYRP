@@ -10,7 +10,6 @@ RSpec.describe Graphics::Update, type: :interactor do
   let(:input) do
     {
       id: graphic.id,
-      layer: 'test',
       params: { 'text' => new_text }
     }
   end

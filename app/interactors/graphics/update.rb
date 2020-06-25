@@ -5,7 +5,6 @@ class Graphics::Update
 
   GRAPHIC_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
-    required(:layer).filled(:string)
     required(:params).filled(:hash)
   end
 

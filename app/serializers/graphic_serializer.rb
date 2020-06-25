@@ -10,8 +10,11 @@
 #  params     :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  kind       :string
+#  read_all   :boolean          default(FALSE), not null
+#  write_all  :boolean          default(FALSE), not null
 #
 
 class GraphicSerializer < ActiveModel::Serializer
-  attributes :id, :layer, :params
+  attributes :id, :kind, :params
 end

@@ -11,7 +11,7 @@ RSpec.describe Graphics::Create, type: :interactor do
     let(:input) do
       {
         page_id: page.id,
-        layer: 'test',
+        kind: 'line',
         params: { 'text' => 'params' }
       }
     end
@@ -20,7 +20,7 @@ RSpec.describe Graphics::Create, type: :interactor do
       expect(interactor).to be_success
       graphic = interactor.success
       expect(graphic.page_id).to eq input[:page_id]
-      expect(graphic.layer).to eq input[:layer]
+      expect(graphic.kind).to eq input[:kind]
       expect(graphic.params).to eq input[:params]
     end
   end

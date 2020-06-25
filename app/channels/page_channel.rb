@@ -12,7 +12,9 @@ class PageChannel < ApplicationCable::Channel
     when 'image'
       responds(Images::Create, params.merge(data)) { |image| broadcast(new: true, image: ImageSerializer.new(image)) }
     when 'graphic'
-      responds(Graphics::Create, params.merge(data)) { |graphic| broadcast(new: true, graphic: graphic) }
+      responds(Graphics::Create, params.merge(data)) do |graphic|
+        broadcast(new: true, graphic: GraphicSerializer.new(graphic))
+      end
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -31,7 +33,9 @@ class PageChannel < ApplicationCable::Channel
       end
 
     when 'graphic'
-      responds(Graphics::Update, params.merge(data)) { |token| broadcast(update: true, graphic: token) }
+      responds(Graphics::Update, params.merge(data)) do |graphic|
+        broadcast(update: true, graphic: GraphicSerializer.new(graphic))
+      end
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -75,8 +79,7 @@ class PageChannel < ApplicationCable::Channel
   def remove_graphic(graphic)
     return broadcast(errors: 'graphic not found') if graphic.nil?
 
-    graphic.delete
-    broadcast(delete: true, graphic: { id: graphic.id, layer: graphic.layer })
+    broadcast(delete: true, graphic: { id: graphic.delete.id })
   end
 
   def token_by_data(data)

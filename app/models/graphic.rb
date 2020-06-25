@@ -10,6 +10,9 @@
 #  params     :jsonb
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  kind       :string
+#  read_all   :boolean          default(FALSE), not null
+#  write_all  :boolean          default(FALSE), not null
 #
 
 class Graphic < ApplicationRecord
