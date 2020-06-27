@@ -7,10 +7,11 @@
     "name": { "type": "string" },
     "master": {
       "type": "object",
-      "required": ["id", "nickname", "avatar"],
+      "required": ["id", "nickname", "avatar", "admin", "sheet"],
       "properties": {
         "id": { "type": "number" },
         "nickname": { "type": "string" },
+        "sheet": { "type": "object" },
         "avatar": {
           "type": "object",
           "required": ["url", "lazy", "thumb"],
@@ -27,10 +28,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "nickname", "avatar"],
+        "required": ["id", "nickname", "avatar", "admin", "sheet"],
         "properties": {
           "id": { "type": "number" },
           "nickname": { "type": "string" },
+          "sheet": { "type": "object" },
           "avatar": {
             "type": "object",
             "required": ["url", "lazy", "thumb"],

@@ -10,7 +10,7 @@ AllCops:
   - locale/*
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 22
   Exclude:
   - db/migrate/*
 
@@ -21,7 +21,7 @@ Metrics/BlockLength:
   - config/routes.rb
 
 Metrics/ClassLength:
-  Max: 120
+  Max: 137
 
 Layout/LineLength:
   Max: 120
@@ -106,4 +106,7 @@ Style/RedundantRegexpCharacterClass:
   Enabled: true
 
 Style/RedundantRegexpEscape:
+  Enabled: true
+
+Style/RedundantFetchBlock:
   Enabled: true

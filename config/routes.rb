@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       post :join, on: :member
 
       scope module: :games do
+        resources :users, only: :index
         resources :sheets, only: :index
         resources :messages, only: :index
         resources :items, only: :index

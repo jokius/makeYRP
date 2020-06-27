@@ -37,10 +37,10 @@ RSpec.describe Games::Join, type: :interactor do
     context 'when master' do
       before { game.update(master: user) }
 
-      it 'no change' do
+      it 'new user' do
         expect(interactor).to be_success
         game = interactor.success
-        expect(game.users.count).to eq 0
+        expect(game.users.last).to eq user
       end
     end
   end

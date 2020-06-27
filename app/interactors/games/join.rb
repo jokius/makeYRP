@@ -28,7 +28,7 @@ class Games::Join
   end
 
   def join(game:, user_id:)
-    return if game.master_id == user_id || game.users.exists?(user_id)
+    return if game.users.exists?(user_id)
 
     game.users << User.find(user_id)
   end

@@ -137,6 +137,24 @@ RSpec.describe GameChannel, type: :channel do
       end
     end
 
+    describe 'user' do
+      let(:sheet) { { 'name' => 'test' } }
+      let(:params) { { 'sheet' => sheet, 'type' => 'user' } }
+      let!(:users_in_game) { create(:users_in_game, user: user, game: game) }
+
+      it 'broadcasted to game' do
+        expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:user]).to match_json_schema('games/users/show')
+          expect(data[:update]).to be true
+        end)
+      end
+
+      it 'new params save' do
+        subscription.change(params)
+        expect(users_in_game.reload.sheet).to match(sheet)
+      end
+    end
+
     it 'errors' do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.change({})
@@ -212,5 +230,16 @@ RSpec.describe GameChannel, type: :channel do
       allow(channel).to receive(:broadcast_to).with(game, errors: anything)
       subscription.change({})
     end
+  end
+
+  describe 'call user_connected' do
+    let(:instance) { instance_double(described_class) }
+
+    before do
+      allow(described_class).to receive(:new).and_return(instance)
+      allow(instance).to receive(:user_connected)
+    end
+
+    it { subscription }
   end
 end

@@ -2,7 +2,12 @@
 
 class GameChannel < ApplicationCable::Channel
   def subscribed
+    user_connected
     stream_for game
+  end
+
+  def unsubscribed
+    user_disconnected
   end
 
   def add(data)
@@ -28,6 +33,11 @@ class GameChannel < ApplicationCable::Channel
       responds(Pages::Update, params.merge(data)) { |page| broadcast(update: true, page: page) }
     when 'menu_item'
       responds(Menus::Items::Update, params.merge(data)) { |menu_item| broadcast(update: true, menu_item: menu_item) }
+    when 'user'
+      data = data.merge(user_id: current_user.id)
+      responds(Users::ChangeSheet, params.merge(data)) do |user|
+        broadcast(update: true, user: ShortUserSerializer.new(user, game: game))
+      end
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -127,6 +137,16 @@ class GameChannel < ApplicationCable::Channel
     responds(Menus::Items::Create, params.merge(data)) do |item|
       broadcast(new: true, menu_item: Menus::ItemSerializer.new(item))
     end
+  end
+
+  def user_connected
+    REDIS.lpush("game_#{game.id}", current_user.id.to_s)
+    broadcast(new: true, user: ShortUserSerializer.new(current_user, game: game))
+  end
+
+  def user_disconnected
+    REDIS.lrem("game_#{game.id}", 1, current_user.id.to_s)
+    broadcast(delete: true, user: current_user.id)
   end
 
   def game
