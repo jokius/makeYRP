@@ -145,7 +145,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def user_disconnected
-    REDIS.lrem("game_#{game.id}", 1, current_user.id.to_s)
+    change_list
     broadcast(delete: true, user: current_user.id)
   end
 
@@ -167,5 +167,11 @@ class GameChannel < ApplicationCable::Channel
 
   def menu_item_by_data(data)
     Menus::Item.find_by(id: data['id'])
+  end
+
+  def change_list
+    key = "game_#{game.id}"
+    REDIS.lrem(key, 1, current_user.id.to_s)
+    REDIS.del(key) if REDIS.llen(key).zero?
   end
 end
