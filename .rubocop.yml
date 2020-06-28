@@ -21,7 +21,7 @@ Metrics/BlockLength:
   - config/routes.rb
 
 Metrics/ClassLength:
-  Max: 137
+  Enabled: false
 
 Layout/LineLength:
   Max: 120
