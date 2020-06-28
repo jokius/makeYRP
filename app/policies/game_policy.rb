@@ -15,4 +15,8 @@ class GamePolicy < ApplicationPolicy
   relation_scope :player do |scope, open|
     scope.joins(:users).where(open.merge(users: { id: user.id }))
   end
+
+  def switch_status?
+    master?(record)
+  end
 end

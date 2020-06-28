@@ -24,9 +24,20 @@ class GamesController < ApplicationController
     end
   end
 
+  def switch_status
+    authorize! game
+
+    game.update(open: !game.open)
+    head :no_content
+  end
+
   private
 
   def games_params
     params.permit(:open).to_h.symbolize_keys
+  end
+
+  def game
+    @game ||= Game.find(params[:id])
   end
 end

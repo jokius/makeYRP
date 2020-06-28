@@ -91,4 +91,15 @@ RSpec.describe GamesController, type: :request do
       expect(response).to match_json_schema('games/show')
     end
   end
+
+  describe 'PUT /games/:id/switch_status' do
+    let(:game) { create(:game, master: user, open: true) }
+
+    before { put "/api/games/#{game.id}/switch_status", **headers }
+
+    it 'correct json' do
+      expect(response.status).to eq 204
+      expect(game.reload.open).to be false
+    end
+  end
 end

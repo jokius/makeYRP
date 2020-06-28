@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
 
     resources :games, except: %i[update delete] do
-      post :join, on: :member
+      member do
+        post :join
+        put :switch_status
+      end
 
       scope module: :games do
         resources :users, only: :index
