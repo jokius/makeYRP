@@ -19,4 +19,8 @@ class GamePolicy < ApplicationPolicy
   def switch_status?
     master?(record)
   end
+
+  def update?
+    master?(record)
+  end
 end

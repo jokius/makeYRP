@@ -24,6 +24,15 @@ class GamesController < ApplicationController
     end
   end
 
+  def update
+    authorize! game
+
+    head :no_content
+    responds(Games::Update, params) do
+      head :no_content
+    end
+  end
+
   def switch_status
     authorize! game
 
