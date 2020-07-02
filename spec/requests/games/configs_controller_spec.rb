@@ -22,6 +22,7 @@ RSpec.describe Games::ConfigsController, type: :request do
 
   describe 'PUT /games/:game_id/config' do
     let(:params) { { name: 'new name', custom_template: {} } }
+
     before do
       put "/api/games/#{game.id}/config", params: params
     end

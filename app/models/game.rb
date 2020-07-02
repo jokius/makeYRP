@@ -33,7 +33,7 @@ class Game < ApplicationRecord
   end
 
   def template
-    hash  = {}
+    hash = {}
     custom_system.template.each do |key, value|
       hash = deep_or_merge(key, value, system.template['template'])
     end
@@ -48,9 +48,9 @@ class Game < ApplicationRecord
   private
 
   def deep_or_merge(key, value, hash)
-    if value.kind_of? Hash
+    if value.is_a? Hash
       value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key]) }
-    elsif value.kind_of? Array
+    elsif value.is_a? Array
       hash[key] = value.concat(hash[key]).uniq
     else
       hash[key] = value

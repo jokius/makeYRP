@@ -10,7 +10,7 @@ RSpec.describe Games::Update, type: :interactor do
   describe 'update game' do
     context 'with name' do
       let(:input) do
-        { game_id: game.id, name: 'super name', custom_template: { 'item' => 'new item'} }
+        { game_id: game.id, name: 'super name', custom_template: { 'item' => 'new item' } }
       end
 
       it { expect(interactor).to be_success }

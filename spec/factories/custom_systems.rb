@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: custom_systems
@@ -11,6 +13,5 @@
 
 FactoryBot.define do
   factory :custom_system do
-    
   end
 end
