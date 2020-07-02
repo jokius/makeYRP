@@ -4,8 +4,9 @@ class Games::Update
   include Dry::Monads[:result, :do]
 
   GAMES_UPDATE_SCHEMA = Dry::Schema.Params do
-    required(:id).filled(:integer)
+    required(:game_id).filled(:integer)
     required(:name).filled(:string)
+    optional(:custom_template).maybe(:any)
   end
 
   def call(input)
@@ -26,7 +27,7 @@ class Games::Update
   end
 
   def fetch_game(input)
-    game = Game.find_by(id: input.delete(:id))
+    game = Game.find_by(id: input.delete(:game_id))
     if game
       Success(game: game, input: input)
     else
@@ -35,7 +36,10 @@ class Games::Update
   end
 
   def update(game:, input:)
-    if game.update(input)
+    game.name = input[:name]
+    game.custom_system_attributes = { template: input[:custom_template] || {} }
+
+    if game.save
       Success(game)
     else
       Failure(message: game.errors.to_h)

@@ -29,7 +29,6 @@ class Games::Create
     params = yield validate(input)
     game = yield create(params)
     yield add_menu(game)
-    yield add_items(game)
     yield add_page(game)
     Success(game)
   end
@@ -54,10 +53,6 @@ class Games::Create
 
   def add_menu(game)
     Games::AddMenus.new.call(game.id)
-  end
-
-  def add_items(game)
-    Games::AddItems.new.call(game.id)
   end
 
   def add_page(game)

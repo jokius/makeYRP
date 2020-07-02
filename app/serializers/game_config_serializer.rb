@@ -13,18 +13,14 @@
 #  updated_at :datetime         not null
 #
 
-class GameSerializer < ActiveModel::Serializer
+class GameConfigSerializer < ActiveModel::Serializer
   attributes :id, :name, :template
 
   attribute :system do
     object.system.key.split('-')[0]
   end
 
-  belongs_to :master, serializer: ShortUserSerializer
-  has_many :users, serializer: ShortUserSerializer do
-    object.users.with_attached_avatar
+  attribute :custom_template do
+    object.custom_system.template
   end
-
-  has_many :menus
-  has_many :pages
 end

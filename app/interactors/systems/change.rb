@@ -22,7 +22,6 @@ class Systems::Change
   def transaction(input)
     hash = yield parse(input)
     system = yield save_system(hash)
-    update_items(system)
     update_games(system)
   end
 
@@ -34,15 +33,6 @@ class Systems::Change
     template = input[:template]
     version = template[:version]
     save(system(input, template, version))
-  end
-
-  def update_items(system)
-    system.games.find_each do |game|
-      result = Games::AddItems.new.call(game.id)
-      return result if result.failure?
-    end
-
-    Success(system)
   end
 
   def update_games(system)

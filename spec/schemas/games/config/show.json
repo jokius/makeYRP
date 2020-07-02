@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": ["id", "system", "name", "template", "custom_template"],
+  "properties": {
+    "id": { "type": "number" },
+    "system": { "type": "string" },
+    "name": { "type": "string" },
+    "template": {
+      "type": "object"
+    },
+    "custom_template": {
+      "type": "object"
+    }
+  }
+}

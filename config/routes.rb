@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   scope :api, defaults: { format: :json } do
     devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
 
-    resources :games, except: %i[delete] do
+    resources :games, except: %i[update delete] do
       member do
         post :join
         put :switch_status
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         resources :users, only: :index
         resources :sheets, only: :index
         resources :messages, only: :index
-        resources :items, only: :index
+        resource :config, only: %i[show update]
       end
     end
 

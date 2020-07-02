@@ -20,6 +20,10 @@ class GamePolicy < ApplicationPolicy
     master?(record)
   end
 
+  def config_show?
+    master?(record)
+  end
+
   def update?
     master?(record)
   end
