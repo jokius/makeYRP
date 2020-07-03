@@ -33,9 +33,9 @@ class Game < ApplicationRecord
   end
 
   def template
-    hash = {}
+    hash = system.template['template']
     custom_system.template.each do |key, value|
-      hash = deep_or_merge(key, value, system.template['template'])
+      hash = deep_or_merge(key, value, hash)
     end
 
     hash
