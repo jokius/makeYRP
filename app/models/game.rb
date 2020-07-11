@@ -51,7 +51,7 @@ class Game < ApplicationRecord
     if value.is_a? Hash
       value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key]) }
     elsif value.is_a? Array
-      hash[key] = value.concat(hash[key]).uniq
+      hash[key] = value.concat(Array.wrap(hash[key])).uniq
     else
       hash[key] = value
     end
