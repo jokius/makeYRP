@@ -24,7 +24,7 @@ class PageChannel < ApplicationCable::Channel
     case data['type']
     when 'token'
       responds(Tokens::Update, params.merge(data)) do |token|
-        broadcast(update: true, token: TokenSerializer.new(token))
+        broadcast(update: true, token: TokenSerializer.new(token), by: current_user.id)
       end
 
     when 'image'
