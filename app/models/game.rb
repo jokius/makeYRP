@@ -48,6 +48,8 @@ class Game < ApplicationRecord
   private
 
   def deep_or_merge(key, value, hash)
+    return if key.nil? || hash.nil?
+
     if value.is_a? Hash
       value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key]) }
     elsif value.is_a? Array
