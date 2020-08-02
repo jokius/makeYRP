@@ -50,9 +50,10 @@ class Game < ApplicationRecord
   def deep_or_merge(key, value, hash)
     return if key.nil? || hash.nil?
 
-    if value.is_a? Hash
+    case value
+    when Hash
       value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key]) }
-    elsif value.is_a? Array
+    when Array
       hash[key] = value.concat(Array.wrap(hash[key])).uniq
     else
       hash[key] = value
