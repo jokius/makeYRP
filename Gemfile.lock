@@ -53,6 +53,9 @@ GEM
       activemodel (>= 4.1, < 6.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
+    active_storage-send_zip (0.3.4)
+      rails (> 5.2)
+      rubyzip (< 3.0)
     activejob (6.0.3.2)
       activesupport (= 6.0.3.2)
       globalid (>= 0.3.6)
@@ -296,6 +299,7 @@ GEM
       ffi (~> 1.9)
     ruby_parser (3.14.2)
       sexp_processor (~> 4.9)
+    rubyzip (2.3.0)
     russian (0.6.0)
       i18n (>= 0.5.0)
     sassc (2.4.0)
@@ -353,6 +357,7 @@ DEPENDENCIES
   action-cable-testing (>= 0.6.1)
   action_policy
   active_model_serializers (~> 0.10.10)
+  active_storage-send_zip
   annotate!
   awesome_nested_set (>= 3.2.0)
   bootsnap (>= 1.4.2)
@@ -386,6 +391,7 @@ DEPENDENCIES
   rubocop
   rubocop-performance
   rubocop-rspec
+  rubyzip
   russian
   sassc-rails (>= 2.1.2)
   spring

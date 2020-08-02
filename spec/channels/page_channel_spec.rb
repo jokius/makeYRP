@@ -62,7 +62,7 @@ RSpec.describe PageChannel, type: :channel do
     it 'token' do
       token = create(:token)
       data = { id: token.id, params: { x: 2, y: 3 }, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, token: kind_of(TokenSerializer))
+      allow(channel).to receive(:broadcast_to).with(page, update: true, token: kind_of(TokenSerializer), by: user.id)
 
       subscription.change(data)
       expect(subscription).to have_stream_for(page)

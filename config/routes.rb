@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   scope :api, defaults: { format: :json } do
     devise_for :users, controllers: { registrations: 'registrations', sessions: 'sessions' }
 
+    resources :medias, only: %i[create show] do
+      post :download, on: :collection
+    end
+
     resources :games, except: %i[update delete] do
       member do
         post :join

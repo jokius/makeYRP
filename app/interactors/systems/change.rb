@@ -20,8 +20,10 @@ class Systems::Change
   private
 
   def transaction(input)
+    media_file = input.delete(:media_file)
     hash = yield parse(input)
     system = yield save_system(hash)
+    upload_media(system, media_file)
     update_games(system)
   end
 
@@ -42,6 +44,10 @@ class Systems::Change
     end
 
     Success(system)
+  end
+
+  def upload_media(system, media_file)
+    Systems::LoadMedias.new.call(id: system.id, media_file: media_file)
   end
 
   def system(input, template, version)
