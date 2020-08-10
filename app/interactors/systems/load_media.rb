@@ -11,7 +11,9 @@ class Systems::LoadMedia
   end
 
   def call(input)
-    load(yield validate(input))
+    params = yield validate(input)
+    system = yield fetch_system(params)
+    load(system, params)
   end
 
   private
@@ -25,10 +27,19 @@ class Systems::LoadMedia
     end
   end
 
-  def load(input)
-    key = "system_#{input[:id]}_#{input[:name]}"
+  def fetch_system(params)
+    system = System.find_by(id: params[:id])
+    if system
+      Success(system)
+    else
+      Failure(message: 'system not found')
+    end
+  end
+
+  def load(system, params)
+    key = "#{system.key}_#{params[:name]}"
     media = Medium.find_or_initialize_by(key: key)
-    media.image.attach(io: StringIO.new(input[:io_file]), filename: input[:file_name])
+    media.image.attach(io: StringIO.new(params[:io_file]), filename: params[:file_name])
     if media.save
       Success(key: key)
     else

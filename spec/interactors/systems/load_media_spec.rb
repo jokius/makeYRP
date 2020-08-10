@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe Systems::LoadMedia, type: :interactor do
   subject(:interactor) { described_class.new.call(input) }
 
-  let(:id) { create(:system).id }
+  let(:system) { create(:system) }
   let(:name) { 'test' }
   let(:file_name) { 'test.png' }
   let(:file) { file_fixture('test.png') }
   let(:input) do
     {
-      id: id,
+      id: system.id,
       name: name,
       file_name: file_name,
       io_file: file.read
@@ -21,18 +21,18 @@ RSpec.describe Systems::LoadMedia, type: :interactor do
   it 'create new media' do
     expect(interactor).to be_success
     result = interactor.success
-    expect(result[:key]).to eq "system_#{id}_#{name}"
+    expect(result[:key]).to eq "#{system.key}_#{name}"
   end
 
   describe 'update media' do
     let!(:media) do
-      create(:medium, key: "system_#{id}_#{name}")
+      create(:medium, key: "#{system.key}_#{name}")
     end
 
     it do
       expect(interactor).to be_success
       result = interactor.success
-      expect(result[:key]).to eq "system_#{id}_#{name}"
+      expect(result[:key]).to eq "#{system.key}_#{name}"
       expect(media.image).to be_attached
     end
   end
