@@ -28,8 +28,9 @@ class Messages::Create
 
   def parse_body(input)
     body = input[:body]
-    dices = body['dices']
-    body['dices'] = RollDices.new.call(dices, input[:game_id]) if dices
+    dices = body['dices_string'] || body['dices']
+
+    body['dices'] = RollDices.new.call!(dices, input[:game_id]) if dices
     input
   end
 
