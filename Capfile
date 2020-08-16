@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'dotenv'
+
 # Load DSL and set up stages
 require 'capistrano/setup'
 

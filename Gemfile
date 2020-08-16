@@ -49,6 +49,7 @@ gem 'rubyzip'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails', '>= 5.1.1'
+  gem 'dotenv-rails'
 end
 
 group :development do
