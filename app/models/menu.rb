@@ -14,5 +14,5 @@
 
 class Menu < ApplicationRecord
   belongs_to :game
-  has_many :items, class_name: 'Menus::Item'
+  has_many :items, class_name: 'Menus::Item', dependent: :destroy
 end

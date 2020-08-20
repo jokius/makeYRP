@@ -14,7 +14,7 @@
 
 class Page < ApplicationRecord
   belongs_to :game
-  has_many :tokens
-  has_many :images
-  has_many :graphics
+  has_many :tokens, dependent: :destroy
+  has_many :images, dependent: :destroy
+  has_many :graphics, dependent: :destroy
 end

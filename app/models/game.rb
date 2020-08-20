@@ -20,9 +20,9 @@ class Game < ApplicationRecord
 
   has_many :users_in_games, dependent: :destroy
   has_many :users, through: :users_in_games
-  has_many :pages
-  has_many :menus
-  has_many :messages
+  has_many :pages, dependent: :destroy
+  has_many :menus, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   accepts_nested_attributes_for :custom_system
 
