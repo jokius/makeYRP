@@ -53,7 +53,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotate', git: 'https://github.com/ctran/annotate_models.git'
+  gem 'annotate'
   gem 'brakeman'
   gem 'capistrano', '~> 3.12', require: false
   gem 'capistrano3-puma', '>= 4.0.0', require: false
