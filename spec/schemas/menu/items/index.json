@@ -1,0 +1,40 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "params", "menu_id", "type", "acl"],
+    "properties": {
+      "id": { "type": "number" },
+      "menu_id": { "type": "number" },
+      "type": { "type": "string" },
+      "params": { "type": "object" },
+      "acl": {
+        "type": "object",
+        "required": ["write_all", "read_all", "owner_id", "read_ids", "write_ids"],
+        "properties": {
+          "write_all": {
+            "type": "boolean"
+          },
+          "read_all": {
+            "type": "boolean"
+          },
+          "owner_id": {
+            "type": "number"
+          },
+          "read_ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "write_ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}

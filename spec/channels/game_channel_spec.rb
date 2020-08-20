@@ -55,7 +55,7 @@ RSpec.describe GameChannel, type: :channel do
       menu = create(:menu)
       params = { game_id: game.id, menu_id: menu.id, params: { test: 'new' }, 'type' => 'menu_item' }
       expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
-        expect(data[:menu_item]).to match_json_schema('games/menus/items/show')
+        expect(data[:menu_item]).to match_json_schema('menu/items/show')
         expect(data[:new]).to be true
       end)
 
@@ -119,13 +119,13 @@ RSpec.describe GameChannel, type: :channel do
     end
 
     describe 'menu_item' do
-      let(:menu_item) { create(:menus_item) }
+      let(:menu_item) { create(:menus_item, owner: user) }
       let(:menu_item_params) { { 'new_params' => 'updated' } }
-      let(:params) { { id: menu_item.id, params: menu_item_params, 'type' => 'menu_item' } }
+      let(:params) { { 'id' => menu_item.id, 'params' => menu_item_params, 'type' => 'menu_item' } }
 
       it 'broadcasted to game' do
         expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
-          expect(data[:menu_item]).to match_json_schema('games/menus/items/show')
+          expect(data[:menu_item]).to match_json_schema('menu/items/show')
           expect(data[:update]).to be true
         end)
       end

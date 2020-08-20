@@ -32,7 +32,7 @@ class GameChannel < ApplicationCable::Channel
     when 'page'
       responds(Pages::Update, params.merge(data)) { |page| broadcast(update: true, page: page) }
     when 'menu_item'
-      responds(Menus::Items::Update, params.merge(data)) { |menu_item| broadcast(update: true, menu_item: menu_item) }
+      change_menu_item(data)
     when 'user'
       data = data.merge(user_id: current_user.id)
       responds(Users::ChangeSheet, params.merge(data)) do |user|
@@ -66,6 +66,11 @@ class GameChannel < ApplicationCable::Channel
       return change_access('change_access') unless allowed_to?(:change_access?, sheet)
 
       access_sheet(data)
+    when 'menu_item'
+      menu_item = menu_item_by_data(data)
+      return change_access('change_access') unless allowed_to?(:change_access?, menu_item)
+
+      access_menu_item(data)
     else
       broadcast(errors: "incorrect type found #{data['type']}")
     end
@@ -105,8 +110,14 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def access_sheet(data)
-    responds(Sheets::Access, params.merge(data)) do |sheet|
+    responds(Acl::Access, params.merge(data)) do |sheet|
       broadcast(access: true, sheet: sheet_serializer(sheet))
+    end
+  end
+
+  def access_menu_item(data)
+    responds(Acl::Access, params.merge(data)) do |menu_item|
+      broadcast(access: true, menu_item: menu_item_serializer(menu_item))
     end
   end
 
@@ -120,6 +131,20 @@ class GameChannel < ApplicationCable::Channel
     broadcast(delete: true, page: page.destroy.id)
   end
 
+  def add_menu_item(data)
+    responds(Menus::Items::Create, params.merge(data).merge(owner_id: current_user.id)) do |item|
+      broadcast(new: true, menu_item: Menus::ItemSerializer.new(item))
+    end
+  end
+
+  def change_menu_item(data)
+    return change_access('write') unless allowed_to?(:write?, menu_item_by_data(data))
+
+    responds(Menus::Items::Update, params.merge(data)) do |menu_item|
+      broadcast(update: true, menu_item: menu_item_serializer(menu_item))
+    end
+  end
+
   def remove_menu_item(menu_item)
     return broadcast(errors: 'menu item not found') if menu_item.nil?
 
@@ -130,12 +155,6 @@ class GameChannel < ApplicationCable::Channel
   def add_message(data)
     responds(Messages::Create, params.merge(data).merge(user_id: current_user.id)) do |message|
       broadcast(new: true, message: MessageSerializer.new(message))
-    end
-  end
-
-  def add_menu_item(data)
-    responds(Menus::Items::Create, params.merge(data)) do |item|
-      broadcast(new: true, menu_item: Menus::ItemSerializer.new(item))
     end
   end
 
@@ -155,6 +174,10 @@ class GameChannel < ApplicationCable::Channel
 
   def sheet_serializer(sheet)
     SheetSerializer.new(sheet)
+  end
+
+  def menu_item_serializer(menu_item)
+    Menus::ItemSerializer.new(menu_item)
   end
 
   def sheet_by_data(data)

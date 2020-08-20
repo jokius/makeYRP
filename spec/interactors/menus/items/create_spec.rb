@@ -10,6 +10,7 @@ RSpec.describe Menus::Items::Create, type: :interactor do
   describe 'create new menu item' do
     let(:input) do
       {
+        owner_id: create(:user).id,
         menu_id: menu.id,
         params: { name: 'test' }
       }

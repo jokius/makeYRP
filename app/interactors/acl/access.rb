@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class Sheets::Access
+class Acl::Access
   include Dry::Monads[:result, :do]
 
-  SHEETS_UPDATE_SCHEMA = Dry::Schema.Params do
+  ACCESS_SCHEMA = Dry::Schema.Params do
+    required(:type).filled(:string)
     required(:id).filled(:integer)
     required(:read_all).filled(:bool)
     required(:write_all).filled(:bool)
@@ -19,15 +20,15 @@ class Sheets::Access
   def call(input)
     ActiveRecord::Base.transaction do
       params = yield validate(input)
-      sheet = yield fetch_sheet(params)
-      save_access(sheet, params)
+      record = yield fetch_record(params)
+      save_access(record, params)
     end
   end
 
   private
 
   def validate(input)
-    result = SHEETS_UPDATE_SCHEMA.call(input)
+    result = ACCESS_SCHEMA.call(input)
     if result.success?
       Success(result.to_h)
     else
@@ -35,31 +36,38 @@ class Sheets::Access
     end
   end
 
-  def fetch_sheet(input)
-    sheet = Sheet.find_by(id: input.delete(:id))
-    if sheet
-      Success(sheet)
+  def fetch_record(input)
+    record = case input.delete(:type)
+             when 'sheet'
+               Sheet.find_by(id: input.delete(:id))
+             when 'menu_item'
+               Menus::Item.find_by(id: input.delete(:id))
+             end
+
+    if record
+      Success(record)
     else
-      Failure(message: 'sheet not found')
+      Failure(message: 'record not found')
     end
   end
 
-  def save_access(sheet, params)
-    yield save_access_levels(sheet, params.delete(:levels))
-    sheet.assign_attributes(params)
-    if sheet.save
-      Success(sheet)
+  def save_access(record, params)
+    yield save_access_levels(record, params.delete(:levels))
+    record.assign_attributes(params)
+    if record.save
+      Success(record)
     else
-      Failure(message: sheet.errors.to_h)
+      Failure(message: record.errors.to_h)
     end
   end
 
-  def save_access_levels(sheet, levels)
+  def save_access_levels(record, levels)
     levels.each do |item|
       item[:user_id]
-      acl = sheet.access_levels.find_or_initialize_by(user_id: item[:user_id])
+      acl = record.access_levels.find_or_initialize_by(user_id: item[:user_id])
       acl.read = item[:read]
       acl.write = item[:write]
+
       return Failure(message: acl.errors.to_h) unless acl.save
     end
 

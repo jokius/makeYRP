@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_30_003841) do
+ActiveRecord::Schema.define(version: 2020_08_18_012255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,9 @@ ActiveRecord::Schema.define(version: 2020_07_30_003841) do
     t.jsonb "params", default: {}, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "owner_id", null: false
+    t.boolean "read_all", default: false, null: false
+    t.boolean "write_all", default: false, null: false
     t.index ["menu_id"], name: "index_menus_items_on_menu_id"
   end
 

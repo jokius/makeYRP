@@ -4,6 +4,8 @@ module Acl
   extend ActiveSupport::Concern
   included do
     has_many :access_levels, as: :object, dependent: :destroy
+
+    belongs_to :owner, class_name: 'User'
   end
 
   def owner?(user)

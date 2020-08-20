@@ -56,20 +56,7 @@
         "required": ["id", "name", "params"],
         "properties": {
           "id": { "type": "number" },
-          "params": { "type": "object" },
-          "items": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "required": ["id", "params"],
-              "properties": {
-                "id": { "type": "number" },
-                "menu_id": { "type": "number" },
-                "identifier": { "type": "string" },
-                "params": { "type": "object" }
-              }
-            }
-          }
+          "params": { "type": "object" }
         }
       }
     },

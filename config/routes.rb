@@ -22,6 +22,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :menu, only: :none do
+      scope module: :menus do
+        resources :items, only: :index
+      end
+    end
+
     resources :pages, only: :none do
       scope module: :pages do
         resources :tokens, only: :index
