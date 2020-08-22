@@ -5,11 +5,15 @@
 # Table name: menus
 #
 #  id         :bigint           not null, primary key
-#  game_id    :bigint           not null
+#  identifier :string           not null
 #  params     :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  identifier :string           not null
+#  game_id    :bigint           not null
+#
+# Indexes
+#
+#  index_menus_on_game_id  (game_id)
 #
 
 class MenuSerializer < ActiveModel::Serializer

@@ -5,10 +5,14 @@
 # Table name: custom_systems
 #
 #  id         :bigint           not null, primary key
-#  game_id    :bigint           not null
 #  template   :jsonb            not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  game_id    :bigint           not null
+#
+# Indexes
+#
+#  index_custom_systems_on_game_id  (game_id)
 #
 
 FactoryBot.define do

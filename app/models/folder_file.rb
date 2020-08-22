@@ -5,10 +5,14 @@
 # Table name: folder_files
 #
 #  id         :bigint           not null, primary key
-#  folder_id  :bigint           not null
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  folder_id  :bigint           not null
+#
+# Indexes
+#
+#  index_folder_files_on_folder_id  (folder_id)
 #
 
 class FolderFile < ApplicationRecord

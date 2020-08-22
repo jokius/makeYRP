@@ -5,14 +5,19 @@
 # Table name: graphics
 #
 #  id         :bigint           not null, primary key
-#  page_id    :bigint           not null
+#  kind       :string
 #  layer      :string
 #  params     :jsonb
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  kind       :string
 #  read_all   :boolean          default(TRUE), not null
 #  write_all  :boolean          default(FALSE), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  page_id    :bigint           not null
+#
+# Indexes
+#
+#  index_graphics_on_layer    (layer)
+#  index_graphics_on_page_id  (page_id)
 #
 
 class GraphicSerializer < ActiveModel::Serializer
