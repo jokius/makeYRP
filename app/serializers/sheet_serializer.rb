@@ -22,10 +22,10 @@
 #  index_sheets_on_owner_id              (owner_id)
 #
 
-class SheetSerializer < ActiveModel::Serializer
-  attributes :id, :name, :sheet_type, :params
+class SheetSerializer < BaseSerializer
+  attributes :name, :sheet_type, :params
 
-  attribute :acl do
-    AclOldSerializer.new(object)
+  attribute :acl do |item|
+    AclSerializer.new(item).to_hash[:data][:attributes]
   end
 end
