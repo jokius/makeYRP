@@ -15,6 +15,7 @@ gem 'listen', '>= 3.0.5'
 
 # JSON API
 gem 'active_model_serializers', '~> 0.10.10'
+gem 'fast_jsonapi'
 
 # Database
 gem 'awesome_nested_set', '>= 3.2.0'

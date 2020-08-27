@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
     resources :menu, only: :none do
       scope module: :menus do
-        resources :items, only: :index
+        resources :folders, only: :index
       end
     end
 

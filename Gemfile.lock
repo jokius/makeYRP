@@ -161,6 +161,8 @@ GEM
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
+    fast_jsonapi (1.5)
+      activesupport (>= 4.2)
     fasterer (0.8.3)
       colorize (~> 0.7)
       ruby_parser (>= 3.14.1)
@@ -373,6 +375,7 @@ DEPENDENCIES
   dry-monads
   dry-schema
   factory_bot_rails (>= 5.1.1)
+  fast_jsonapi
   fasterer
   ffaker
   image_processing

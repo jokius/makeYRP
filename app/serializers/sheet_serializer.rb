@@ -26,6 +26,6 @@ class SheetSerializer < ActiveModel::Serializer
   attributes :id, :name, :sheet_type, :params
 
   attribute :acl do
-    AclSerializer.new(object)
+    AclOldSerializer.new(object)
   end
 end

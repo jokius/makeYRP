@@ -11,8 +11,8 @@ class Users::ChangeSheet
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_user_in_game(params)
-    update(hash)
+    user_in_game = yield fetch_user_in_game(params)
+    update(user_in_game: user_in_game, input: params)
   end
 
   private
@@ -29,7 +29,7 @@ class Users::ChangeSheet
   def fetch_user_in_game(input)
     user_in_game = UsersInGame.find_by(game_id: input[:game_id], user_id: input[:user_id])
     if user_in_game
-      Success(user_in_game: user_in_game, input: input)
+      Success(user_in_game)
     else
       Failure('user in game not found')
     end

@@ -1,0 +1,135 @@
+{
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "name",
+            "items",
+            "children",
+            "depth",
+            "path"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "depth": {
+              "type": "number"
+            },
+            "path": {
+              "type": "array"
+            },
+            "children": {
+              "type": "array"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "data"
+                ],
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type",
+                      "attributes"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "attributes": {
+                        "type": "object",
+                        "required": [
+                          "params",
+                          "menuId",
+                          "oldFolderId",
+                          "type",
+                          "acl"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "menuId": {
+                            "type": "number"
+                          },
+                          "oldFolderId": {
+                            "type": ["number", "null"]
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "params": {
+                            "type": "object"
+                          },
+                          "acl": {
+                            "type": "object",
+                            "required": [
+                              "writeAll",
+                              "readAll",
+                              "ownerId",
+                              "readIds",
+                              "writeIds"
+                            ],
+                            "properties": {
+                              "writeAll": {
+                                "type": "boolean"
+                              },
+                              "readAll": {
+                                "type": "boolean"
+                              },
+                              "ownerId": {
+                                "type": "number"
+                              },
+                              "readIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              },
+                              "writeIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,8 +11,8 @@ class Pages::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_page(params)
-    update(hash)
+    page = yield fetch_page(params)
+    update(page: page, input: params)
   end
 
   private
@@ -29,7 +29,7 @@ class Pages::Update
   def fetch_page(input)
     page = Page.find_by(id: input.delete(:id))
     if page
-      Success(page: page, input: input)
+      Success(page)
     else
       Failure(message: 'page not found')
     end

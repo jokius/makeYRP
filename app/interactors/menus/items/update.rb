@@ -10,8 +10,8 @@ class Menus::Items::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_menu_item(params)
-    update(hash)
+    menu_item = yield fetch_menu_item(params)
+    update(menu_item: menu_item, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Menus::Items::Update
   def fetch_menu_item(input)
     menu_item = ::Menus::Item.find_by(id: input.delete(:id))
     if menu_item
-      Success(menu_item: menu_item, input: input)
+      Success(menu_item)
     else
       Failure(message: 'menu item not found')
     end

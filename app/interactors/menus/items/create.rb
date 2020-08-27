@@ -5,14 +5,14 @@ class Menus::Items::Create
 
   ITEMS_CREATE_SCHEMA = Dry::Schema.Params do
     required(:owner_id).filled(:integer)
-    required(:menu_id).filled(:integer)
+    required(:folder_id).filled(:integer)
     required(:params).filled(:hash)
   end
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_menu(params)
-    create(hash)
+    folder = yield fetch_folder(params)
+    create(folder: folder, input: params)
   end
 
   private
@@ -26,17 +26,17 @@ class Menus::Items::Create
     end
   end
 
-  def fetch_menu(input)
-    menu = Menu.find(input[:menu_id])
-    if menu
-      Success(menu: menu, input: input)
+  def fetch_folder(input)
+    folder = Menus::ItemFolder.find(input[:folder_id])
+    if folder
+      Success(folder)
     else
-      Failure(message: 'menu not found', status: :not_fount)
+      Failure(message: 'folder not found', status: :not_fount)
     end
   end
 
-  def create(menu:, input:)
-    item = menu.items.build(params: input[:params], owner_id: input[:owner_id])
+  def create(folder:, input:)
+    item = folder.items.build(params: input[:params], owner_id: input[:owner_id], menu_id: folder.menu_id)
 
     if item.save
       Success(item)

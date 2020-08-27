@@ -1,34 +1,81 @@
 {
   "type": "object",
-  "required": ["id", "params", "menu_id", "type", "acl"],
+  "required": [
+    "data"
+  ],
   "properties": {
-    "id": { "type": "number" },
-    "menu_id": { "type": "number" },
-    "type": { "type": "string" },
-    "params": { "type": "object" },
-    "acl": {
+    "data": {
       "type": "object",
-      "required": ["write_all", "read_all", "owner_id", "read_ids", "write_ids"],
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
       "properties": {
-        "write_all": {
-          "type": "boolean"
+        "id": {
+          "type": "string"
         },
-        "read_all": {
-          "type": "boolean"
+        "type": {
+          "type": "string"
         },
-        "owner_id": {
-          "type": "number"
-        },
-        "read_ids": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "write_ids": {
-          "type": "array",
-          "items": {
-            "type": "number"
+        "attributes": {
+          "type": "object",
+          "required": [
+            "params",
+            "menuId",
+            "folderId",
+            "oldFolderId",
+            "acl"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "menuId": {
+              "type": "number"
+            },
+            "folderId": {
+              "type": "number"
+            },
+            "oldFolderId": {
+              "type": ["number", "null"]
+            },
+            "params": {
+              "type": "object"
+            },
+            "acl": {
+              "type": "object",
+              "required": [
+                "writeAll",
+                "readAll",
+                "ownerId",
+                "readIds",
+                "writeIds"
+              ],
+              "properties": {
+                "writeAll": {
+                  "type": "boolean"
+                },
+                "readAll": {
+                  "type": "boolean"
+                },
+                "ownerId": {
+                  "type": "number"
+                },
+                "readIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                "writeIds": {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
           }
         }
       }

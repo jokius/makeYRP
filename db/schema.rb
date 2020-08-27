@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_18_012255) do
+ActiveRecord::Schema.define(version: 2020_08_22_114028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,24 @@ ActiveRecord::Schema.define(version: 2020_08_18_012255) do
     t.index ["game_id"], name: "index_menus_on_game_id"
   end
 
+  create_table "menus_item_folders", force: :cascade do |t|
+    t.bigint "menu_id"
+    t.bigint "owner_id"
+    t.string "name"
+    t.integer "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lft"], name: "index_menus_item_folders_on_lft"
+    t.index ["menu_id"], name: "index_menus_item_folders_on_menu_id"
+    t.index ["owner_id"], name: "index_menus_item_folders_on_owner_id"
+    t.index ["parent_id"], name: "index_menus_item_folders_on_parent_id"
+    t.index ["rgt"], name: "index_menus_item_folders_on_rgt"
+  end
+
   create_table "menus_items", force: :cascade do |t|
     t.bigint "menu_id", null: false
     t.jsonb "params", default: {}, null: false
@@ -135,6 +153,9 @@ ActiveRecord::Schema.define(version: 2020_08_18_012255) do
     t.bigint "owner_id", null: false
     t.boolean "read_all", default: false, null: false
     t.boolean "write_all", default: false, null: false
+    t.bigint "folder_id", null: false
+    t.index ["folder_id"], name: "index_menus_items_on_folder_id"
+    t.index ["menu_id", "folder_id"], name: "index_menus_items_on_menu_id_and_folder_id"
     t.index ["menu_id"], name: "index_menus_items_on_menu_id"
   end
 

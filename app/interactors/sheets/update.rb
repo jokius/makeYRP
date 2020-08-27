@@ -11,8 +11,8 @@ class Sheets::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_sheet(params)
-    update(hash)
+    sheet = yield fetch_sheet(params)
+    update(sheet: sheet, input: params)
   end
 
   private
@@ -29,7 +29,7 @@ class Sheets::Update
   def fetch_sheet(input)
     sheet = Sheet.find_by(id: input.delete(:id))
     if sheet
-      Success(sheet: sheet, input: input)
+      Success(sheet)
     else
       Failure(message: 'sheet not found')
     end

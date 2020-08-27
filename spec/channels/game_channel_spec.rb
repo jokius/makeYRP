@@ -51,16 +51,24 @@ RSpec.describe GameChannel, type: :channel do
       expect(message).not_to be_nil
     end
 
-    it 'menu_item' do
+    it 'item_folder' do
       menu = create(:menu)
-      params = { game_id: game.id, menu_id: menu.id, params: { test: 'new' }, 'type' => 'menu_item' }
+      params = { parent_id: menu.folders.root.id, name: 'test folder name', 'type' => 'item_folder' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
+        expect(data[:item_folder]).to match_json_schema('menu/folder/show')
+        expect(data[:new]).to be true
+        expect(Menus::ItemFolder.find_by(id: data[:item_folder]['data']['id'])).not_to be_nil
+      end)
+    end
+
+    it 'menu_item' do
+      folder = create(:menus_item_folder)
+      params = { folder_id: folder.id, params: { test: 'new' }, 'type' => 'menu_item' }
       expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
         expect(data[:menu_item]).to match_json_schema('menu/items/show')
         expect(data[:new]).to be true
+        expect(Menus::Item.find_by(id: data[:menu_item]['data']['id'])).not_to be_nil
       end)
-
-      menu_item = Menus::Item.find_by(menu: menu)
-      expect(menu_item).not_to be_nil
     end
 
     it 'errors' do
@@ -137,6 +145,29 @@ RSpec.describe GameChannel, type: :channel do
       end
     end
 
+    describe 'item_folder' do
+      let(:menu) { create(:menu, game: game) }
+      let(:folder) { create(:menus_item_folder, menu: menu) }
+      let(:params) { { 'id' => folder.id, 'name' => 'new name', 'type' => 'item_folder' } }
+
+      before do
+        game.update(master: user)
+      end
+
+      it 'broadcasted to game' do
+        expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:item_folder]).to match_json_schema('menu/folder/show')
+          expect(data[:update]).to be true
+        end)
+      end
+
+      it 'new params save' do
+        subscription.change(params)
+        folder.reload
+        expect(folder.name).to eq params['name']
+      end
+    end
+
     describe 'user' do
       let(:sheet) { { 'name' => 'test' } }
       let(:params) { { 'sheet' => sheet, 'type' => 'user' } }
@@ -208,21 +239,46 @@ RSpec.describe GameChannel, type: :channel do
 
     describe 'menu_item' do
       it 'broadcasted to game' do
-        menu_item = create(:menus_item)
+        menu_item = create(:menus_item, owner: user)
         params = { 'id' => menu_item.id, 'type' => 'menu_item' }
         expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
+          p data
           expect(data[:id]).to eq menu_item.id
-          expect(data[:menu_id]).to eq menu_item.menu_id
+          expect(data[:menuId]).to eq menu_item.menu_id
           expect(data[:menu_item]).to be true
           expect(data[:delete]).to be true
         end)
       end
 
       it 'remove record' do
-        menu_item = create(:menus_item)
+        menu_item = create(:menus_item, owner: user)
         params = { 'id' => menu_item.id, 'type' => 'menu_item' }
         subscription.remove(params)
         expect(Menus::Item.find_by(id: menu_item.id)).to be_nil
+      end
+    end
+
+    describe 'item_folder' do
+      let(:menu) { create(:menu, game: game) }
+      let(:folder) { create(:menus_item_folder, menu: menu, parent: create(:menus_item_folder)) }
+      let(:params) { { 'id' => folder.id, 'type' => 'item_folder' } }
+
+      before do
+        game.update(master: user)
+      end
+
+      it 'broadcasted to game' do
+        expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:id]).to eq folder.id
+          expect(data[:menuId]).to eq folder.menu_id
+          expect(data[:item_folder]).to be true
+          expect(data[:delete]).to be true
+        end)
+      end
+
+      it 'remove record' do
+        subscription.remove(params)
+        expect(Menus::ItemFolder.find_by(id: folder.id)).to be_nil
       end
     end
 
