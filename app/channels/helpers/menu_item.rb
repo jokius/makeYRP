@@ -21,7 +21,7 @@ class Helpers::MenuItem < Helpers::Base
     return broadcast(errors: 'No permission') unless allowed_to?(:remove?, menu_item)
 
     menu_item.destroy
-    broadcast(delete: true, menu_item: true, id: menu_item.id, menuId: menu_item.menu_id)
+    broadcast(delete: true, menu_item: true, id: menu_item.id, folderId: menu_item.folder_id, menuId: menu_item.menu_id)
   end
 
   def change_access(data)
