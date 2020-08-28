@@ -1,9 +1,13 @@
 class SetFolderToMenuItem < ActiveRecord::Migration[6.0]
   def up
-    Menus::Item.find_each do |item|
-      folder = item.menu.create_root_folder
-      owner = item.owner
-      item.update!(folder_id: folder.id, owner_id: owner.id)
+    Menu.find_each do |menu|
+      next if menu.folders.any?
+      next menu.destroy if menu.game.nil?
+      next menu.game.destroy if menu.game.master.nil?
+
+      folder = menu.create_root_folder
+      owner = menu.owner
+      Menus::Item.find_by(menu_id: menu.id).update_all(folder_id: folder.id, owner_id: owner.id)
     end
 
     change_column_null :menus_items, :folder_id, false
