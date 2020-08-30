@@ -10,6 +10,7 @@ RSpec.describe Graphics::Create, type: :interactor do
   describe 'create new graphic' do
     let(:input) do
       {
+        owner_id: create(:user).id,
         page_id: page.id,
         kind: 'line',
         params: { 'text' => 'params' }

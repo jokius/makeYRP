@@ -10,8 +10,8 @@ class Tokens::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_token(params)
-    update(hash)
+    token = yield fetch_token(params)
+    update(token: token, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Tokens::Update
   def fetch_token(input)
     token = Token.find_by(id: input.delete(:id))
     if token
-      Success(token: token, input: input)
+      Success(token)
     else
       Failure('token not found')
     end

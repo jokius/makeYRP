@@ -4,6 +4,7 @@ class Images::Create
   include Dry::Monads[:result, :do]
 
   IMAGE_CREATE_SCHEMA = Dry::Schema.Params do
+    required(:owner_id).filled(:integer)
     required(:page_id).filled(:integer)
     required(:params).filled(:hash)
   end

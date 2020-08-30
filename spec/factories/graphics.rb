@@ -12,6 +12,7 @@
 #  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  owner_id   :bigint           not null
 #  page_id    :bigint           not null
 #
 # Indexes
@@ -22,6 +23,9 @@
 
 FactoryBot.define do
   factory :graphic do
+    owner { create(:user) }
     page
+    kind { 'test' }
+    params { { test: true } }
   end
 end

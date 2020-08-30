@@ -10,8 +10,8 @@ class Graphics::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_graphic(params)
-    update(hash)
+    graphic = yield fetch_graphic(params)
+    update(graphic: graphic, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Graphics::Update
   def fetch_graphic(input)
     graphic = Graphic.find_by(id: input.delete(:id))
     if graphic
-      Success(graphic: graphic, input: input)
+      Success(graphic)
     else
       Failure(message: 'graphic not found')
     end

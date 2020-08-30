@@ -19,10 +19,10 @@
 #  index_tokens_on_sheet_id  (sheet_id)
 #
 
-class TokenSerializer < ActiveModel::Serializer
-  attributes :id, :sheet_id, :params
+class TokenSerializer < BaseSerializer
+  attributes :sheet_id, :params
 
-  attribute :acl do
-    AclSerializer.new(object)
+  attribute :acl do |item|
+    AclSerializer.new(item).to_hash[:data][:attributes]
   end
 end

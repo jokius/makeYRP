@@ -13,13 +13,13 @@ class GamesController < ApplicationController
   end
 
   def show
-    responds(Games::Join, game_id: params[:id], user_id: current_user.id) do |game|
+    responds(Games::Join, { game_id: params[:id], user_id: current_user.id }) do |game|
       render json: game, include: %w[master users pages menus.items]
     end
   end
 
   def join
-    responds(Games::Join, game_id: params[:id], user_id: current_user.id) do |game|
+    responds(Games::Join, { game_id: params[:id], user_id: current_user.id }) do |game|
       render json: { id: game.id }, status: :created
     end
   end

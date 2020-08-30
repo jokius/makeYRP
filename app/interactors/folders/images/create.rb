@@ -10,8 +10,8 @@ class Folders::Images::Create
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_folder(params)
-    create(hash)
+    folder = yield fetch_folder(params)
+    create(folder: folder, file: input[:file])
   end
 
   private
@@ -28,7 +28,7 @@ class Folders::Images::Create
   def fetch_folder(input)
     folder = Folder.find_by(id: input[:folder_id])
     if folder
-      Success(folder: folder, file: input[:file])
+      Success(folder)
     else
       Failure(message: 'folder not found', status: :not_fount)
     end

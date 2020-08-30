@@ -17,7 +17,8 @@ RSpec.describe Pages::ImagesController, type: :request do
 
     it 'correct json' do
       expect(response.status).to eq 200
-      expect(response).to match_json_schema('images/index')
+      expect(json_data[:data]).to be_any
+      expect(response).to match_json_schema('pages/images/index')
     end
   end
 end

@@ -2,7 +2,8 @@
 
 class Pages::ImagesController < ::ApplicationController
   def index
-    render json: page.images
+    images = authorized_scope(page.images, scope_options: { game: page.game })
+    render json: ImageSerializer.new(images)
   end
 
   private

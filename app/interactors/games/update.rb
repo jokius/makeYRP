@@ -11,8 +11,8 @@ class Games::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_game(params)
-    update(hash)
+    game = yield fetch_game(params)
+    update(game: game, input: params)
   end
 
   private
@@ -29,7 +29,7 @@ class Games::Update
   def fetch_game(input)
     game = Game.find_by(id: input.delete(:game_id))
     if game
-      Success(game: game, input: input)
+      Success(game)
     else
       Failure(message: 'game not found')
     end

@@ -6,8 +6,11 @@
 #
 #  id         :bigint           not null, primary key
 #  params     :jsonb            not null
+#  read_all   :boolean          default(TRUE), not null
+#  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  owner_id   :bigint           not null
 #  page_id    :bigint           not null
 #
 # Indexes
@@ -17,6 +20,7 @@
 
 FactoryBot.define do
   factory :image do
+    owner { create(:user) }
     page
     params { { x: 0, y: 0 } }
   end

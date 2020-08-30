@@ -2,8 +2,8 @@
 
 class Pages::GraphicsController < ::ApplicationController
   def index
-    tokens = page.graphics
-    render json: tokens
+    graphics = authorized_scope(page.graphics, scope_options: { game: page.game })
+    render json: GraphicSerializer.new(graphics)
   end
 
   private

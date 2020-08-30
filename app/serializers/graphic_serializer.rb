@@ -12,6 +12,7 @@
 #  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  owner_id   :bigint           not null
 #  page_id    :bigint           not null
 #
 # Indexes
@@ -20,6 +21,10 @@
 #  index_graphics_on_page_id  (page_id)
 #
 
-class GraphicSerializer < ActiveModel::Serializer
-  attributes :id, :kind, :params
+class GraphicSerializer < BaseSerializer
+  attributes :kind, :params
+
+  attribute :acl do |item|
+    AclSerializer.new(item).to_hash[:data][:attributes]
+  end
 end

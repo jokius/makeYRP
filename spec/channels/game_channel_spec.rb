@@ -242,7 +242,6 @@ RSpec.describe GameChannel, type: :channel do
         menu_item = create(:menus_item, owner: user)
         params = { 'id' => menu_item.id, 'type' => 'menu_item' }
         expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
-          p data
           expect(data[:id]).to eq menu_item.id
           expect(data[:menuId]).to eq menu_item.menu_id
           expect(data[:menu_item]).to be true

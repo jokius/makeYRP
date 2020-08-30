@@ -10,6 +10,7 @@ RSpec.describe Images::Create, type: :interactor do
   describe 'create new image' do
     let(:input) do
       {
+        owner_id: create(:user).id,
         page_id: page.id,
         params: { x: 0, y: 0 }
       }

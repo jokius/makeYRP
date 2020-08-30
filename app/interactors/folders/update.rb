@@ -10,8 +10,8 @@ class Folders::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_folder(params)
-    update(hash)
+    folder = yield fetch_folder(params)
+    update(folder: folder, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Folders::Update
   def fetch_folder(input)
     folder = Folder.find_by(id: input.delete(:id))
     if folder
-      Success(folder: folder, input: input)
+      Success(folder)
     else
       Failure(message: 'folder not found', status: :not_fount)
     end

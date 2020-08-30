@@ -10,8 +10,8 @@ class Images::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_image(params)
-    update(hash)
+    image = yield fetch_image(params)
+    update(image: image, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Images::Update
   def fetch_image(input)
     image = Image.find_by(id: input.delete(:id))
     if image
-      Success(image: image, input: input)
+      Success(image)
     else
       Failure('image not found')
     end

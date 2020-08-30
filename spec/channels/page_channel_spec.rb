@@ -20,36 +20,30 @@ RSpec.describe PageChannel, type: :channel do
   describe '#add' do
     it 'token' do
       sheet = create(:sheet)
-      data = { sheet_id: sheet.id, params: { x: 1, y: 1 }, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, new: true, token: kind_of(TokenSerializer))
-
-      subscription.add(data)
-      expect(subscription).to have_stream_for(page)
-
-      token = Token.find_by(page: page, sheet: sheet)
-      expect(token).not_to be_nil
+      params = { sheet_id: sheet.id, params: { x: 1, y: 1 }, 'type' => 'token' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:token]).to match_json_schema('pages/tokens/show')
+        expect(data[:new]).to be true
+        expect(Token.find_by(page: page, sheet: sheet, id: data[:token]['data']['id'])).not_to be_nil
+      end)
     end
 
     it 'image' do
-      data = { params: { x: 1, y: 1 }, 'type' => 'image' }
-      allow(channel).to receive(:broadcast_to).with(page, new: true, image: kind_of(ImageSerializer))
-
-      subscription.add(data)
-      expect(subscription).to have_stream_for(page)
-
-      image = Image.find_by(page: page)
-      expect(image).not_to be_nil
+      params = { params: { x: 1, y: 1 }, 'type' => 'image' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:image]).to match_json_schema('pages/images/show')
+        expect(data[:new]).to be true
+        expect(Image.find_by(page: page, id: data[:image]['data']['id'])).not_to be_nil
+      end)
     end
 
     it 'graphic' do
-      data = { page_id: page.id, kind: 'line', params: { text: :params }, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to).with(page, new: true, graphic: kind_of(GraphicSerializer))
-
-      subscription.add(data)
-      expect(subscription).to have_stream_for(page)
-
-      graphic = Graphic.find_by(page: page)
-      expect(graphic).not_to be_nil
+      params = { page_id: page.id, kind: 'line', params: { text: :params }, 'type' => 'graphic' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:graphic]).to match_json_schema('pages/graphic/show')
+        expect(data[:new]).to be true
+        expect(Graphic.find_by(page: page, id: data[:graphic]['data']['id'])).not_to be_nil
+      end)
     end
 
     it 'errors' do
@@ -60,12 +54,13 @@ RSpec.describe PageChannel, type: :channel do
 
   describe '#change' do
     it 'token' do
-      token = create(:token)
-      data = { id: token.id, params: { x: 2, y: 3 }, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, token: kind_of(TokenSerializer), by: user.id)
-
-      subscription.change(data)
-      expect(subscription).to have_stream_for(page)
+      sheet = create(:sheet, owner: user)
+      token = create(:token, sheet: sheet)
+      params = { 'id' => token.id, params: { x: 2, y: 3 }, 'type' => 'token' }
+      expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:token]).to match_json_schema('pages/tokens/show')
+        expect(data[:update]).to be true
+      end)
 
       token = token.reload
       expect(token.params['x']).to eq 2
@@ -73,12 +68,12 @@ RSpec.describe PageChannel, type: :channel do
     end
 
     it 'image' do
-      image = create(:image)
-      data = { id: image.id, params: { x: 2, y: 3 }, 'type' => 'image' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, image: kind_of(ImageSerializer))
-
-      subscription.change(data)
-      expect(subscription).to have_stream_for(page)
+      image = create(:image, owner: user)
+      params = { 'id' => image.id, params: { x: 2, y: 3 }, 'type' => 'image' }
+      expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:image]).to match_json_schema('pages/images/show')
+        expect(data[:update]).to be true
+      end)
 
       image = image.reload
       expect(image.params['x']).to eq 2
@@ -86,13 +81,13 @@ RSpec.describe PageChannel, type: :channel do
     end
 
     it 'graphic' do
-      graphic = create(:graphic)
+      graphic = create(:graphic, owner: user)
       new_text = 'new text'
-      data = { id: graphic.id, params: { text: new_text }, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to).with(page, update: true, graphic: kind_of(GraphicSerializer))
-
-      subscription.change(data)
-      expect(subscription).to have_stream_for(page)
+      params = { 'id' => graphic.id, params: { text: new_text }, 'type' => 'graphic' }
+      expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:graphic]).to match_json_schema('pages/graphic/show')
+        expect(data[:update]).to be true
+      end)
 
       graphic = graphic.reload
       expect(graphic.params['text']).to eq new_text
@@ -106,36 +101,40 @@ RSpec.describe PageChannel, type: :channel do
 
   describe '#remove' do
     it 'token' do
-      token = create(:token)
-      data = { 'id' => token.id, 'type' => 'token' }
-      allow(channel).to receive(:broadcast_to).with(page, delete: true, token: { id: token.id })
+      sheet = create(:sheet, owner: user)
+      token = create(:token, sheet: sheet)
+      params = { 'id' => token.id, 'type' => 'token' }
+      expect { subscription.remove(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:id]).to eq token.id
+        expect(data[:token]).to be true
+        expect(data[:delete]).to be true
+      end)
 
-      subscription.remove(data)
-      expect(subscription).to have_stream_for(page)
-
-      expect(Token.find_by(id: data['id'])).to be_nil
+      expect(Token.find_by(id: params['id'])).to be_nil
     end
 
     it 'image' do
-      image = create(:image)
-      data = { 'id' => image.id, 'type' => 'image' }
-      allow(channel).to receive(:broadcast_to).with(page, delete: true, image: { id: image.id })
+      image = create(:image, owner: user)
+      params = { 'id' => image.id, 'type' => 'image' }
+      expect { subscription.remove(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:id]).to eq image.id
+        expect(data[:image]).to be true
+        expect(data[:delete]).to be true
+      end)
 
-      subscription.remove(data)
-      expect(subscription).to have_stream_for(page)
-
-      expect(Image.find_by(id: data['id'])).to be_nil
+      expect(Image.find_by(id: params['id'])).to be_nil
     end
 
     it 'graphic' do
-      graphic = create(:graphic)
-      data = { 'id' => graphic.id, 'type' => 'graphic' }
-      allow(channel).to receive(:broadcast_to).with(page, delete: true, graphic: { id: graphic.id })
+      graphic = create(:graphic, owner: user)
+      params = { 'id' => graphic.id, 'type' => 'graphic' }
+      expect { subscription.remove(params) }.to(have_broadcasted_to(page).with do |data|
+        expect(data[:id]).to eq graphic.id
+        expect(data[:graphic]).to be true
+        expect(data[:delete]).to be true
+      end)
 
-      subscription.remove(data)
-      expect(subscription).to have_stream_for(page)
-
-      expect(Graphic.find_by(id: data['id'])).to be_nil
+      expect(Graphic.find_by(id: params['id'])).to be_nil
     end
 
     it 'errors' do

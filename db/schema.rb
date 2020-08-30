@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_22_114028) do
+ActiveRecord::Schema.define(version: 2020_08_29_233939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 2020_08_22_114028) do
     t.string "kind"
     t.boolean "read_all", default: true, null: false
     t.boolean "write_all", default: false, null: false
+    t.bigint "owner_id", null: false
     t.index ["layer"], name: "index_graphics_on_layer"
     t.index ["page_id"], name: "index_graphics_on_page_id"
   end
@@ -109,6 +110,9 @@ ActiveRecord::Schema.define(version: 2020_08_22_114028) do
     t.jsonb "params", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "owner_id", null: false
+    t.boolean "read_all", default: true, null: false
+    t.boolean "write_all", default: false, null: false
     t.index ["page_id"], name: "index_images_on_page_id"
   end
 

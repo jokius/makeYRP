@@ -10,8 +10,8 @@ class Folders::Images::Update
 
   def call(input)
     params = yield validate(input)
-    hash = yield fetch_image(params)
-    update(hash)
+    image = yield fetch_image(params)
+    update(image: image, input: params)
   end
 
   private
@@ -28,7 +28,7 @@ class Folders::Images::Update
   def fetch_image(input)
     image = FolderFile.find_by(id: input.delete(:id))
     if image
-      Success(image: image, input: input)
+      Success(image)
     else
       Failure(message: 'image not found', status: :not_fount)
     end
