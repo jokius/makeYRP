@@ -23,10 +23,10 @@
 #  index_folders_on_user_id    (user_id)
 #
 
-class FolderSerializer < ActiveModel::Serializer
-  attributes :id, :name, :parent_id
+class FolderSerializer < BaseSerializer
+  attributes :name, :parent_id
   has_many :children, serializer: ShortFolderSerializer
-  has_many :images, serializer: FolderImageSerializer do
-    object.files.with_attached_image
+  has_many :images, serializer: FolderImageSerializer do |image|
+    image.files.with_attached_image
   end
 end

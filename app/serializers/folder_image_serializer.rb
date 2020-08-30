@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class FolderImageSerializer < ActiveModel::Serializer
-  attributes :id, :name
+class FolderImageSerializer < BaseSerializer
+  attributes :name
 
-  attribute :versions do
-    { url: object.image_url,
-      chat: object.image_chat,
-      lazy: object.image_lazy,
-      thumb: object.image_thumb }
+  attribute :versions do |image|
+    { url: image.image_url,
+      chat: image.image_chat,
+      lazy: image.image_lazy,
+      thumb: image.image_thumb }
   end
 end

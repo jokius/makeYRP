@@ -16,15 +16,18 @@
 #  updated_at     :datetime         not null
 #
 
-class FolderTreeSerializer < ActiveModel::Serializer
-  attributes :id, :name
-  has_many :images, serializer: FolderImageSerializer do
-    object.files.with_attached_image
+class FolderTreeSerializer < BaseSerializer
+  attributes :name, :parent_id
+  attribute :images do |folder|
+    folder.files.with_attached_image.map do |image|
+      FolderImageSerializer.new(image)
+    end
   end
 
-  attribute :children do
-    object.children.map do |item|
-      FolderTreeSerializer.new(item).to_h
+  attribute :children do |folder|
+    folder.children.map do |item|
+      FolderTreeSerializer.new(item)
     end
   end
 end
+

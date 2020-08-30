@@ -40,7 +40,7 @@ RSpec.describe Folders::ImagesController, type: :request do
 
     it 'correct json' do
       expect(response.status).to eq 201
-      expect(json_data[:name]).to eq new_name
+      expect(json_data[:data][:attributes][:name]).to eq new_name
       expect(response).to match_json_schema('folders/images/show')
     end
   end

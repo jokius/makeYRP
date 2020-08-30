@@ -1,38 +1,121 @@
 {
   "type": "object",
-  "required": ["id", "name", "children", "images"],
+  "required": [
+    "data",
+    "included"
+  ],
   "properties": {
-    "id": { "type": "number" },
-    "name": { "type": "string" },
-    "parent_id": { "type": ["null", "number"] },
-    "children": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["id", "name"],
-        "properties": {
-          "id": { "type": "number" },
-          "name": { "type": "string" }
+    "data": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes",
+        "relationships"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "name",
+            "parentId"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "parentId": {
+              "type": ["number", "null"]
+            }
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "required": [
+            "children",
+            "images"
+          ],
+          "properties": {
+            "children": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "images": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
-    "images": {
+    "included": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "versions"],
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
         "properties": {
-          "id": { "type": "integer" },
-          "name": { "type": "string" },
-          "versions": {
-            "type": "object",
-            "required": ["url", "lazy", "thumb"],
-            "properties": {
-              "url": { "type": ["null", "string"] },
-              "chat": { "type": ["null", "string"] },
-              "lazy": { "type": ["null", "string"] },
-              "thumb": { "type": ["null", "string"] }
-            }
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object"
           }
         }
       }

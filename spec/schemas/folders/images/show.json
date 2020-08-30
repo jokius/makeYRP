@@ -1,17 +1,58 @@
 {
   "type": "object",
-  "required": ["id", "name", "versions"],
+  "required": [
+    "data"
+  ],
   "properties": {
-    "id": { "type": "integer" },
-    "name": { "type": "string" },
-    "versions": {
+    "data": {
       "type": "object",
-      "required": ["url", "lazy", "thumb"],
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
       "properties": {
-        "url": { "type": ["null", "string"] },
-        "chat": { "type": ["null", "string"] },
-        "lazy": { "type": ["null", "string"] },
-        "thumb": { "type": ["null", "string"] }
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "name",
+            "versions"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "versions": {
+              "type": "object",
+              "required": [
+                "url",
+                "chat",
+                "lazy",
+                "thumb"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "chat": {
+                  "type": "string"
+                },
+                "lazy": {
+                  "type": "string"
+                },
+                "thumb": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

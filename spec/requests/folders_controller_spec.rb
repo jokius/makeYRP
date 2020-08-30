@@ -58,7 +58,7 @@ RSpec.describe FoldersController, type: :request do
 
     it 'correct json' do
       expect(response.status).to eq 201
-      expect(json_data[:name]).to eq new_name
+      expect(json_data[:data][:attributes][:name]).to eq new_name
       expect(response).to match_json_schema('folders/show')
     end
   end
@@ -74,7 +74,7 @@ RSpec.describe FoldersController, type: :request do
 
     it 'correct json' do
       expect(response.status).to eq 200
-      expect(response).to match_json_schema('folders/show')
+      expect(response).to match_json_schema('folders/tree')
     end
   end
 end
