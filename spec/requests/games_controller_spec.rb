@@ -9,28 +9,19 @@ RSpec.describe GamesController, type: :request do
   before { sign_in user }
 
   describe 'GET /games json' do
-    let!(:game) do
-      game = create(:game)
-      game.users << user
-      game
-    end
-
-    let!(:other_game) do
-      game = create(:game)
-      game.users << user
-      game
-    end
-
-    let!(:master_game) do
-      game = create(:game, master: user)
-      game.users << create(:user)
-      game
-    end
-
     let!(:close_game) do
       game = create(:game, :close)
       game.users << user
       game
+    end
+
+    before do
+      game = create(:game)
+      game.users << user
+      game = create(:game)
+      game.users << user
+      game = create(:game, master: user)
+      game.users << create(:user)
     end
 
     context 'when get open games' do

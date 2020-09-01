@@ -30,4 +30,3 @@ class FolderTreeSerializer < BaseSerializer
     end
   end
 end
-
