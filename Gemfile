@@ -14,7 +14,6 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'listen', '>= 3.0.5'
 
 # JSON API
-gem 'active_model_serializers', '~> 0.10.10'
 gem 'fast_jsonapi'
 
 # Database

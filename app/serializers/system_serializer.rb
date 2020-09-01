@@ -13,6 +13,6 @@
 #  updated_at :datetime         not null
 #
 
-class SystemSerializer < ActiveModel::Serializer
-  attributes :id, :name
+class SystemSerializer < BaseSerializer
+  attributes :name
 end

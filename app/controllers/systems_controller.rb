@@ -2,7 +2,7 @@
 
 class SystemsController < ApplicationController
   def index
-    render json: System.all
+    render json: SystemSerializer.new(System.all)
   end
 
   def create

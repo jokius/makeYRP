@@ -78,7 +78,7 @@ class GameChannel < ApplicationCable::Channel
 
   def user_connected
     REDIS.lpush("game_#{game.id}", current_user.id.to_s)
-    broadcast(new: true, user: ShortUserSerializer.new(current_user, game: game))
+    broadcast(new: true, user: ShortUserSerializer.new(current_user, { params: { game: game } }))
   end
 
   def user_disconnected

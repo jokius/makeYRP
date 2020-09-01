@@ -16,7 +16,7 @@
 #  index_menus_on_game_id  (game_id)
 #
 
-class MenuSerializer < ActiveModel::Serializer
-  attributes :id, :params
-  attribute :identifier, key: :type
+class MenuSerializer < BaseSerializer
+  attributes :params
+  attribute :type, &:identifier
 end

@@ -13,6 +13,6 @@ class Helpers::User < Helpers::Base
   end
 
   def user_serializer(item)
-    ShortUserSerializer.new(item, game: object)
+    ShortUserSerializer.new(item, { params: { game: object } })
   end
 end

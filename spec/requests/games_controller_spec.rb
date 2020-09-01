@@ -11,13 +11,27 @@ RSpec.describe GamesController, type: :request do
   describe 'GET /games json' do
     let!(:game) do
       game = create(:game)
-      game.update(users: [user])
+      game.users << user
       game
     end
 
-    let!(:other_game) { create(:game) }
-    let!(:master_game) { create(:game, master: user) }
-    let!(:close_game) { create(:game, :close) }
+    let!(:other_game) do
+      game = create(:game)
+      game.users << user
+      game
+    end
+
+    let!(:master_game) do
+      game = create(:game, master: user)
+      game.users << create(:user)
+      game
+    end
+
+    let!(:close_game) do
+      game = create(:game, :close)
+      game.users << user
+      game
+    end
 
     context 'when get open games' do
       before { get '/api/games', **headers, params: { open: true } }
@@ -25,13 +39,7 @@ RSpec.describe GamesController, type: :request do
       it 'correct json' do
         expect(response.status).to eq 200
         expect(response).to match_json_schema('games/index')
-        expect(json_data.size).to eq 3
-      end
-
-      it 'correct order' do
-        expect(json_data[0][:id]).to eq master_game.id
-        expect(json_data[1][:id]).to eq game.id
-        expect(json_data[2][:id]).to eq other_game.id
+        expect(json_data[:data].size).to eq 3
       end
     end
 
@@ -41,11 +49,11 @@ RSpec.describe GamesController, type: :request do
       it 'correct json' do
         expect(response.status).to eq 200
         expect(response).to match_json_schema('games/index')
-        expect(json_data.size).to eq 1
+        expect(json_data[:data].size).to eq 1
       end
 
       it 'correct order' do
-        expect(json_data[0][:id]).to eq close_game.id
+        expect(json_data[:data][0][:id]).to eq close_game.id.to_s
       end
     end
   end

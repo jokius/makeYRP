@@ -10,14 +10,15 @@ RSpec.describe Admin::GamesController, type: :request do
 
   describe 'GET /admin/games json' do
     before do
-      create(:game)
+      game = create(:game)
+      game.users << create(:user)
       get '/api/admin/games', **headers, params: { open: true }
     end
 
     it 'correct json' do
       expect(response.status).to eq 200
       expect(response).to match_json_schema('games/index')
-      expect(json_data.size).to eq 1
+      expect(json_data[:data].size).to eq 1
     end
   end
 

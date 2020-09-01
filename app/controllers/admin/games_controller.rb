@@ -2,7 +2,8 @@
 
 class Admin::GamesController < Admin::ApplicationController
   def index
-    render json: Game.order(created_at: :desc), each_serializer: ShortGameSerializer
+    games = Game.order(created_at: :desc)
+    render json: ShortGameSerializer.new(games, { include: %i[master users] })
   end
 
   def destroy

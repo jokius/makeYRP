@@ -16,6 +16,6 @@
 #  index_pages_on_game_id  (game_id)
 #
 
-class PageSerializer < ActiveModel::Serializer
-  attributes :id, :name, :params
+class PageSerializer < BaseSerializer
+  attributes :name, :params
 end

@@ -40,11 +40,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    active_model_serializers (0.10.10)
-      actionpack (>= 4.1, < 6.1)
-      activemodel (>= 4.1, < 6.1)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     active_storage-send_zip (0.3.4)
       rails (> 5.2)
       rubyzip (< 3.0)
@@ -99,8 +94,6 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 4.0)
-    case_transform (0.2)
-      activesupport
     colorize (0.8.1)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
@@ -178,7 +171,6 @@ GEM
     json_matchers (0.11.1)
       json_schema
     json_schema (0.20.9)
-    jsonapi-renderer (0.2.2)
     jwt (2.2.2)
     kwalify (0.7.2)
     listen (3.2.1)
@@ -357,7 +349,6 @@ PLATFORMS
 DEPENDENCIES
   action-cable-testing (>= 0.6.1)
   action_policy
-  active_model_serializers (~> 0.10.10)
   active_storage-send_zip
   annotate
   awesome_nested_set (>= 3.2.0)

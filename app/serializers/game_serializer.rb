@@ -18,16 +18,16 @@
 #  index_games_on_system_id  (system_id)
 #
 
-class GameSerializer < ActiveModel::Serializer
-  attributes :id, :name, :template
+class GameSerializer < BaseSerializer
+  attributes :name, :template
 
-  attribute :system do
-    object.system.key.split('-')[0]
+  attribute :system do |game|
+    game.system.key.split('-')[0]
   end
 
   belongs_to :master, serializer: ShortUserSerializer
-  has_many :users, serializer: ShortUserSerializer do
-    object.users.with_attached_avatar
+  has_many :users, serializer: ShortUserSerializer do |game|
+    game.users.with_attached_avatar
   end
 
   has_many :menus

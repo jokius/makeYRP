@@ -1,28 +1,134 @@
 {
   "type": "object",
-  "required": ["id", "user", "body", "created_at"],
+  "required": [
+    "data",
+    "included"
+  ],
   "properties": {
-    "id": { "type": "number" },
-    "user": {
+    "data": {
       "type": "object",
-      "required": ["id", "nickname", "avatar", "admin", "sheet"],
+      "required": [
+        "id",
+        "type",
+        "attributes",
+        "relationships"
+      ],
       "properties": {
-        "id": { "type": "number" },
-        "nickname": { "type": "string" },
-        "sheet": { "type": "object" },
-        "avatar": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
           "type": "object",
-          "required": ["url", "lazy", "thumb"],
+          "required": [
+            "body",
+            "createdAt"
+          ],
           "properties": {
-            "url": { "type": ["null", "string"] },
-            "lazy": { "type": ["null", "string"] },
-            "thumb": { "type": ["null", "string"] },
-            "chat": { "type": ["null", "string"] }
+            "body": {
+              "type": "object"
+            },
+            "createdAt": {
+              "type": "string"
+            }
+          }
+        },
+        "relationships": {
+          "type": "object",
+          "required": [
+            "user"
+          ],
+          "properties": {
+            "user": {
+              "type": "object",
+              "required": [
+                "data"
+              ],
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "type"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
-    "body": { "type": "object" },
-    "created_at": { "type": "string" }
+    "included": {
+      "type": "array",
+      "items":  {
+        "type": "object",
+        "required": [
+          "id",
+          "type",
+          "attributes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "attributes": {
+            "type": "object",
+            "required": [
+              "nickname",
+              "admin",
+              "avatar",
+              "sheet"
+            ],
+            "properties": {
+              "nickname": {
+                "type": "string"
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "avatar": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "lazy": {
+                    "type": "string"
+                  },
+                  "thumb": {
+                    "type": "string"
+                  },
+                  "chat": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "url",
+                  "lazy",
+                  "thumb",
+                  "chat"
+                ]
+              },
+              "sheet": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

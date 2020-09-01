@@ -18,7 +18,7 @@ RSpec.describe Games::MessagesController, type: :request do
 
     it 'correct json' do
       expect(response.status).to eq 200
-      expect(json_data.size).to eq 20
+      expect(json_data[:data].size).to eq 20
       expect(response).to match_json_schema('games/messages/index')
     end
   end

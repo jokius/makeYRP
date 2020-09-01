@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class UsersAclSerializer < ActiveModel::Serializer
-  attributes :id, :write_all, :read_all
-  attribute :levels do
-    instance_options[:users].map do |user|
+class UsersAclSerializer < BaseSerializer
+  attributes :write_all, :read_all
+  attribute :levels do |object, params|
+    params[:users].map do |user|
       { user: ShortUserSerializer.new(user),
         owner: object.owner?(user),
         read: object.read_record?(user),

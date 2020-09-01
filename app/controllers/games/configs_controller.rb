@@ -3,7 +3,7 @@
 class Games::ConfigsController < Games::ApplicationController
   def show
     authorize! game, to: :config_show?
-    render json: game, serializer: GameConfigSerializer
+    render json: GameConfigSerializer.new(game, include: %i[master users])
   end
 
   def update

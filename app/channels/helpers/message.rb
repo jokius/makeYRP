@@ -10,6 +10,6 @@ class Helpers::Message < Helpers::Base
   private
 
   def message_serializer(item)
-    MessageSerializer.new(item)
+    MessageSerializer.new(item, { include: %i[user] })
   end
 end

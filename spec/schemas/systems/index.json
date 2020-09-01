@@ -1,11 +1,40 @@
 {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "required": ["id", "name"],
-    "properties": {
-      "id": { "type": "number" },
-      "name": { "type": "string" }
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "required": [
+            "id",
+            "type",
+            "attributes"
+          ],
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "attributes": {
+              "type": "object",
+              "required": [
+                "name"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
 }

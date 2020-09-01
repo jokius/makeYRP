@@ -19,8 +19,8 @@
 #  index_messages_on_whisper_to_id  (whisper_to_id)
 #
 
-class MessageSerializer < ActiveModel::Serializer
-  attributes :id, :body, :created_at
+class MessageSerializer < BaseSerializer
+  attributes :body, :created_at
 
   belongs_to :user, serializer: ShortUserSerializer
 end

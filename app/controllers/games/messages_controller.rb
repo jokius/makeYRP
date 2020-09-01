@@ -2,6 +2,6 @@
 
 class Games::MessagesController < Games::ApplicationController
   def index
-    render json: game.limit_messages(20)
+    render json: MessageSerializer.new(game.limit_messages(20), { include: %i[user] })
   end
 end

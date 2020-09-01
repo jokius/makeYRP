@@ -2,6 +2,6 @@
 
 class UsersController < ApplicationController
   def current
-    render json: current_user, serializer: ShortUserSerializer
+    render json: ShortUserSerializer.new(current_user)
   end
 end

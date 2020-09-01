@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ShortGameSerializer < ActiveModel::Serializer
-  attributes :id, :name
-  attribute :system do
-    object.system.name
+class ShortGameSerializer < BaseSerializer
+  attributes :name
+  attribute :system do |game|
+    game.system.name
   end
 
   belongs_to :master, serializer: ShortUserSerializer

@@ -1,20 +1,42 @@
 {
   "type": "object",
-  "required": ["id", "read_all", "write_all", "levels"],
+  "required": [
+    "data"
+  ],
   "properties": {
-    "id": {
-      "type": "number"
-    },
-    "write_all": {
-      "type": "boolean"
-    },
-    "read_all": {
-      "type": "boolean"
-    },
-    "levels": {
-      "type": "array",
-      "items": {
-        "type": "object"
+    "data": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "writeAll",
+            "readAll",
+            "levels"
+          ],
+          "properties": {
+            "writeAll": {
+              "type": "boolean"
+            },
+            "readAll": {
+              "type": "boolean"
+            },
+            "levels": {
+              "type": "array"
+            }
+          }
+        }
       }
     }
   }

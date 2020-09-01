@@ -1,9 +1,39 @@
 {
   "type": "object",
-  "required": ["id", "name", "params"],
+  "required": [
+    "data"
+  ],
   "properties": {
-    "id": { "type": "number" },
-    "name": { "type": "string" },
-    "params": { "type": "object" }
+    "data": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "name",
+            "params"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "params": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
   }
 }

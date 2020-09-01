@@ -1,18 +1,66 @@
 {
   "type": "object",
-  "required": ["id", "nickname", "avatar", "admin", "sheet"],
+  "required": [
+    "data"
+  ],
   "properties": {
-    "id": { "type": "number" },
-    "nickname": { "type": "string" },
-    "sheet": { "type": "object" },
-    "avatar": {
+    "data": {
       "type": "object",
-      "required": ["url", "lazy", "thumb"],
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
       "properties": {
-        "url": { "type": ["null", "string"] },
-        "lazy": { "type": ["null", "string"] },
-        "thumb": { "type": ["null", "string"] },
-        "chat": { "type": ["null", "string"] }
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "required": [
+            "nickname",
+            "admin",
+            "avatar",
+            "sheet"
+          ],
+          "properties": {
+            "nickname": {
+              "type": "string"
+            },
+            "admin": {
+              "type": "boolean"
+            },
+            "avatar": {
+              "type": "object",
+              "required": [
+                "url",
+                "lazy",
+                "thumb",
+                "chat"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "lazy": {
+                  "type": "string"
+                },
+                "thumb": {
+                  "type": "string"
+                },
+                "chat": {
+                  "type": "string"
+                }
+              }
+            },
+            "sheet": {
+              "type": "object"
+            }
+          }
+        }
       }
     }
   }

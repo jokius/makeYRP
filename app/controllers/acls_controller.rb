@@ -4,7 +4,7 @@ class AclsController < ApplicationController
   def show
     item = object
     if item
-      render json: item, serializer: UsersAclSerializer, users: item.game.users
+      render json: UsersAclSerializer.new(item, { params: { users: item.game.users } })
     else
       render json: 'incorrect type', status: :unprocessable_entity
     end

@@ -2,7 +2,8 @@
 
 class Games::UsersController < Games::ApplicationController
   def index
-    render json: User.where(id: ids), each_serializer: ShortUserSerializer, game: game
+    users = User.where(id: ids)
+    render json: ShortUserSerializer.new(users, { params: { game: game } })
   end
 
   private
