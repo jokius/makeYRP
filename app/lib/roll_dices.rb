@@ -36,7 +36,7 @@ class RollDices
     result = if mod.present?
                result_by_mod(mod, count, dice)
              else
-               roll(count, dice).inject(0) { |sum, value| sum + value }
+               roll(count, dice).sum
              end
 
     { result: result + incr }
