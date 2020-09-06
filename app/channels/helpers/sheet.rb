@@ -26,6 +26,17 @@ class Helpers::Sheet < Helpers::Base
     broadcast(delete: true, sheet: sheet.id)
   end
 
+  def clone(data)
+    sheet = by_data(data)
+    return broadcast(errors: 'sheet not found') if sheet.nil?
+    return broadcast(errors: 'No permission') unless allowed_to?(:clone?, sheet)
+
+    operation = SheetCloner.call(sheet)
+    operation.persist!
+    cloned = operation.to_record
+    broadcast(new: true, sheet: sheet_serializer(cloned))
+  end
+
   def change_access(data)
     sheet = by_data(data)
     return broadcast(errors: 'sheet not found') if sheet.nil?

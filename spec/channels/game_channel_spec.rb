@@ -287,6 +287,24 @@ RSpec.describe GameChannel, type: :channel do
     end
   end
 
+  describe '#clone' do
+    describe 'sheet' do
+      it 'broadcasted to game' do
+        sheet = create(:sheet, owner: user)
+        params = { 'id' => sheet.id, 'type' => 'sheet' }
+        expect { subscription.clone(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:sheet]).to match_json_schema('sheets/show')
+          expect(data[:new]).to be true
+        end)
+      end
+    end
+
+    it 'errors' do
+      allow(channel).to receive(:broadcast_to).with(game, errors: anything)
+      subscription.change({})
+    end
+  end
+
   describe 'call user_connected' do
     let(:instance) { instance_double(described_class) }
 

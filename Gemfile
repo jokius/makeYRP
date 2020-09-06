@@ -46,6 +46,9 @@ gem 'action_policy'
 gem 'active_storage-send_zip'
 gem 'rubyzip'
 
+# Clone
+gem 'clowne'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'

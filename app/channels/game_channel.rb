@@ -28,6 +28,12 @@ class GameChannel < ApplicationCable::Channel
     send(data['type']).remove(data)
   end
 
+  def clone(data)
+    return incorrect_type(data) unless %w[sheet].include? data['type']
+
+    send(data['type']).clone(data)
+  end
+
   def change_access(data)
     return incorrect_type(data) unless %w[sheet menu_item].include? data['type']
 

@@ -94,6 +94,7 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 4.0)
+    clowne (1.2.0)
     colorize (0.8.1)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
@@ -359,6 +360,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rbenv
   capistrano3-puma (>= 4.0.0)
+  clowne
   database_cleaner
   devise (>= 4.7.1)
   devise-jwt

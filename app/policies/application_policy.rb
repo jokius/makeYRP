@@ -17,6 +17,10 @@ class ApplicationPolicy < ActionPolicy::Base
     owner? || master?(record.game)
   end
 
+  def clone?
+    owner? || master?(record.game)
+  end
+
   protected
 
   def admin?
