@@ -57,9 +57,9 @@ class Game < ApplicationRecord
 
     case value
     when Hash
-      value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key]) }
+      value.each { |d_key, d_value| hash[key] = deep_or_merge(d_key, d_value, hash[key] || {}) }
     when Array
-      hash[key] = value.concat(Array.wrap(hash[key])).uniq
+      hash[key] = value.concat(Array.wrap(hash[key])).uniq || []
     else
       hash[key] = value
     end

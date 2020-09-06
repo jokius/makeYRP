@@ -70,6 +70,9 @@ Style/Documentation:
 Style/FormatStringToken:
   Enabled: false
 
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   Exclude:
   - locale/custom_locales.rb
