@@ -14,7 +14,7 @@ RSpec.describe Acl::Access, type: :interactor do
         id: sheet.id,
         read_all: true,
         write_all: false,
-        levels: [{ user_id: user.id,
+        levels: [{ user_id: user.id.to_s,
                    read: true,
                    write: false }] }
     end
@@ -42,7 +42,7 @@ RSpec.describe Acl::Access, type: :interactor do
         id: menu_item.id,
         read_all: true,
         write_all: false,
-        levels: [{ user_id: user.id,
+        levels: [{ user_id: user.id.to_s,
                    read: true,
                    write: false }] }
     end

@@ -7,10 +7,10 @@ class Acl::Access
     required(:type).filled(:string)
     required(:id).filled(:integer)
     required(:read_all).filled(:bool)
-    required(:write_all).filled(:bool)
-    required(:levels).each do
+    optional(:write_all).filled(:bool)
+    optional(:levels).each do
       hash do
-        required(:user_id).filled(:integer)
+        required(:user_id).filled(:string)
         required(:read).filled(:bool)
         required(:write).filled(:bool)
       end
@@ -62,6 +62,8 @@ class Acl::Access
   end
 
   def save_access_levels(record, levels)
+    return Success() if levels.nil?
+
     levels.each do |item|
       item[:user_id]
       acl = record.access_levels.find_or_initialize_by(user_id: item[:user_id])
