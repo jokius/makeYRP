@@ -18,6 +18,13 @@ class Folders::ImagesController < ApplicationController
     head :no_content
   end
 
+  def drop
+    responds(Folders::Images::Drop, params.merge({ user_id: current_user.id })) do |image|
+      PageChannel.broadcast_to(image.page, new: true, image: ImageSerializer.new(image))
+      head :no_content
+    end
+  end
+
   private
 
   def image

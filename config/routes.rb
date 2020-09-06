@@ -47,7 +47,9 @@ Rails.application.routes.draw do
       get :tree, on: :collection
 
       scope module: :folders do
-        resources :images
+        resources :images, only: %i[create update destroy] do
+          post :drop, on: :collection
+        end
       end
     end
 
