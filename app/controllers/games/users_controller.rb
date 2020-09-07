@@ -9,6 +9,6 @@ class Games::UsersController < Games::ApplicationController
   private
 
   def ids
-    REDIS.lrange("game_#{game.id}", 0, -1)
+    REDIS.keys("game_#{game.id}_user_*").map { |key| REDIS.get(key) }
   end
 end

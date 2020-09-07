@@ -83,8 +83,14 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def user_connected
-    REDIS.lpush("game_#{game.id}", current_user.id.to_s)
+    return add_user if REDIS.get(key)
+
+    add_user
     broadcast(new: true, user: ShortUserSerializer.new(current_user, { params: { game: game } }))
+  end
+
+  def add_user
+    REDIS.set(key, current_user.id.to_s, ex: 2.days)
   end
 
   def user_disconnected
@@ -93,8 +99,10 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def change_list
-    key = "game_#{game.id}"
-    REDIS.lrem(key, 1, current_user.id.to_s)
-    REDIS.del(key) if REDIS.llen(key).zero?
+    REDIS.del(key)
+  end
+
+  def key
+    "game_#{game.id}_user_#{current_user.id}"
   end
 end
