@@ -60,6 +60,7 @@ RSpec.describe PageChannel, type: :channel do
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:token]).to match_json_schema('pages/tokens/show')
         expect(data[:update]).to be true
+        expect(data[:from]).to eq user.id.to_s
       end)
 
       token = token.reload
@@ -73,6 +74,7 @@ RSpec.describe PageChannel, type: :channel do
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:image]).to match_json_schema('pages/images/show')
         expect(data[:update]).to be true
+        expect(data[:from]).to eq user.id.to_s
       end)
 
       image = image.reload
@@ -87,6 +89,7 @@ RSpec.describe PageChannel, type: :channel do
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:graphic]).to match_json_schema('pages/graphic/show')
         expect(data[:update]).to be true
+        expect(data[:from]).to eq user.id.to_s
       end)
 
       graphic = graphic.reload

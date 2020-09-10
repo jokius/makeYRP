@@ -11,7 +11,7 @@ class Helpers::Token < Helpers::Base
     return broadcast(errors: 'No permission') unless allowed_to?(:write?, by_data(data))
 
     responds(Tokens::Update, params.merge(data)) do |item|
-      broadcast(update: true, token: token_serializer(item))
+      broadcast(update: true, token: token_serializer(item), from: current_user.id.to_s)
     end
   end
 
