@@ -11,8 +11,9 @@ RSpec.describe Games::UsersController, type: :request do
 
   describe 'GET /games/:game_id/messages json' do
     before do
-      REDIS.lpush("game_#{game.id}", user.id.to_s)
-      REDIS.lpush("game_#{game.id}", create(:user).id.to_s)
+      REDIS.set("game_#{game.id}_user_#{user.id}", user.id.to_s)
+      other_user = create(:user)
+      REDIS.set("game_#{game.id}_user_#{other_user.id}", other_user.id.to_s)
 
       get "/api/games/#{game.id}/users", **headers
     end
