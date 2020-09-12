@@ -1,4 +1,4 @@
-FROM ruby:2.7.0-alpine
+FROM ruby:2.7.1-alpine
 
 ENV PROJECT_ROOT=/app
 WORKDIR $PROJECT_ROOT
@@ -11,7 +11,7 @@ postgresql-dev postgresql-client openssh git make \
 chromium chromium-chromedriver nodejs-current imagemagick yarn cmake less graphviz
 
 COPY Gemfile* $PROJECT_ROOT/
-RUN gem install bundler -v 2.0.2
+RUN gem install bundler -v 2.1.4
 RUN bundle check || BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --jobs 4 --retry 4
 
 COPY package.json yarn.lock $PROJECT_ROOT/

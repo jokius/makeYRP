@@ -12,11 +12,12 @@ services:
       SECRET_KEY_BASE: ""
       HOST: 'http://localhost:3000'
       REDIS_URL: redis://redis:6379/
+      ACTION_CABLE_ALLOWED_HOSTS: http://localhost:3000
     volumes:
       - .:/app
     depends_on:
       - db
-      - webpacker
+      - redis
 
   db:
     container_name: postgres
@@ -33,14 +34,3 @@ services:
     image: redis:5.0.7-alpine
     ports:
       - "6379:6379"
-
-  webpacker:
-    build: .
-    environment:
-      NODE_ENV: development
-      RAILS_ENV: development
-    command: ash -c "yarn && ./bin/webpack-dev-server --progress —colors --host 0.0.0.0"
-    ports:
-      - '3035:3035'
-    volumes:
-      - .:/app
