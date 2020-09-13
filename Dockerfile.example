@@ -13,6 +13,3 @@ chromium chromium-chromedriver nodejs-current imagemagick yarn cmake less graphv
 COPY Gemfile* $PROJECT_ROOT/
 RUN gem install bundler -v 2.1.4
 RUN bundle check || BUNDLE_FORCE_RUBY_PLATFORM=1 bundle install --jobs 4 --retry 4
-
-COPY package.json yarn.lock $PROJECT_ROOT/
-RUN yarn install
