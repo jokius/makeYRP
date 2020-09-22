@@ -33,13 +33,15 @@ class RollDices
     dice = Regexp.last_match(3).to_i
     incr = Regexp.last_match(4).to_i
     count = 1 if count.zero?
-    result = if mod.present?
-               result_by_mod(mod, count, dice)
-             else
-               roll(count, dice).sum
-             end
+    hash = if mod.present?
+             hash_with_mod(mod, count, dice)
+           else
+             hash_without_mod(count, dice)
+           end
 
-    { result: result + incr }
+    hash[:incr] = incr
+    hash[:result] = hash[:result] + incr
+    hash
   end
 
   def dice_by_template(key, dices)
@@ -53,9 +55,31 @@ class RollDices
     result.compact
   end
 
-  def result_by_mod(mod, count, dice)
+  def hash_with_mod(mod, count, dice)
     result = []
-    count.times { result << rand(1..dice) }
-    mod == 'h' ? result.max : result.min
+    dice_key = "d#{dice}"
+    hash = { mod: mod, dice: { dice_key => [] } }
+    count.times do
+      value = rand(1..dice)
+      result << value
+      hash[:dice][dice_key] << value
+    end
+
+    hash[:result] = mod == 'h' ? result.max : result.min
+    hash
+  end
+
+  def hash_without_mod(count, dice)
+    result = []
+    dice_key = "d#{dice}"
+    hash = { dice: { dice_key => [] } }
+    count.times do
+      value = rand(1..dice)
+      result << value
+      hash[:dice][dice_key] << value
+    end
+
+    hash[:result] = result.sum
+    hash
   end
 end
