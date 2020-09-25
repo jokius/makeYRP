@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ShortUserSerializer < BaseSerializer
-  attributes :nickname, :admin
+  attributes :nickname, :admin, :color
   attribute :avatar, &:avatars
 
   attribute :sheet do |user, params|
