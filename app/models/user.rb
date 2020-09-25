@@ -6,6 +6,7 @@
 #
 #  id                     :bigint           not null, primary key
 #  admin                  :boolean          default(FALSE), not null
+#  color                  :string           not null
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  jti                    :string           not null
@@ -40,7 +41,13 @@ class User < ApplicationRecord
   has_many :folders, dependent: :destroy
   has_many :access_levels, dependent: :destroy
 
+  before_create :create_color
   after_create :create_root_folder
+
+  def create_color
+    color = "##{SecureRandom.hex(3)}"
+    self.color = color
+  end
 
   def create_root_folder
     folders.create(name: 'Корневая папка')
