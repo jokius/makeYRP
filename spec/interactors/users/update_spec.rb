@@ -11,8 +11,7 @@ RSpec.describe Users::Update, type: :interactor do
     { id: user.id,
       nickname: 'super name',
       color: '#fff',
-      avatar: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.png'), 'image/png')
-    }
+      avatar: fixture_file_upload(Rails.root.join('spec', 'fixtures', 'files', 'test.png'), 'image/png') }
   end
 
   it { expect(interactor).to be_success }
