@@ -20,4 +20,15 @@ RSpec.describe UsersController, type: :request do
       end
     end
   end
+
+  describe 'PUT /user json' do
+    before do
+      put '/api/user', **headers, params: { nickname: 'super name', color: '#fff', avatar: nil }
+    end
+
+    it 'correct json' do
+      expect(response.status).to eq 200
+      expect(response).to match_json_schema('users/current_user_short')
+    end
+  end
 end

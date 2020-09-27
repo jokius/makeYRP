@@ -36,6 +36,7 @@ Rails.application.routes.draw do
       end
     end
 
+    resource :user, only: :update
     resources :users, only: :none do
       get :current, on: :collection
     end
