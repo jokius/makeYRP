@@ -8,5 +8,5 @@ server ENV['HOSTNAME'],
 
 set :default_env, {
   RAILS_ENV: 'production',
-  ACTION_CABLE_ALLOWED_HOSTS: ENV['ACTION_CABLE_ALLOWED_HOSTS']
+  CABLE_URL: ENV['CABLE_URL']
 }

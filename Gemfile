@@ -37,6 +37,9 @@ gem 'mini_magick'
 
 gem 'tzinfo-data'
 
+# Websocket
+gem 'anycable-rails'
+gem 'daemons', '~> 1.3', require: false
 gem 'redis'
 
 # ACL
@@ -60,8 +63,10 @@ group :development do
   gem 'brakeman'
   gem 'capistrano', '~> 3.12', require: false
   gem 'capistrano3-puma', '>= 4.0.0', require: false
+  gem 'capistrano-anycable', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
+  gem 'foreman'
   gem 'meta_request', '>= 0.7.2'
   gem 'reek', require: false
   gem 'rubocop', require: false

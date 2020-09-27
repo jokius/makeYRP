@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GameChannel < ApplicationCable::Channel
+  state_attr_accessor :game, :page, :sheet, :message, :item_folder, :menu_item, :user
+
   def subscribed
     user_connected
     stream_for game

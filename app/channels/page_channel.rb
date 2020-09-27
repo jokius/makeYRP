@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PageChannel < ApplicationCable::Channel
+  state_attr_accessor :token, :image, :graphic, :echo
+
   def subscribed
     stream_for page
   end
