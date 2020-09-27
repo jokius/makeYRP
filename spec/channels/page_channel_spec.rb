@@ -48,8 +48,9 @@ RSpec.describe PageChannel, type: :channel do
 
     it 'echo' do
       position = { 'x' => 1, 'y' => 2 }
-      params = { page_id: page.id, position: position, 'type' => 'echo' }
+      params = { page_id: page.id, 'position' => position, 'type' => 'echo' }
       expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
+        p data
         expect(data[:echo]).to be true
         expect(data[:new]).to be true
         expect(data[:position]).to eq position
