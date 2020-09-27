@@ -6,7 +6,7 @@ class PageChannel < ApplicationCable::Channel
   end
 
   def add(data)
-    return incorrect_type(data) unless %w[token image graphic].include? data['type']
+    return incorrect_type(data) unless %w[token image graphic echo].include? data['type']
 
     send(data['type']).add(data)
   end
@@ -51,5 +51,9 @@ class PageChannel < ApplicationCable::Channel
 
   def graphic
     @graphic ||= Helpers::Graphic.new.call(**helper_params)
+  end
+
+  def echo
+    @echo ||= Helpers::Echo.new.call(**helper_params)
   end
 end
