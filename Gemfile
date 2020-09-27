@@ -63,7 +63,6 @@ group :development do
   gem 'brakeman'
   gem 'capistrano', '~> 3.12', require: false
   gem 'capistrano3-puma', '>= 4.0.0', require: false
-  gem 'capistrano-anycable', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rbenv', require: false
   gem 'foreman'
