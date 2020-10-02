@@ -13,6 +13,7 @@ RSpec.describe Graphics::Create, type: :interactor do
         owner_id: create(:user).id,
         page_id: page.id,
         kind: 'line',
+        layer: 'players',
         params: { 'text' => 'params' }
       }
     end

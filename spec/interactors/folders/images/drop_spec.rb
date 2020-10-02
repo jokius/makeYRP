@@ -16,7 +16,8 @@ RSpec.describe Folders::Images::Drop, type: :interactor do
         page_id: page.id,
         x: 1,
         y: 1,
-        file: Rack::Test::UploadedFile.new(file, 'image/png')
+        file: Rack::Test::UploadedFile.new(file, 'image/png'),
+        layer: 'players'
       }
     end
 

@@ -12,7 +12,8 @@ RSpec.describe Images::Create, type: :interactor do
       {
         owner_id: create(:user).id,
         page_id: page.id,
-        params: { x: 0, y: 0 }
+        params: { x: 0, y: 0 },
+        layer: 'players'
       }
     end
 

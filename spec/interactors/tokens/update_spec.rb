@@ -10,7 +10,8 @@ RSpec.describe Tokens::Update, type: :interactor do
   let(:input) do
     {
       id: token.id,
-      params: params
+      params: params,
+      layer: 'test'
     }
   end
 
@@ -18,5 +19,6 @@ RSpec.describe Tokens::Update, type: :interactor do
     expect(interactor).to be_success
     token = interactor.success
     expect(token.params).to match(params)
+    expect(token.layer).to eq 'test'
   end
 end

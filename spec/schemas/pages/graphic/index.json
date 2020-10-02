@@ -25,7 +25,8 @@
             "required": [
               "kind",
               "params",
-              "acl"
+              "acl",
+              "layer"
             ],
             "properties": {
               "kind": {
@@ -33,6 +34,9 @@
               },
               "params": {
                 "type": "object"
+              },
+              "layer": {
+                "type": "string"
               },
               "acl": {
                 "type": "object",

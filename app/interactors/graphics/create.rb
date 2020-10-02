@@ -7,6 +7,7 @@ class Graphics::Create
     required(:owner_id).filled(:integer)
     required(:page_id).filled(:integer)
     required(:kind).filled(:string)
+    required(:layer).filled(:string)
     required(:params).filled(:hash)
   end
 

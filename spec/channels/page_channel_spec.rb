@@ -20,7 +20,7 @@ RSpec.describe PageChannel, type: :channel do
   describe '#add' do
     it 'token' do
       sheet = create(:sheet)
-      params = { sheet_id: sheet.id, params: { x: 1, y: 1 }, 'type' => 'token' }
+      params = { sheet_id: sheet.id, layer: 'players', params: { x: 1, y: 1 }, 'type' => 'token' }
       expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:token]).to match_json_schema('pages/tokens/show')
         expect(data[:new]).to be true
@@ -29,7 +29,7 @@ RSpec.describe PageChannel, type: :channel do
     end
 
     it 'image' do
-      params = { params: { x: 1, y: 1 }, 'type' => 'image' }
+      params = { params: { x: 1, y: 1 }, layer: 'players', 'type' => 'image' }
       expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:image]).to match_json_schema('pages/images/show')
         expect(data[:new]).to be true
@@ -38,7 +38,7 @@ RSpec.describe PageChannel, type: :channel do
     end
 
     it 'graphic' do
-      params = { page_id: page.id, kind: 'line', params: { text: :params }, 'type' => 'graphic' }
+      params = { page_id: page.id, kind: 'line', layer: 'players', params: { text: :params }, 'type' => 'graphic' }
       expect { subscription.add(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:graphic]).to match_json_schema('pages/graphic/show')
         expect(data[:new]).to be true
@@ -68,7 +68,7 @@ RSpec.describe PageChannel, type: :channel do
     it 'token' do
       sheet = create(:sheet, owner: user)
       token = create(:token, sheet: sheet)
-      params = { 'id' => token.id, params: { x: 2, y: 3 }, 'type' => 'token' }
+      params = { 'id' => token.id, layer: 'players', params: { x: 2, y: 3 }, 'type' => 'token' }
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:token]).to match_json_schema('pages/tokens/show')
         expect(data[:update]).to be true
@@ -82,7 +82,7 @@ RSpec.describe PageChannel, type: :channel do
 
     it 'image' do
       image = create(:image, owner: user)
-      params = { 'id' => image.id, params: { x: 2, y: 3 }, 'type' => 'image' }
+      params = { 'id' => image.id, layer: 'players', params: { x: 2, y: 3 }, 'type' => 'image' }
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:image]).to match_json_schema('pages/images/show')
         expect(data[:update]).to be true
@@ -97,7 +97,7 @@ RSpec.describe PageChannel, type: :channel do
     it 'graphic' do
       graphic = create(:graphic, owner: user)
       new_text = 'new text'
-      params = { 'id' => graphic.id, params: { text: new_text }, 'type' => 'graphic' }
+      params = { 'id' => graphic.id, layer: graphic.layer, params: { text: new_text }, 'type' => 'graphic' }
       expect { subscription.change(params) }.to(have_broadcasted_to(page).with do |data|
         expect(data[:graphic]).to match_json_schema('pages/graphic/show')
         expect(data[:update]).to be true

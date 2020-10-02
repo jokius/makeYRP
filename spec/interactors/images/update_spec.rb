@@ -10,7 +10,8 @@ RSpec.describe Images::Update, type: :interactor do
   let(:input) do
     {
       id: image.id,
-      params: params
+      params: params,
+      layer: 'test'
     }
   end
 
@@ -18,5 +19,6 @@ RSpec.describe Images::Update, type: :interactor do
     expect(interactor).to be_success
     image = interactor.success
     expect(image.params).to match(params)
+    expect(image.layer).to eq 'test'
   end
 end

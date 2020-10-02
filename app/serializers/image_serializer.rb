@@ -5,6 +5,7 @@
 # Table name: images
 #
 #  id         :bigint           not null, primary key
+#  layer      :string           not null
 #  params     :jsonb            not null
 #  read_all   :boolean          default(TRUE), not null
 #  write_all  :boolean          default(FALSE), not null
@@ -19,7 +20,7 @@
 #
 
 class ImageSerializer < BaseSerializer
-  attributes :params
+  attributes :params, :layer
 
   attribute :acl do |item|
     AclSerializer.new(item).to_hash[:data][:attributes]

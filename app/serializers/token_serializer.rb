@@ -5,6 +5,7 @@
 # Table name: tokens
 #
 #  id         :bigint           not null, primary key
+#  layer      :string           not null
 #  params     :jsonb            not null
 #  read_all   :boolean          default(FALSE), not null
 #  write_all  :boolean          default(FALSE), not null
@@ -20,7 +21,7 @@
 #
 
 class TokenSerializer < BaseSerializer
-  attributes :sheet_id, :params
+  attributes :sheet_id, :params, :layer
 
   attribute :acl do |item|
     AclSerializer.new(item).to_hash[:data][:attributes]

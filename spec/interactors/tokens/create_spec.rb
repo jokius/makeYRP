@@ -13,7 +13,8 @@ RSpec.describe Tokens::Create, type: :interactor do
       {
         page_id: page.id,
         sheet_id: sheet.id,
-        params: { x: 0, y: 0 }
+        params: { x: 0, y: 0 },
+        layer: 'players'
       }
     end
 

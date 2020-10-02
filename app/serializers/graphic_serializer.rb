@@ -6,7 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  kind       :string
-#  layer      :string
+#  layer      :string           not null
 #  params     :jsonb
 #  read_all   :boolean          default(TRUE), not null
 #  write_all  :boolean          default(FALSE), not null
@@ -22,7 +22,7 @@
 #
 
 class GraphicSerializer < BaseSerializer
-  attributes :kind, :params
+  attributes :kind, :params, :layer
 
   attribute :acl do |item|
     AclSerializer.new(item).to_hash[:data][:attributes]

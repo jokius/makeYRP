@@ -23,7 +23,8 @@
           "required": [
             "sheetId",
             "params",
-            "acl"
+            "acl",
+            "layer"
           ],
           "properties": {
             "sheetId": {
@@ -31,6 +32,9 @@
             },
             "params": {
               "type": "object"
+            },
+            "layer": {
+              "type": "string"
             },
             "acl": {
               "type": "object",

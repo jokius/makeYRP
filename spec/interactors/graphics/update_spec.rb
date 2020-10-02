@@ -10,7 +10,8 @@ RSpec.describe Graphics::Update, type: :interactor do
   let(:input) do
     {
       id: graphic.id,
-      params: { 'text' => new_text }
+      params: { 'text' => new_text },
+      layer: 'test'
     }
   end
 
@@ -18,5 +19,6 @@ RSpec.describe Graphics::Update, type: :interactor do
     expect(interactor).to be_success
     graphic = interactor.success
     expect(graphic.params['text']).to eq new_text
+    expect(graphic.layer).to eq 'test'
   end
 end

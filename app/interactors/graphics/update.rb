@@ -6,6 +6,7 @@ class Graphics::Update
   GRAPHIC_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
     required(:params).filled(:hash)
+    required(:layer).filled(:string)
   end
 
   def call(input)

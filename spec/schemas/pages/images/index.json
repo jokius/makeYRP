@@ -24,11 +24,15 @@
             "type": "object",
             "required": [
               "params",
-              "acl"
+              "acl",
+              "layer"
             ],
             "properties": {
               "params": {
                 "type": "object"
+              },
+              "layer": {
+                "type": "string"
               },
               "acl": {
                 "type": "object",

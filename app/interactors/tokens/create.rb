@@ -6,6 +6,7 @@ class Tokens::Create
   TOKEN_CREATE_SCHEMA = Dry::Schema.Params do
     required(:page_id).filled(:integer)
     required(:sheet_id).filled(:integer)
+    required(:layer).filled(:string)
     required(:params).filled(:hash)
   end
 

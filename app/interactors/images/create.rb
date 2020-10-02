@@ -6,6 +6,7 @@ class Images::Create
   IMAGE_CREATE_SCHEMA = Dry::Schema.Params do
     required(:owner_id).filled(:integer)
     required(:page_id).filled(:integer)
+    required(:layer).filled(:string)
     required(:params).filled(:hash)
   end
 

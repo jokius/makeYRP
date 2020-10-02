@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_25_011022) do
+ActiveRecord::Schema.define(version: 2020_10_01_051520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2020_09_25_011022) do
 
   create_table "graphics", force: :cascade do |t|
     t.bigint "page_id", null: false
-    t.string "layer"
+    t.string "layer", null: false
     t.jsonb "params"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 2020_09_25_011022) do
     t.bigint "owner_id", null: false
     t.boolean "read_all", default: true, null: false
     t.boolean "write_all", default: false, null: false
+    t.string "layer", null: false
     t.index ["page_id"], name: "index_images_on_page_id"
   end
 
@@ -216,6 +217,7 @@ ActiveRecord::Schema.define(version: 2020_09_25_011022) do
     t.jsonb "params", default: {}, null: false
     t.boolean "read_all", default: false, null: false
     t.boolean "write_all", default: false, null: false
+    t.string "layer", null: false
     t.index ["page_id"], name: "index_tokens_on_page_id"
     t.index ["sheet_id"], name: "index_tokens_on_sheet_id"
   end

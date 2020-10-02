@@ -6,7 +6,7 @@
 #
 #  id         :bigint           not null, primary key
 #  kind       :string
-#  layer      :string
+#  layer      :string           not null
 #  params     :jsonb
 #  read_all   :boolean          default(TRUE), not null
 #  write_all  :boolean          default(FALSE), not null
@@ -26,6 +26,7 @@ FactoryBot.define do
     owner { create(:user) }
     page
     kind { 'test' }
+    layer { 'players' }
     params { { test: true } }
   end
 end
