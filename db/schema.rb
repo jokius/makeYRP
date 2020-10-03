@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_01_051520) do
+ActiveRecord::Schema.define(version: 2020_10_03_035735) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,24 @@ ActiveRecord::Schema.define(version: 2020_10_01_051520) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["master_id"], name: "index_games_on_master_id"
     t.index ["system_id"], name: "index_games_on_system_id"
+  end
+
+  create_table "games_sheet_folders", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "owner_id"
+    t.string "name"
+    t.integer "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "depth", default: 0, null: false
+    t.integer "children_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_games_sheet_folders_on_game_id"
+    t.index ["lft"], name: "index_games_sheet_folders_on_lft"
+    t.index ["owner_id"], name: "index_games_sheet_folders_on_owner_id"
+    t.index ["parent_id"], name: "index_games_sheet_folders_on_parent_id"
+    t.index ["rgt"], name: "index_games_sheet_folders_on_rgt"
   end
 
   create_table "graphics", force: :cascade do |t|
@@ -195,6 +213,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_051520) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "sheet_type", null: false
+    t.integer "folder_id", null: false
     t.index ["game_id", "owner_id"], name: "index_sheets_on_game_id_and_owner_id"
     t.index ["game_id"], name: "index_sheets_on_game_id"
     t.index ["owner_id"], name: "index_sheets_on_owner_id"

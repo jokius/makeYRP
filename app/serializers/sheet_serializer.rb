@@ -12,6 +12,7 @@
 #  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  folder_id  :integer          not null
 #  game_id    :bigint           not null
 #  owner_id   :bigint           not null
 #
@@ -23,7 +24,7 @@
 #
 
 class SheetSerializer < BaseSerializer
-  attributes :name, :sheet_type, :params
+  attributes :name, :sheet_type, :params, :folder_id
 
   attribute :acl do |item|
     AclSerializer.new(item).to_hash[:data][:attributes]

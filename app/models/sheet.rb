@@ -12,6 +12,7 @@
 #  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  folder_id  :integer          not null
 #  game_id    :bigint           not null
 #  owner_id   :bigint           not null
 #
@@ -26,5 +27,6 @@ class Sheet < ApplicationRecord
   include Acl
 
   belongs_to :game
+  belongs_to :folder, class_name: 'Games::SheetFolder'
   has_many :tokens, dependent: :destroy
 end

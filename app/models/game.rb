@@ -28,10 +28,12 @@ class Game < ApplicationRecord
   has_many :pages, dependent: :destroy
   has_many :menus, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :folders, class_name: 'Games::SheetFolder', dependent: :destroy
+  has_many :sheets
 
   accepts_nested_attributes_for :custom_system
 
-  after_create :add_custom_system
+  after_create :add_custom_system, :create_root_folder
 
   def limit_messages(limit)
     messages.order(created_at: :desc).limit(limit).reverse
@@ -48,6 +50,10 @@ class Game < ApplicationRecord
 
   def add_custom_system
     create_custom_system
+  end
+
+  def create_root_folder
+    folders.create(name: 'Корневая папка', owner: master)
   end
 
   private

@@ -24,7 +24,8 @@
             "name",
             "sheetType",
             "params",
-            "acl"
+            "acl",
+            "folderId"
           ],
           "properties": {
             "name": {
@@ -35,6 +36,9 @@
             },
             "params": {
               "type": "object"
+            },
+            "folderId": {
+              "type": "integer"
             },
             "acl": {
               "type": "object",

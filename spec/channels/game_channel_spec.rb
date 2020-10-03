@@ -18,8 +18,17 @@ RSpec.describe GameChannel, type: :channel do
   end
 
   describe '#add' do
+    it 'sheet_folder' do
+      params = { parent_id: game.folders.root.id, name: 'test folder name', 'type' => 'sheet_folder' }
+      expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
+        expect(data[:sheet_folder]).to match_json_schema('sheets/index')
+        expect(data[:new]).to be true
+        expect(Games::SheetFolder.find_by(id: data[:sheet_folder]['data']['id'])).not_to be_nil
+      end)
+    end
+
     it 'sheet' do
-      params = { game_id: game.id, sheet_type: 'character', 'type' => 'sheet' }
+      params = { game_id: game.id, folder_id: game.folders.root.id, sheet_type: 'character', 'type' => 'sheet' }
       expect { subscription.add(params) }.to(have_broadcasted_to(game).with do |data|
         expect(data[:sheet]).to match_json_schema('sheets/show')
         expect(data[:new]).to be true
@@ -78,11 +87,35 @@ RSpec.describe GameChannel, type: :channel do
   end
 
   describe '#change' do
+    describe 'sheet_folder' do
+      let(:folder) { create(:games_sheet_folder, game: game) }
+      let(:params) { { 'id' => folder.id, 'name' => 'new name', 'type' => 'sheet_folder' } }
+
+      before do
+        game.update(master: user)
+      end
+
+      it 'broadcasted to game' do
+        expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:sheet_folder]).to match_json_schema('sheets/index')
+          expect(data[:update]).to be true
+        end)
+      end
+
+      it 'new params save' do
+        subscription.change(params)
+        folder.reload
+        expect(folder.name).to eq params['name']
+      end
+    end
+
     describe 'sheet' do
       let(:sheet) { create(:sheet, owner: user) }
       let(:new_name) { 'super name' }
       let(:sheet_params) { { 'new_params' => 'updated' } }
-      let(:params) { { 'id' => sheet.id, name: new_name, params: sheet_params, 'type' => 'sheet' } }
+      let(:params) do
+        { 'id' => sheet.id, folder_id: game.folders.root.id, name: new_name, params: sheet_params, 'type' => 'sheet' }
+      end
 
       it 'broadcasted to game' do
         expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|
@@ -193,6 +226,28 @@ RSpec.describe GameChannel, type: :channel do
   end
 
   describe '#remove' do
+    describe 'sheet_folder' do
+      let(:folder) { create(:games_sheet_folder, game: game, parent: create(:games_sheet_folder)) }
+      let(:params) { { 'id' => folder.id, 'type' => 'sheet_folder' } }
+
+      before do
+        game.update(master: user)
+      end
+
+      it 'broadcasted to game' do
+        expect { subscription.remove(params) }.to(have_broadcasted_to(game).with do |data|
+          expect(data[:id]).to eq folder.id
+          expect(data[:sheet_folder]).to be true
+          expect(data[:delete]).to be true
+        end)
+      end
+
+      it 'remove record' do
+        subscription.remove(params)
+        expect(Menus::ItemFolder.find_by(id: folder.id)).to be_nil
+      end
+    end
+
     describe 'sheet' do
       it 'broadcasted to game' do
         sheet = create(:sheet, owner: user)

@@ -2,7 +2,8 @@
 
 class Games::SheetsController < Games::ApplicationController
   def index
-    sheets = authorized_scope(Sheet.where(game: game).order(created_at: :desc), scope_options: { game: game })
-    render json: SheetSerializer.new(sheets)
+    responds(Sheets::Folders::List, params.merge(user_id: current_user.id)) do |result|
+      render json: Sheets::FolderSerializer.new(result)
+    end
   end
 end

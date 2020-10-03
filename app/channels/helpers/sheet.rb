@@ -42,8 +42,10 @@ class Helpers::Sheet < Helpers::Base
     return broadcast(errors: 'sheet not found') if sheet.nil?
     return broadcast(errors: 'No permission') unless allowed_to?(:change_access?, sheet)
 
-    responds(Acl::Access, params.merge(data)) do |item|
-      broadcast(access: true, sheet: sheet_serializer(item))
+    responds(Acl::Access, params.merge(data)) do
+      responds(Sheets::Folders::List, { game_id: object.id, user_id: current_user.id }) do |result|
+        broadcast(access: true, sheet: Sheets::FolderSerializer.new(result))
+      end
     end
   end
 

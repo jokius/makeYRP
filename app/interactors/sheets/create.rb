@@ -6,6 +6,7 @@ class Sheets::Create
   SHEETS_CREATE_SCHEMA = Dry::Schema.Params do
     required(:owner_id).filled(:integer)
     required(:game_id).filled(:integer)
+    required(:folder_id).filled(:integer)
     required(:sheet_type).filled(:string)
     optional(:name).maybe(:string)
   end

@@ -12,6 +12,7 @@
 #  write_all  :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  folder_id  :integer          not null
 #  game_id    :bigint           not null
 #  owner_id   :bigint           not null
 #
@@ -28,6 +29,7 @@ FactoryBot.define do
     owner { create(:user) }
     sheet_type { 'character' }
     name { FFaker::Product.product_name }
+    folder { create(:games_sheet_folder) }
 
     trait :with_acl do
       after(:create) do |sheet|

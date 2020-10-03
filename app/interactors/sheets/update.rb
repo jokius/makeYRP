@@ -5,6 +5,7 @@ class Sheets::Update
 
   SHEETS_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
+    required(:folder_id).filled(:integer)
     required(:name).filled(:string)
     required(:params).filled(:hash)
   end

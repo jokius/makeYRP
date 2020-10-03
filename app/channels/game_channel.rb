@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GameChannel < ApplicationCable::Channel
-  state_attr_accessor :game, :page, :sheet, :message, :item_folder, :menu_item, :user
+  state_attr_accessor :game, :page, :sheet_folder, :sheet, :message, :item_folder, :menu_item, :user
 
   def subscribed
     user_connected
@@ -13,19 +13,19 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def add(data)
-    return incorrect_type(data) unless %w[sheet page message item_folder menu_item].include? data['type']
+    return incorrect_type(data) unless %w[sheet_folder sheet page message item_folder menu_item].include? data['type']
 
     send(data['type']).add(data)
   end
 
   def change(data)
-    return incorrect_type(data) unless %w[sheet page item_folder menu_item user].include? data['type']
+    return incorrect_type(data) unless %w[sheet_folder sheet page item_folder menu_item user].include? data['type']
 
     send(data['type']).change(data)
   end
 
   def remove(data)
-    return incorrect_type(data) unless %w[sheet page item_folder menu_item].include? data['type']
+    return incorrect_type(data) unless %w[sheet_folder sheet page item_folder menu_item].include? data['type']
 
     send(data['type']).remove(data)
   end
@@ -62,6 +62,10 @@ class GameChannel < ApplicationCable::Channel
 
   def page
     @page ||= Helpers::Page.new.call(**helper_params)
+  end
+
+  def sheet_folder
+    @sheet_folder ||= Helpers::SheetFolder.new.call(**helper_params)
   end
 
   def sheet

@@ -10,7 +10,10 @@ RSpec.describe Sheets::Update, type: :interactor do
   describe 'update sheet' do
     context 'with name' do
       let(:input) do
-        { id: sheet.id, name: 'super name', params: { 'new_params' => 'updated' } }
+        { id: sheet.id,
+          name: 'super name',
+          params: { 'new_params' => 'updated' },
+          folder_id: sheet.folder.id }
       end
 
       it 'save new sheet' do
