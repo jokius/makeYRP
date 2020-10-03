@@ -38,7 +38,6 @@ class Tokens::Create
 
   def create(sheet, input)
     token = Token.new(input)
-    token.read_all = sheet.read_all
     token.write_all = sheet.write_all
     if token.save
       create_access_levels(sheet, token)
