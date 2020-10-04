@@ -73,6 +73,7 @@ group :development do
   gem 'rubocop-rspec', require: false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'sshkit-sudo'
   gem 'web-console', '>= 4.0.1'
 end
 

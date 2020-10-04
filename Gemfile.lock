@@ -367,6 +367,8 @@ GEM
     sshkit (1.21.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    sshkit-sudo (0.1.0)
+      sshkit (~> 1.8)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -453,6 +455,7 @@ DEPENDENCIES
   sassc-rails (>= 2.1.2)
   spring
   spring-watcher-listen (~> 2.0.0)
+  sshkit-sudo
   tzinfo-data
   warden-jwt_auth (~> 0.4.2)
   web-console (>= 4.0.1)

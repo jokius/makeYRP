@@ -21,3 +21,5 @@ append :linked_files,
        'config/storage.yml',
        'config/master.key',
        'config/credentials.yml.enc'
+
+after 'deploy', 'anycable:restart'
