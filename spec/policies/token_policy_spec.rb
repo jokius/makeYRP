@@ -10,7 +10,9 @@ RSpec.describe TokenPolicy, type: :policy do
   let(:context) { { user: user } }
 
   describe_rule :read? do
-    failed 'when no access'
+    failed 'when no access' do
+      before { record.update(write_all: false, read_all: false) }
+    end
 
     succeed 'when master' do
       let(:game) { create(:game, master: user) }
