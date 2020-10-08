@@ -6,6 +6,7 @@ class Folders::Images::Drop
   IMAGES_DROP_SCHEMA = Dry::Schema.Params do
     required(:user_id).filled(:integer)
     required(:page_id).filled(:integer)
+    required(:rank).filled(:integer)
     required(:layer).filled(:string)
     required(:x).filled(:float)
     required(:y).filled(:float)
@@ -59,7 +60,8 @@ class Folders::Images::Drop
       x: input[:x],
       y: input[:y],
       width: meta[:width],
-      height: meta[:height]
+      height: meta[:height],
+      rank: input[:rank]
     }
 
     Images::Create.new.call({ owner_id: input[:user_id], page_id: input[:page_id],
