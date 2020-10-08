@@ -49,6 +49,17 @@ class Helpers::Sheet < Helpers::Base
     end
   end
 
+  def change_folder(data)
+    sheet = by_data(data)
+    return broadcast(errors: 'sheet not found') if sheet.nil?
+
+    responds(Sheets::Update, params.merge(data)) do
+      responds(Sheets::Folders::List, { game_id: object.id, user_id: current_user.id }) do |result|
+        broadcast(changeFolder: true, sheet: Sheets::FolderSerializer.new(result))
+      end
+    end
+  end
+
   private
 
   def by_data(data)

@@ -36,6 +36,17 @@ class Helpers::MenuItem < Helpers::Base
     end
   end
 
+  def change_folder(data)
+    menu_item = by_data(data)
+    return broadcast(errors: 'menu item not found') if menu_item.nil?
+
+    responds(Menus::Items::Update, params.merge(data)) do
+      responds(Menus::Folders::List, { menu_id: menu_item.menu_id, user_id: current_user.id }) do |result|
+        broadcast(changeFolder: true, menu_item: Menus::FolderSerializer.new(result))
+      end
+    end
+  end
+
   private
 
   def by_data(data)

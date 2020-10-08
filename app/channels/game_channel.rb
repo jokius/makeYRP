@@ -36,10 +36,18 @@ class GameChannel < ApplicationCable::Channel
     send(data['type']).clone(data)
   end
 
+  # TODO: add tests
   def change_access(data)
     return incorrect_type(data) unless %w[sheet menu_item].include? data['type']
 
     send(data['type']).change_access(data)
+  end
+
+  # TODO: add tests
+  def change_folder(data)
+    return incorrect_type(data) unless %w[sheet menu_item].include? data['type']
+
+    send(data['type']).change_folder(data)
   end
 
   private

@@ -5,6 +5,7 @@ class Menus::Items::Update
 
   ITEMS_UPDATE_SCHEMA = Dry::Schema.Params do
     required(:id).filled(:integer)
+    required(:folder_id).filled(:integer)
     required(:params).filled(:hash)
   end
 

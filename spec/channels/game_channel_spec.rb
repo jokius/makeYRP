@@ -162,7 +162,9 @@ RSpec.describe GameChannel, type: :channel do
     describe 'menu_item' do
       let(:menu_item) { create(:menus_item, owner: user) }
       let(:menu_item_params) { { 'new_params' => 'updated' } }
-      let(:params) { { 'id' => menu_item.id, 'params' => menu_item_params, 'type' => 'menu_item' } }
+      let(:params) do
+        { 'id' => menu_item.id, folder_id: menu_item.folder_id, 'params' => menu_item_params, 'type' => 'menu_item' }
+      end
 
       it 'broadcasted to game' do
         expect { subscription.change(params) }.to(have_broadcasted_to(game).with do |data|

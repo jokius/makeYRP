@@ -9,6 +9,7 @@ RSpec.describe Menus::Items::Update, type: :interactor do
   let(:input) do
     {
       id: menu_item.id,
+      folder_id: menu_item.folder_id,
       params: { 'name' => 'test' }
     }
   end
